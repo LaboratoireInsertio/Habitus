@@ -44,7 +44,7 @@ parser: serialport.parsers.readline('\n')
 // open the serial port:
 ///dev/ttyUSB0
 ///dev/cu.usbserial-DA013UAA
-var myPort = new SerialPort("dev/ttyAMA0", portConfig);
+var myPort = new SerialPort("/dev/ttyUSB0", portConfig);
 
 // ------------------------------------------------------------- //
 
