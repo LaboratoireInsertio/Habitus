@@ -1,0 +1,19 @@
+{
+  "name": "insertio",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "JAP & PAC",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0",
+    "moment": "^2.17.1",
+    "mongojs": "^2.4.0",
+    "serialport": "^4.0.7",
+    "socket.io": "^1.7.2",
+    "winston": "^2.3.0"
+  }
+}
