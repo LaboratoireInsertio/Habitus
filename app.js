@@ -20,6 +20,8 @@ var pirActive = false,
 		SomeOneInStairs = false,
 		TimeInStairs,
 		UpOrDown;
+		
+
 
 //----------- CONFIGURATION SERVER <-> CLIENT --------------------//
 
@@ -44,7 +46,9 @@ parser: serialport.parsers.readline('\n')
 };
 
 // open the serial port:
-var myPort = new SerialPort("/dev/cu.usbserial-DA013UAA", portConfig);
+// /dev/ttyUSB0
+// /dev/cu.usbserial-DA013UAA
+var myPort = new SerialPort("/dev/ttyUSB0", portConfig);
 
 //---------- MQTT CONFIGURATION SERVER <-> REMOTE ARDUINO ----------//
 
@@ -195,7 +199,6 @@ myPort.on('data', function (data) {
    }
    */
    
-
 });
 
 
