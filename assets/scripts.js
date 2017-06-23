@@ -4,6 +4,9 @@ var activityPIR = [],
 		activitySoundGlobal = [];
 		activityStairs = [];
 
+
+socket.emit('datas');
+
 socket.on('pirData', function (datas) {
 	
   $.each(datas, function(time, activation){

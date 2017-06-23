@@ -1,5 +1,5 @@
 {
-	"server" : "http://107.170.65.244:4200",
+	"server" : "http://107.170.65.244:8844",
 	"serverLocal" : "http://localhost:8844",
 	"debugLevel" : "debug"
 }
