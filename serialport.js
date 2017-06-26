@@ -22,8 +22,10 @@ winston.level = config.debugLevel;
 
 
 ///dev/cu.usbserial-7QVCOHC
-var serial = new SerialPort('/dev/ttyACM0', {
-// var serial = new SerialPort('/dev/cu.usbmodemfa131', {
+// var serial = new SerialPort('/dev/ttyACM0', {
+var arduinoPort = '/dev/cu.usbmodemfa131';
+// var arduinoPort = '/dev/ttyACM0';
+var serial = new SerialPort(arduinoPort, {
   parser: SerialPort.parsers.readline("\n"),
   baudRate: 9600
 });
@@ -33,7 +35,7 @@ var serial = new SerialPort('/dev/ttyACM0', {
 // const LOW = Buffer.from([0]);
 
 serial.on('open', () => {
-  console.log('Port is open!');
+  log.info('Arduino port '+arduinoPort+' is open');
 });
 
 serial.on('data', (data) => {
