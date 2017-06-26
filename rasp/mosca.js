@@ -1,4 +1,6 @@
 var mosca = require('mosca');
+var winston = log = require('winston');
+winston.level = config.debugLevel;
 
 var mqtt_settings = {
   port: 1883,
