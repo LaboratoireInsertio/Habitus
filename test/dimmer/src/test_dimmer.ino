@@ -1,133 +1,166 @@
+/***********************************************************************************
+ *
+ * Demo Arduino code for 4CH AC DIMMER MODULE
+ *
+ * AC LINE FREQUENCY - 60HZ !
+ *
+ * Variables for dimming - buf_CH1, buf_CH2, buf_CH3, buf_CH4 !
+ *
+ * Variables have range 0-255. 0 - Fully ON, 255 - Fully OFF.
+ *
+ * KRIDA Electronics, 4 SEP 2016
+ ***********************************************************************************/
+
 
 #include <TimerOne.h>
 
-unsigned char channel_1 = 24;  // Output to Opto Triac pin, channel 1
-unsigned char channel_2 = 25;  // Output to Opto Triac pin, channel 2
-unsigned char channel_3 = 26;  // Output to Opto Triac pin, channel 3
-unsigned char channel_4 = 27;  // Output to Opto Triac pin, channel 4
-unsigned char channel_5 = 28;  // Output to Opto Triac pin, channel 5
-unsigned char channel_6 = 29;  // Output to Opto Triac pin, channel 6
-unsigned char channel_7 = 30; // Output to Opto Triac pin, channel 7
-unsigned char channel_8 = 31; // Output to Opto Triac pin, channel 8
-unsigned char CH1, CH2, CH3, CH4, CH5, CH6, CH7, CH8;
-unsigned char CHANNEL_SELECT;
-unsigned char i=0;
-unsigned char clock_tick; // variable for Timer1
-unsigned int delay_time = 25;
+#define channel_1 24
+#define channel_2 25
+#define channel_3 26
+#define channel_4 27
+#define channel_5 28
+#define channel_6 29
+#define channel_7 30
+#define channel_8 31
 
-unsigned char low = 75;
-unsigned char high = 5;
-unsigned char off = 95;
+#define SPEED 2
 
+#define GATE_IMPULSE 5
+
+#define FREQ 84
+
+unsigned int  CH1, CH2, CH3, CH4, CH5, CH6, CH7, CH8;
+unsigned int  buf_CH1, buf_CH2, buf_CH3, buf_CH4, buf_CH5, buf_CH6, buf_CH7, buf_CH8;
+unsigned char clock_cn;
+unsigned int  clock_tick;
+unsigned char i;
 
 void setup() {
 
-pinMode(channel_1, OUTPUT);// Set AC Load pin as output
-pinMode(channel_2, OUTPUT);// Set AC Load pin as output
-pinMode(channel_3, OUTPUT);// Set AC Load pin as output
-pinMode(channel_4, OUTPUT);// Set AC Load pin as output
-pinMode(channel_5, OUTPUT);// Set AC Load pin as output
-pinMode(channel_6, OUTPUT);// Set AC Load pin as output
-pinMode(channel_7, OUTPUT);// Set AC Load pin as output
-pinMode(channel_8, OUTPUT);// Set AC Load pin as output
-attachInterrupt(1, zero_crosss_int, RISING);
-Timer1.initialize(83); // set a timer of length 100 microseconds for 50Hz or 83 microseconds for 60Hz;
-Timer1.attachInterrupt( timerIsr ); // attach the service routine here
+  pinMode(channel_1, OUTPUT);
+  pinMode(channel_2, OUTPUT);
+  pinMode(channel_3, OUTPUT);
+  pinMode(channel_4, OUTPUT);
+  pinMode(channel_5, OUTPUT);
+  pinMode(channel_6, OUTPUT);
+  pinMode(channel_7, OUTPUT);
+  pinMode(channel_8, OUTPUT);
+  attachInterrupt(1, zero_crosss_int, RISING);
+  Timer1.initialize(10);
+  Timer1.attachInterrupt( timerIsr );
 
 }
 
 void timerIsr()
 {
-clock_tick++;
+    clock_tick++;
 
-if (CH1==clock_tick)
-{
-digitalWrite(channel_1, HIGH); // triac firing
-delayMicroseconds(8.33); // triac On propogation delay (for 60Hz use 8.33)
-digitalWrite(channel_1, LOW); // triac Off
+    if (clock_cn)
+     {
+      clock_cn++;
+
+       if (clock_cn==GATE_IMPULSE)
+       {
+        digitalWrite(channel_1, LOW);
+        digitalWrite(channel_2, LOW);
+        digitalWrite(channel_3, LOW);
+        digitalWrite(channel_4, LOW);
+        digitalWrite(channel_5, LOW);
+        digitalWrite(channel_6, LOW);
+        digitalWrite(channel_7, LOW);
+        digitalWrite(channel_8, LOW);
+        clock_cn=0;
+       }
+     }
+
+        if (CH1==clock_tick)
+         {
+          digitalWrite(channel_1, HIGH);
+          clock_cn=1;
+         }
+
+           if (CH2==clock_tick)
+            {
+             digitalWrite(channel_2, HIGH);
+             clock_cn=1;
+            }
+
+              if (CH3==clock_tick)
+               {
+                digitalWrite(channel_3, HIGH);
+                clock_cn=1;
+               }
+
+                 if (CH4==clock_tick)
+                  {
+                   digitalWrite(channel_4, HIGH);
+                   clock_cn=1;
+                  }
+
+                  if (CH5==clock_tick)
+                   {
+                    digitalWrite(channel_5, HIGH);
+                    clock_cn=1;
+                   }
+                     if (CH6==clock_tick)
+                      {
+                       digitalWrite(channel_6, HIGH);
+                       clock_cn=1;
+                      }
+                      if (CH7==clock_tick)
+                       {
+                        digitalWrite(channel_7, HIGH);
+                        clock_cn=1;
+                       }
+                       if (CH8==clock_tick)
+                        {
+                         digitalWrite(channel_8, HIGH);
+                         clock_cn=1;
+                        }
+
 }
 
-if (CH2==clock_tick)
+
+
+void zero_crosss_int()
 {
-digitalWrite(channel_2, HIGH); // triac firing
-delayMicroseconds(8.33); // triac On propogation delay (for 60Hz use 8.33)
-digitalWrite(channel_2, LOW); // triac Off
+  CH1=buf_CH1;
+   CH2=buf_CH2;
+    CH3=buf_CH3;
+     CH4=buf_CH4;
+      CH5=buf_CH5;
+       CH6=buf_CH6;
+       // CH7=buf_CH7;
+        // CH8=buf_CH8;
+
+  clock_tick=0;
 }
 
-if (CH3==clock_tick)
+unsigned int DIMM_VALUE (unsigned char level)
 {
-digitalWrite(channel_3, HIGH); // triac firing
-delayMicroseconds(8.33); // triac On propogation delay (for 60Hz use 8.33)
-digitalWrite(channel_3, LOW); // triac Off
-}
+ unsigned int buf_level;
 
-if (CH4==clock_tick)
-{
-digitalWrite(channel_4, HIGH); // triac firing
-delayMicroseconds(8.33); // triac On propogation delay (for 60Hz use 8.33)
-digitalWrite(channel_4, LOW); // triac Off
-}
+ if (level < 26)  {level=26;}
+ if (level > 229) {level=229;}
 
-if (CH5==clock_tick)
-{
-digitalWrite(channel_5, HIGH); // triac firing
-delayMicroseconds(8.33); // triac On propogation delay (for 60Hz use 8.33)
-digitalWrite(channel_5, LOW); // triac Off
-}
-
-if (CH6==clock_tick)
-{
-digitalWrite(channel_6, HIGH); // triac firing
-delayMicroseconds(8.33); // triac On propogation delay (for 60Hz use 8.33)
-digitalWrite(channel_6, LOW); // triac Off
-}
-
-if (CH7==clock_tick)
-{
-digitalWrite(channel_7, HIGH); // triac firing
-delayMicroseconds(8.33); // triac On propogation delay (for 60Hz use 8.33)
-digitalWrite(channel_7, LOW); // triac Off
-}
-
-if (CH8==clock_tick)
-{
-digitalWrite(channel_8, HIGH); // triac firing
-delayMicroseconds(8.33); // triac On propogation delay (for 60Hz use 8.33)
-digitalWrite(channel_8, LOW); // triac Off
-}
-
-
-}
-
-
-
-void zero_crosss_int() // function to be fired at the zero crossing to dim the light
-{
-// Every zerocrossing interrupt: For 50Hz (1/2 Cycle) => 10ms ; For 60Hz (1/2 Cycle) => 8.33ms
-// 10ms=10000us , 8.33ms=8330us
-
-clock_tick=0;
+ return ((level*(FREQ))/256)*10;
 }
 
 
 
 void loop() {
 
+  for (i=255;i>1;i--) {buf_CH1=DIMM_VALUE(i); delay(SPEED);}
+   for (i=255;i>1;i--) {buf_CH2=DIMM_VALUE(i); delay(SPEED);}
+    for (i=255;i>1;i--) {buf_CH3=DIMM_VALUE(i); delay(SPEED);}
+     for (i=255;i>1;i--) {buf_CH4=DIMM_VALUE(i); delay(SPEED);}
+      for (i=255;i>1;i--) {buf_CH5=DIMM_VALUE(i); delay(SPEED);}
+       for (i=255;i>1;i--) {buf_CH6=DIMM_VALUE(i); delay(SPEED);}
 
-         for (i=95;i>10;i--)
-          {
-            CH1=CH2=CH3=CH4=CH5=CH6=CH7=CH8=i;
-            delay(delay_time);
-          }
-
-           for (i=10;i<95;i++)
-          {
-            CH1=CH2=CH3=CH4=CH5=CH6=CH7=CH8=i;
-            delay(delay_time);
-          }
-
-
-
-
-
+  for (i=0;i<255;i++) {buf_CH1=DIMM_VALUE(i); delay(SPEED);}
+   for (i=0;i<255;i++) {buf_CH2=DIMM_VALUE(i); delay(SPEED);}
+    for (i=0;i<255;i++) {buf_CH3=DIMM_VALUE(i); delay(SPEED);}
+     for (i=0;i<255;i++) {buf_CH4=DIMM_VALUE(i); delay(SPEED);}
+      for (i=0;i<255;i++) {buf_CH5=DIMM_VALUE(i); delay(SPEED);}
+       for (i=0;i<255;i++) {buf_CH6=DIMM_VALUE(i); delay(SPEED);}
 }
