@@ -44,14 +44,15 @@ socket.on('turnAllTintOff', turnAllTintOff)
 
 var numLamps = 8;
 var bulbMin = 95;
+var bulbMid = 58;
 var bulbMax = 20;
 
 setTimeout(function() {
   console.log('------------------- START ------------------------');
   //turnAllBulbOn(bulbMax); 
   setInterval(function() {
-    swingBulbUp(200, bulbMax);
-    swingBulbDown(200, bulbMax);
+    swingBulbUp(200, bulbMid);
+    swingBulbDown(200, bulbMid);
     //swingTintUp(1000);
     //swingTintDown(1000);
     //randomBulb(1000);
