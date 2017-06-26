@@ -48,10 +48,10 @@ var bulbMax = 20;
 
 setTimeout(function() {
   console.log('------------------- START ------------------------');
-  turnAllBulbOn(bulbMax); 
+  //turnAllBulbOn(bulbMax); 
   setInterval(function() {
-    //swingBulbUp(200, bulbMax);
-    //swingBulbDown(1000);
+    swingBulbUp(200, bulbMax);
+    swingBulbDown(200, bulbMax);
     //swingTintUp(1000);
     //swingTintDown(1000);
     //randomBulb(1000);
