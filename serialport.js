@@ -2,7 +2,7 @@ var SerialPort = require('serialport');
 var _ = require('underscore');
 var winston = log = require('winston');
 const config = require('./config.json');
-
+var socket;
 
 var pirActive = false,
 		CapturingSoundGlobal = false,
@@ -13,7 +13,16 @@ var count = 0;
 var averageSound = 0;
 var maxValueSound = 0;
 
-winston.level = config.debugLevel;
+module.exports.init = function(iosocket){
+  log.debug('Init serialport');
+  socket = iosocket;
+}
+
+
+//
+// module.exports.init = function(socketio, ) {
+//   socket = socketio;
+// }
 
 // var portArduino = '';
 // SerialPort.list(function (err, ports) {

@@ -7,6 +7,8 @@ var io = require('socket.io-client'),
 winston.level = config.debugLevel;
 var serialport = require('./serialport');
 
+serialport.init(socket);
+
 require('./rasp/mosca').listen(config, log, socket);
 
 // Add a connect listener
