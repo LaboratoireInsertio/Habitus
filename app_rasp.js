@@ -2,8 +2,8 @@ const config = require('./config.json');
 var 	io = require('socket.io-client'),
 		socket = io.connect(config.serverLocal, {reconnect: true}),
 		winston = log = require('winston');
-
-var serialport = require('serialport'); // include the serialport library
+winston.level = config.debugLevel;
+var serialport = require('./serialport');
 
 
 var pirActive = false,
@@ -14,26 +14,7 @@ var pirActive = false,
 	SomeOneInStairs = false,
 	TimeInStairs,
 	UpOrDown;
-		
 
-//-------------- Winston debug -----------------------//
-winston.level = config.debugLevel;
-
-
-// //----------- CONFIGURATION SERVER <-> ARDUINO --------------------//
-
-// var SerialPort = serialport.SerialPort, // make a local instance of serial
-// portName = process.argv[1],         // get the port name from the command line
-// portConfig = {
-// baudRate: 9600,
-//     // call myPort.on('data') when a newline is received:
-// parser: serialport.parsers.readline('\n')
-// };
-
-// // open the serial port:
-// // /dev/ttyUSB0
-// // /dev/cu.usbserial-DA013UAA
-// var myPort = new SerialPort("/dev/ttyUSB0", portConfig);
 
 // //---------- MQTT CONFIGURATION SERVER <-> REMOTE ARDUINO ----------//
 
@@ -41,7 +22,7 @@ winston.level = config.debugLevel;
 //   port: 1883,
 //   persistence: mosca.persistence.Memory
 // };
- 
+
 // var mqtt_server = new mosca.Server(mqtt_settings, function() {
 //   //console.log('Mosca server is up and running')
 // });
@@ -50,13 +31,13 @@ winston.level = config.debugLevel;
 
 
 // Add a connect listener
-socket.on('connect', function() { 
+socket.on('connect', function() {
   log.debug('Connected!');
 
-  setInterval(function() {
-  	socket.emit('insertData', 'sound_global', {x:  new Date().getTime(), y: '12'});
-  	log.debug('send');
-  }, 1000);
+  // setInterval(function() {
+  // 	socket.emit('insertData', 'sound_global', {x:  new Date().getTime(), y: '12'});
+  // 	log.debug('send');
+  // }, 1000);
 
 });
 
@@ -83,7 +64,7 @@ socket.on('newData', function(table, value){
 //    // 4 = DigitalRead3 : PIR
 //    // console.log('1:' + dataSplit[0] + ' 2:' + dataSplit[1] +' 3:' + dataSplit[2] +' 4:' + dataSplit[3] +' 5:' + dataSplit[4]);
 
-   
+
 //    if(lastTenValueSound.length >= 10){
 //    	lastTenValueSound.splice(0,1);
 //    }
@@ -134,7 +115,7 @@ socket.on('newData', function(table, value){
 //    	},200);
 //    }
 
-   
+
 //    // PHOTOCELLS
 //    if(dataSplit[2] >= 500 && !photoCellDownActive ){
 //    		photoCellDownActive = new Date().getTime();
@@ -148,7 +129,7 @@ socket.on('newData', function(table, value){
 //    }
 //    if(photoCellUpActive && photoCellDownActive && SomeOneInStairs){
 //    	SomeOneInStairs =  false;
-   
+
 //    	TimeInStairs = photoCellUpActive - photoCellDownActive;
 //    	if(TimeInStairs > 0){
 //    		winston.debug('Someone up the stairs!', TimeInStairs);
@@ -163,8 +144,8 @@ socket.on('newData', function(table, value){
 //    		photoCellDownActive = photoCellUpActive = false;
 //    	},500);
 //    }
-   
-   
+
+
 // });
 
 
@@ -178,7 +159,7 @@ socket.on('newData', function(table, value){
 //   if (packet.topic.indexOf('echo') === 0) {
 //     return cb();
 //   }
- 
+
 //   var newPacket = {
 //     topic: 'echo/' + packet.topic,
 //     payload: packet.payload.toString(),
@@ -193,7 +174,7 @@ socket.on('newData', function(table, value){
 //   } else if (packet.topic == "feeds/piezo"){
 // 	piez = parseInt(packet.payload.toString());
 //   }
- 
+
 //    // PHOTOCELLS
 //    if(phoD >= 500 && !photoCellDownActive ){
 //    		photoCellDownActive = new Date().getTime();
@@ -226,10 +207,7 @@ socket.on('newData', function(table, value){
 //    		photoCellDownActive = photoCellUpActive = false;
 //    	},500);
 //    }
-  
+
 //   // forward messages to subscribed clients
 //   mqtt_server.publish(newPacket, cb);
 // }
-
-
-
