@@ -65,17 +65,12 @@ socket.on('turnAllTintOff', turnAllTintOff)
 
 // Main Loop
 setInterval(function(){
-<<<<<<< HEAD
-		//swingBulbDown();
-		// swingTintDown();
-=======
 		//swingBulbUp(1000);
 		//swingBulbDown(1000);
 		//swingTintUp(1000);
 		//swingTintDown(1000);
 		randomBulb(1000);
 
->>>>>>> 65b4de930e1ef9543aeeb5ebee755156f91e424b
 },30);
 
 var numLamps = 8;
@@ -194,7 +189,7 @@ function randomBulb(interval){
 		serialport.sendToMega("D", whichRandomBulb, String.fromCharCode(bulbMax));
 
 		whichRandomBulb = getRandomInt(1, 8);
-		
+
 		serialport.sendToMega("D", whichRandomBulb, String.fromCharCode(bulbMin));
 
 		timerRandomBulb = Date.now();
@@ -212,7 +207,7 @@ function randomTint(interval){
 		serialport.sendToMega("R", whichRandomTint, String.fromCharCode(0));
 
 		whichRandomTint = getRandomInt(1, 8);
-		
+
 		serialport.sendToMega("R", whichRandomTint, String.fromCharCode(1));
 
 		timerRandomTint = Date.now();
