@@ -8,7 +8,7 @@ var activityPIR = [],
 socket.emit('datas');
 
 socket.on('pirData', function (datas) {
-	
+
   $.each(datas, function(time, activation){
   	activityPIR.push({'x' : time, 'y' : activation.length});
   });
@@ -89,7 +89,7 @@ function generateCharts(id, label, datas, type, bgColor, color){
             }]
             ,
             yAxes: [{
-                ticks: { 
+                ticks: {
                 		beginAtZero : true,
                 }
             }]
@@ -100,5 +100,7 @@ function generateCharts(id, label, datas, type, bgColor, color){
 
 
 $(document).ready(function(){
-	
+	$(".ctrl").on('click',function(){
+    socket.emit("ctrl", $(this).data('id'));
+  });
 });
