@@ -45,13 +45,13 @@ module.exports.listen = function(config, log, socket) {
 
     log.debug(phoD+ ' '+phoU);
     // PHOTOCELLS
-    if (phoD <= 500 && !photoCellDownActive) {
+    if (phoD <= 600 && !photoCellDownActive) {
       photoCellDownActive = new Date().getTime();
       SomeOneInStairs = true;
       log.debug('Photocell Down active');
     }
 
-    if (phoU <= 500 && !photoCellUpActive) {
+    if (phoU <= 600 && !photoCellUpActive) {
       photoCellUpActive = new Date().getTime();
       SomeOneInStairs = true;
       log.debug('Photocell Up active');
