@@ -1,6 +1,6 @@
 const config = require('./config.json');
 var io = require('socket.io-client'),
-  socket = io.connect(config.serverLocal, {
+  socket = io.connect(config.server, {
     reconnect: true
   }),
   winston = log = require('winston');

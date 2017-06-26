@@ -24,7 +24,7 @@ module.exports.listen = function(server, log, db, _, moment) {
         socket.emit('SoundGlobalData', datas);
       })
     });
-    
+
     //Insert data in mongo DB
     socket.on('insertData', function(table, data) {
       log.debug('Ask for insertion :', table, data);
@@ -32,9 +32,15 @@ module.exports.listen = function(server, log, db, _, moment) {
       db[table].insert(data);
     });
 
+    socket.on("ctrl", function(typeCtrl){
+      log.debug("Ask for : "+typeCtrl);
+      io.sockets.emit(typeCtrl,"1");
+    });
+
     socket.on("disconnect", function() {
       log.debug('Client Disconnect');
-    })
+    });
+
 
   });
 };
