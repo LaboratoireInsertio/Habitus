@@ -8,15 +8,6 @@ winston.level = config.debugLevel;
 var serialport = require('./serialport');
 
 
-var pirActive = false,
-  CapturingSoundGlobal = false,
-  soundLoudActive = false,
-  photoCellDownActive = false,
-  photoCellUpActive = false,
-  SomeOneInStairs = false,
-  TimeInStairs,
-  UpOrDown;
-
 
 // //---------- MQTT CONFIGURATION SERVER <-> REMOTE ARDUINO ----------//
 

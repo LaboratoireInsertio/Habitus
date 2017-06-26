@@ -9,6 +9,15 @@ var mqtt_server = new mosca.Server(mqtt_settings, function() {
   console.log('Mosca server is up and running');
 });
 
+var pirActive = false,
+  CapturingSoundGlobal = false,
+  soundLoudActive = false,
+  photoCellDownActive = false,
+  photoCellUpActive = false,
+  SomeOneInStairs = false,
+  TimeInStairs,
+  UpOrDown;
+
 
 // Recieve data from remote Arduino
 
