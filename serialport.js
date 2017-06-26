@@ -25,7 +25,7 @@ SerialPort.list(function (err, ports) {
 
       serial.on('data', (data) => {
         // if(data.indexOf('~').length <= 0)
-          // console.log(data);
+          console.log(data);
       });
 
       serial.on('close', () => {
@@ -33,14 +33,17 @@ SerialPort.list(function (err, ports) {
         io.sockets.emit('close');
       });
 
+
+
     }
   });
 });
 
 module.exports.sendToMega = function(type, id, value, cb) {
-  // log.debug("send  "+type+ " "+ id + " "+value);
+  log.debug("send  "+type+ " "+ id + " "+value);
   serial.write(type + id + value + "~");
 }
+
 ///dev/cu.usbserial-7QVCOHC
 
 
