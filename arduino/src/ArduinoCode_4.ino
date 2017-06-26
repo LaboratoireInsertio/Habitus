@@ -193,8 +193,8 @@ void loop() {
 
     for (byte i = 0; i < 8; i++) {
       float dif = dimersDes[i] - dimersRea[i];
-      if (dif > 1.0) dimersRea[i] += 1;
-      else if (dif < -1.0) dimersRea[i] -= 1;
+      if (dif > 1.0) dimersRea[i] += 2;
+      else if (dif < -1.0) dimersRea[i] -= 2;
     }
 
     lastDimStep = millis();
