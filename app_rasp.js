@@ -214,11 +214,6 @@ function randomTint(interval){
 	}
 }
 
-
-
-
-
-
 // //----------- RECEIVE DATA FROM THE ARDUINO --------------------//
 
 // var lastTenValueSound = [];

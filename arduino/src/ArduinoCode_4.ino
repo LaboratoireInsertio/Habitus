@@ -145,16 +145,16 @@ void loop() {
     sensSoundInte = digitalRead(SENS_SOUND_INTE);
     sensPir = digitalRead(SENS_PIR);
 
-    
+
     Serial.print(sensSoundGlob, DEC); // Sound Global
     Serial.print(",");
     Serial.print(sensSoundInte, DEC); // Sound Intense
     Serial.print(",");
-    Serial.print(sensPhotoDown, DEC); // Photocell
-    Serial.print(",");
-    Serial.print(sensPhotoUp, DEC); // Photocell
-    Serial.print(",");
     Serial.println(sensPir, DEC); // PIR
+
+    // Serial.print(sensPhotoDown, DEC); // Photocell
+    // Serial.print(",");
+    // Serial.print(sensPhotoUp, DEC); // Photocell
     
 
     lastSensorReading = millis();
@@ -285,4 +285,3 @@ void zero_crosss_int() // function to be fired at the zero crossing to dim the l
 
   clock_tick = 0;
 }
-

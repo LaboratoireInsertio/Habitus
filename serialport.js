@@ -2,6 +2,11 @@ var SerialPort = require('serialport');
 var winston = log = require('winston');
 const config = require('./config.json');
 
+var lastTenValueSound = [];
+var count = 0;
+var averageSound = 0;
+var maxValueSound = 0;
+
 winston.level = config.debugLevel;
 
 // var portArduino = '';
@@ -32,8 +37,14 @@ serial.on('open', () => {
 });
 
 serial.on('data', (data) => {
-  // if(data.indexOf('~').length <= 0)
-    // console.log(data);
+     var dataIn = data;
+     dataSplit = dataIn.split(",");
+     // 1 = AnalogRead0 : Sound global
+     // 2 = DigitalRead2 : Sound Loud
+     // 3 = DigitalRead3 : PIR
+    log.debug('1:' + dataSplit[0] + ' 2:' + dataSplit[1] +' 3:' + dataSplit[2]);
+
+
 });
 
 module.exports.sendToMega = function(type, id, value, cb) {
