@@ -47,21 +47,21 @@ module.exports.listen = function(config, log, socket) {
       log.info('Receive data from wifi arduino');
       receiveData = true;
     }
-    log.debug(phoD+ ' '+phoU);
+    // log.debug(phoD+ ' '+phoU);
     // PHOTOCELLS
-    if (phoD <= 600 && !photoCellDownActive) {
+    if (phoD <= 750 && !photoCellDownActive) {
       photoCellDownActive = new Date().getTime();
       SomeOneInStairs = true;
       log.debug('Photocell Down active');
     }
 
-    if (phoU <= 600 && !photoCellUpActive) {
+    if (phoU <= 750 && !photoCellUpActive) {
       photoCellUpActive = new Date().getTime();
       SomeOneInStairs = true;
       log.debug('Photocell Up active');
     }
 
-    if (photoCellUpActive && photoCellDownActive && SomeOneInStairs) {
+    if (photoCellUpActive && photoCellDownActive && SomeOneInStairs && phoU >= 750 && phoD >= 750) {
       SomeOneInStairs = false;
 
       TimeInStairs = photoCellUpActive - photoCellDownActive;
