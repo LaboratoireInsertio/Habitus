@@ -1,6 +1,6 @@
 const config = require('./config.json');
 var io = require('socket.io-client'),
-  socket = io.connect(config.serverLocal, {
+  socket = io.connect(config.server, {
     reconnect: true
   }),
   winston = log = require('winston');
@@ -47,19 +47,29 @@ socket.on('newData', function(table, value) {
   log.debug('NEW DATA!', table, value);
 });
 
-socket.on('swingUP', function(){
+socket.on('swingUpBubls', function(){
 	log.debug('Ask for swing Up Bulb');
 })
 
-socket.on('swingDOWN', function(){
+socket.on('swingDownBulbs', function(){
 	log.debug('Ask for swing Down Bulb');
 });
 
+socket.on('swingUpTints', function(){
+	log.debug('Ask for swing Up Tints');
+})
+
+socket.on('swingDownTints', function(){
+	log.debug('Ask for swing Down Tints');
+});
+
 socket.on('turnAllBulbOn', function(){
+	turnAllBulbOn();
 	log.debug('Ask for turn all Bulbs On');
 });
 
-socket.on('turnAllTintOff', function(){
+socket.on('turnAllBulbOff', function(){
+	turnAllBulbOff();
 	log.debug('Ask for turn all Bulbs Off');
 });
 
@@ -70,27 +80,6 @@ socket.on('turnAllTintOn', function(){
 socket.on('turnAllTintOff', function(){
 	log.debug('Ask for turn all Tints Off');
 })
-
-
-
-var tintIsOn = false;
-setTimeout(function() {
-  console.log("Open Light 8 ");
-	var value = String.fromCharCode(1);
-  serialport.sendToMega("D", 8, value);
-
-
-  setInterval(function() {
-    if (!tintIsOn) {
-      serialport.sendToMega("D", 7, String.fromCharCode(90));
-      tintIsOn = true;
-    } else {
-      serialport.sendToMega("D", 7, String.fromCharCode(15));
-      tintIsOn = false;
-    }
-  }, 2000);
-
-},3500);
 
 
 var numLamps = 8;
