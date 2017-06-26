@@ -85,7 +85,7 @@ setTimeout(function() {
       serialport.sendToMega("D", 7, String.fromCharCode(90));
       tintIsOn = true;
     } else {
-      serialport.sendToMega("D", 7, String.fromCharCode(20));
+      serialport.sendToMega("D", 7, String.fromCharCode(15));
       tintIsOn = false;
     }
   }, 2000);
