@@ -14,8 +14,8 @@ var photoCellDownActive = false,
   TimeInStairs,
   UpOrDown;
 
-var phoD = 0;
-var phoU = 0;
+var phoD = 1000;
+var phoU = 1000;
 var piez = 0;
 var receiveData = false;
 
