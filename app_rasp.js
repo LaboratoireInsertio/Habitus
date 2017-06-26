@@ -166,8 +166,9 @@ function randomBulb(interval){
 		serialport.sendToMega("D", whichRandomBulb, String.fromCharCode(bulbMax));
 
 		whichRandomBulb = getRandomInt(1, 8);
+		var randomBright = getRandomInt(bulbMin, bulbMax);
 
-		serialport.sendToMega("D", whichRandomBulb, String.fromCharCode(bulbMin));
+		serialport.sendToMega("D", whichRandomBulb, String.fromCharCode(randomBright));
 
 		timerRandomBulb = Date.now();
 	}
