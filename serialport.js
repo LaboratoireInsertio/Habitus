@@ -1,7 +1,23 @@
 var SerialPort = require('serialport');
+var winston = log = require('winston');
+const config = require('./config.json');
+
+winston.level = config.debugLevel;
+
+var portArduino = '';
+SerialPort.list(function (err, ports) {
+  ports.forEach(function(port) {
+    if(port.manufacturer && port.manufacturer.indexOf('Arduino') <= 0){
+      log.debug('Arduino detected  : '+port.comName);
+      portArduino  = port.comName;
+    }
+  });
+});
+return;
+
 
 ///dev/cu.usbserial-7QVCOHC
-var serial = new SerialPort('/dev/ttyACM0', {
+var serial = new SerialPort(portArduino, {
 // var serial = new SerialPort('/dev/cu.usbmodemfa131', {
   parser: SerialPort.parsers.readline("\n"),
   baudRate: 9600
