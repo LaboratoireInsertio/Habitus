@@ -47,13 +47,8 @@ socket.on('newData', function(table, value) {
   log.debug('NEW DATA!', table, value);
 });
 
-socket.on('swingUpBubls', function(){
-	log.debug('Ask for swing Up Bulb');
-})
-
-socket.on('swingDownBulbs', function(){
-	log.debug('Ask for swing Down Bulb');
-});
+socket.on('swingBulbUp', swingBulbUp)
+socket.on('swingBulbDown', swingBulbDown);
 
 socket.on('swingUpTints', function(){
 	log.debug('Ask for swing Up Tints');
@@ -65,15 +60,10 @@ socket.on('swingDownTints', function(){
 
 socket.on('turnAllBulbOn', turnAllBulbOn);
 socket.on('turnAllBulbOff', turnAllBulbOff);
+socket.on('turnAllTintOn', turnAllTintOn);
+socket.on('turnAllTintOff', turnAllTintOff)
 
-socket.on('turnAllTintOn', function(){
-	log.debug('Ask for turn all Tints On');
-});
-
-socket.on('turnAllTintOff', function(){
-	log.debug('Ask for turn all Tints Off');
-})
-
+setInterval(swingBulbUp);
 
 var numLamps = 8;
 var bulbMin = 20;
@@ -110,26 +100,26 @@ var timer2 = Date.now();
 
 function swingBulbUp(){
 	if ((Date.now() - timer1) >= interval){
-		
+
 		turnAllOff();
 		serialport.sendToMega("D", whichLamp+1, String.fromCharCode(bulbMin);
-		
+
 		whichLamp = whichLamp + 1;
 		if (whichLamp > numLamps) whichLamp = 0;
-		
+
 		timer1 = Date.now();
 	}
 }
 
 function swingBulbDown(){
 	if ((Date.now() - timer1) >= interval){
-		
+
 		turnAllOff();
 		serialport.sendToMega("D", whichLamp, String.fromCharCode(bulbMax);
-		
+
 		whichLamp = whichLamp - 1;
 		if (whichLamp < 1) whichLamp = numLamps;
-		
+
 		timer1 = Date.now();
 	}
 }
