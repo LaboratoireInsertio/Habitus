@@ -15,7 +15,8 @@ serial.on('open', () => {
 });
 
 serial.on('data', (data) => {
-  console.log(data);
+  if(data.indexOf('~').length <= 0)
+    console.log(data);
 });
 
 module.exports.sendToMega = function(type, id, value, cb) {
