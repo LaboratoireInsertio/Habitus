@@ -43,7 +43,7 @@ module.exports.listen = function(config, log, socket) {
       piez = parseInt(packet.payload.toString());
     }
 
-    log.debug(phoD);
+    log.debug(phoD+ ' '+phoU);
     // PHOTOCELLS
     if (phoD <= 500 && !photoCellDownActive) {
       photoCellDownActive = new Date().getTime();
