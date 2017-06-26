@@ -50,16 +50,16 @@ socket.on('newData', function(table, value) {
 var tintIsOn = false;
 setTimeout(function() {
   console.log("Open Light 8 ");
-	var value = String.fromCharCode(50);
+	var value = String.fromCharCode(1);
   serialport.sendToMega("D", 8, value);
 
 
   setInterval(function() {
     if (!tintIsOn) {
-      serialport.sendToMega("R", 8, String.fromCharCode(1));
+      serialport.sendToMega("D", 8, String.fromCharCode(255));
       tintIsOn = true;
     } else {
-      serialport.sendToMega("R", 8, String.fromCharCode(0));
+      serialport.sendToMega("d", 8, String.fromCharCode(0));
       tintIsOn = false;
     }
   }, 2000);

@@ -15,7 +15,7 @@ serial.on('open', () => {
 });
 
 serial.on('data', (data) => {
-  if(data.indexOf('~').length <= 0)
+  // if(data.indexOf('~').length <= 0)
     console.log(data);
 });
 
