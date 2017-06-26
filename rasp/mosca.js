@@ -17,6 +17,7 @@ var photoCellDownActive = false,
 var phoD = 0;
 var phoU = 0;
 var piez = 0;
+var receiveData = false;
 
 module.exports.listen = function(config, log, socket) {
 
@@ -42,8 +43,11 @@ module.exports.listen = function(config, log, socket) {
     } else if (packet.topic == "feeds/piezo") {
       piez = parseInt(packet.payload.toString());
     }
-
-    log.debug(phoD+ ' '+phoU);
+    if(!receiveData){
+      info.log('Receive data from wifi arduino');
+      receiveData = true;
+    }
+    // log.debug(phoD+ ' '+phoU);
     // PHOTOCELLS
     if (phoD <= 600 && !photoCellDownActive) {
       photoCellDownActive = new Date().getTime();
