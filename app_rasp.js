@@ -42,7 +42,7 @@ socket.on('turnAllTintOff', turnAllTintOff)
 
 // Main Loop
 setInterval(function(){
-		swingBulbUp(700);
+		swingBulbUp(800);
 		//swingBulbDown(1000);
 		//swingTintUp(1000);
 		//swingTintDown(1000);
