@@ -100,7 +100,14 @@ function generateCharts(id, label, datas, type, bgColor, color){
 
 
 $(document).ready(function(){
-	$(".ctrl").on('click',function(){
-    socket.emit("ctrl", $(this).data('id'));
-  });
+
+	$('#function').keyup(function(e){
+		console.log(e.keyCode);
+    if(e.keyCode == 13)
+    {
+			console.log($('#function').val());
+			socket.emit("ctrl", $('#function').val());
+    }
+});
+
 });
