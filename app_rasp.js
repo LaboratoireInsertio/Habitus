@@ -102,7 +102,7 @@ function swingBulbUp(){
 	if ((Date.now() - timer1) >= interval){
 
 		turnAllOff();
-		serialport.sendToMega("D", whichLamp+1, String.fromCharCode(bulbMin);
+		serialport.sendToMega("D", whichLamp+1, String.fromCharCode(bulbMin));
 
 		whichLamp = whichLamp + 1;
 		if (whichLamp > numLamps) whichLamp = 0;
@@ -115,7 +115,7 @@ function swingBulbDown(){
 	if ((Date.now() - timer1) >= interval){
 
 		turnAllOff();
-		serialport.sendToMega("D", whichLamp, String.fromCharCode(bulbMax);
+		serialport.sendToMega("D", whichLamp, String.fromCharCode(bulbMax));
 
 		whichLamp = whichLamp - 1;
 		if (whichLamp < 1) whichLamp = numLamps;
