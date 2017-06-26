@@ -47,7 +47,7 @@ socket.on('newData', function(table, value) {
   log.debug('NEW DATA!', table, value);
 });
 
-bool tintIsOn = false;
+var tintIsOn = false;
 setTimeout(function() {
   console.log("Open Light 8 ");
   serialport.sendToMega("D", "8", "255");
@@ -61,7 +61,7 @@ setTimeout(function() {
       serialport.sendToMega("R", "8", "0");
       tintIsOn = false;
     }
-  }, 2000)
+  }, 2000);
 
 },3500);
 
