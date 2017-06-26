@@ -50,7 +50,7 @@ socket.on('newData', function(table, value) {
 var tintIsOn = false;
 setTimeout(function() {
   console.log("Open Light 8 ");
-	var value = String.fromCharCode(255);
+	var value = String.fromCharCode(0);
   serialport.sendToMega("D", 8, value);
 
 
