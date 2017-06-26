@@ -105,8 +105,8 @@ void loop() {
 
   // take care of received messages
   if (received) {
-    Serial.print("---------------------");
-    Serial.println(inputString);
+    //Serial.print("---------------------");
+    //Serial.println(inputString);
     // Message arrives in the form R1< :
     // R can be R for Relay or D for Dimer
     // 1 is the channel number (1-8 on both cases)
@@ -117,17 +117,19 @@ void loop() {
         // to convert from char to decimal
         byte temp = inputString[1] - '0';
         if (temp == i + 1) relays[i] = inputString[2];
-        //Serial.print(relays[i]);
+        Serial.print(relays[i]);
+        Serial.print(" ");
       }
-      //Serial.println();
+      Serial.println();
     } else if (inputString[0] == 'D') {
       for (byte i = 0; i < 8; i++) {
         // from char to decimal
         byte temp = inputString[1] - '0';
         if (temp == i + 1) dimersDes[i] = inputString[2];
-        //Serial.print(dimersDes[i]);
+        Serial.print(dimersDes[i]);
+        Serial.print(" ");
       }
-      //Serial.println();
+      Serial.println();
     }
     inputString = "";
     received = false;
@@ -144,15 +146,15 @@ void loop() {
     sensPir = digitalRead(SENS_PIR);
 
     
-//    Serial.print(sensSoundGlob, DEC); // Sound Global
-//    Serial.print(",");
-//    Serial.print(sensSoundInte, DEC); // Sound Intense
-//    Serial.print(",");
-//    Serial.print(sensPhotoDown, DEC); // Photocell
-//    Serial.print(",");
-//    Serial.print(sensPhotoUp, DEC); // Photocell
-//    Serial.print(",");
-//    Serial.println(sensPir, DEC); // PIR
+    Serial.print(sensSoundGlob, DEC); // Sound Global
+    Serial.print(",");
+    Serial.print(sensSoundInte, DEC); // Sound Intense
+    Serial.print(",");
+    Serial.print(sensPhotoDown, DEC); // Photocell
+    Serial.print(",");
+    Serial.print(sensPhotoUp, DEC); // Photocell
+    Serial.print(",");
+    Serial.println(sensPir, DEC); // PIR
     
 
     lastSensorReading = millis();
