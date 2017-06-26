@@ -179,12 +179,12 @@ function getRandomInt (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-var whichRandomBulb = 0;
+var whichRandomBulb = 3;
 var timerRandomBulb = Date.now();
 
 function randomBulb(interval){
 	if ((Date.now() - timerRandomBulb) >= interval){
-		console.log(whichRandomBulb);
+		//console.log(whichRandomBulb);
 
 		serialport.sendToMega("D", whichRandomBulb, String.fromCharCode(bulbMax));
 
@@ -196,8 +196,8 @@ function randomBulb(interval){
 	}
 }
 
-/*
-var whichRandomTint = 0;
+
+var whichRandomTint = 6;
 var timerRandomTint = Date.now();
 
 function randomTint(interval){
@@ -213,7 +213,7 @@ function randomTint(interval){
 		timerRandomTint = Date.now();
 	}
 }
-*/
+
 
 
 
