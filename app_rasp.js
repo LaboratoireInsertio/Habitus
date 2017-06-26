@@ -43,6 +43,7 @@ socket.on('turnAllTintOff', turnAllTintOff)
 // Main Loop
 setTimeout(function() {
   console.log('------------------- START ------------------------');
+  turnAllBulbOn(70); 
   setInterval(function() {
     //swingBulbUp(200);
     //swingBulbDown(1000);
@@ -50,8 +51,8 @@ setTimeout(function() {
     //swingTintDown(1000);
     //randomBulb(1000);
 
-    randomBulbBrightnessAll(200);
-    randomTint(500);
+    //randomBulbBrightnessAll(200);
+    //randomTint(500);
 
   }, 30);
 }, 3000);
@@ -63,6 +64,12 @@ function turnAllBulbOn() {
   for (var i = 0; i < numLamps; i++) {
     serialport.sendToMega("D", i + 1, String.fromCharCode(bulbMin));
   }
+}
+
+function turnAllBulbOn(brightness){
+	for (var i = 0; i < numLamps; i++) {
+	    serialport.sendToMega("D", i + 1, String.fromCharCode(brightness));
+	}
 }
 
 function turnAllBulbOff() {
