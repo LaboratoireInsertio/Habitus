@@ -1,19 +1,21 @@
 const config = require('./config.json');
-var 	io = require('socket.io-client'),
-		socket = io.connect(config.serverLocal, {reconnect: true}),
-		winston = log = require('winston');
+var io = require('socket.io-client'),
+  socket = io.connect(config.serverLocal, {
+    reconnect: true
+  }),
+  winston = log = require('winston');
 winston.level = config.debugLevel;
 var serialport = require('./serialport');
 
 
 var pirActive = false,
-	CapturingSoundGlobal = false,
-	soundLoudActive = false,
-	photoCellDownActive = false,
-	photoCellUpActive = false,
-	SomeOneInStairs = false,
-	TimeInStairs,
-	UpOrDown;
+  CapturingSoundGlobal = false,
+  soundLoudActive = false,
+  photoCellDownActive = false,
+  photoCellUpActive = false,
+  SomeOneInStairs = false,
+  TimeInStairs,
+  UpOrDown;
 
 
 // //---------- MQTT CONFIGURATION SERVER <-> REMOTE ARDUINO ----------//
@@ -41,9 +43,28 @@ socket.on('connect', function() {
 
 });
 
-socket.on('newData', function(table, value){
-	log.debug('NEW DATA!', table, value);
+socket.on('newData', function(table, value) {
+  log.debug('NEW DATA!', table, value);
 });
+
+var tintIsOn = false;
+setTimeout(function() {
+  console.log("Open Light 8 ");
+	var value = String.fromCharCode(1);
+  serialport.sendToMega("D", 8, value);
+
+
+  setInterval(function() {
+    if (!tintIsOn) {
+      serialport.sendToMega("D", 8, 255);
+      tintIsOn = true;
+    } else {
+      serialport.sendToMega("D", 8, 0);
+      tintIsOn = false;
+    }
+  }, 2000);
+
+},3500);
 
 
 

@@ -1,6 +1,7 @@
 var SerialPort = require('serialport');
+
 ///dev/cu.usbserial-7QVCOHC
-var serial = new SerialPort('/dev/cu.usbmodemfa131', {
+var serial = new SerialPort('/dev/ttyACM0', {
   parser: SerialPort.parsers.readline("\n"),
   baudRate: 9600
 });
@@ -14,15 +15,21 @@ serial.on('open', () => {
 });
 
 serial.on('data', (data) => {
-  console.log(data);
+  // if(data.indexOf('~').length <= 0)
+    console.log(data);
 });
+
+module.exports.sendToMega = function(type, id, value, cb) {
+  serial.write(type + id + value + "~");
+}
 
 serial.on('close', () => {
   console.log('Serial port disconnected.');
   io.sockets.emit('close');
 });
 
-setInterval(function(){
-  console.log('Send');
-  serial.write('R' + 5 + '<' + '~');
-},2000);
+//test working
+// setInterval(function(){
+//   console.log('Send');
+//   serial.write('R' + 5 + '<' + '~');
+// },2000);
