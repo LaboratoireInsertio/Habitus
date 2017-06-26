@@ -50,7 +50,7 @@ socket.on('newData', function(table, value) {
 var tintIsOn = false;
 setTimeout(function() {
   console.log("Open Light 8 ");
-  serialport.sendToMega("D", "8", 105);
+  serialport.sendToMega("D", "8", "<");
 
 
   setInterval(function() {
