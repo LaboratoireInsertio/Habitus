@@ -90,10 +90,10 @@ setTimeout(function() {
 
   setInterval(function() {
     if (!tintIsOn) {
-      serialport.sendToMega("D", 7, String.fromCharCode(90));
+    	turnAllBulbOn();
       tintIsOn = true;
     } else {
-      serialport.sendToMega("D", 7, String.fromCharCode(15));
+      turnAllBulbOff();
       tintIsOn = false;
     }
   }, 2000);
