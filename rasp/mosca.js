@@ -42,16 +42,16 @@ module.exports.listen = function(config, log, socket) {
     } else if (packet.topic == "feeds/piezo") {
       piez = parseInt(packet.payload.toString());
     }
-    
-    log.debug('photoD '+phoD+' --- photoU '+phoU );
+
+    // log.debug('photoD '+phoD+' --- photoU '+phoU );
     // PHOTOCELLS
-    if (phoD >= 500 && !photoCellDownActive) {
+    if (phoD <= 500 && !photoCellDownActive) {
       photoCellDownActive = new Date().getTime();
       SomeOneInStairs = true;
       log.debug('Photocell Down active');
     }
 
-    if (phoU >= 500 && !photoCellUpActive) {
+    if (phoU <= 500 && !photoCellUpActive) {
       photoCellUpActive = new Date().getTime();
       SomeOneInStairs = true;
       log.debug('Photocell Up active');
