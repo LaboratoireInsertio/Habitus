@@ -200,7 +200,7 @@ function randomTint(interval) {
 
 var timerRandomBrightnessAll = Date.now();
 
-function randomBulbBrightnessAll(interal) {
+function randomBulbBrightnessAll(interval) {
   if ((Date.now() - timerRandomBrightnessAll) >= interval) {
     for (var i = 1; i <= 8; i++) {
       var randomBright = getRandomInt(bulbMin, bulbMax);
