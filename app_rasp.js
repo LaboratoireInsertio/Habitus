@@ -94,17 +94,16 @@ setTimeout(function() {
 
 
 var numLamps = 8;
-var bulbMin = 5;
-var bulbMax = 90;
+var bulbMin = 20;
+var bulbMax = 95;
 
-
-function turnAllBulbOff(){
+function turnAllBulbOn(){
 	for (var i = 0; i< numLamps; i++){
 		serialport.sendToMega("D", i+1, String.fromCharCode(bulbMin));
 	}
 }
 
-function turnAllBulbOn(){
+function turnAllBulbOff(){
 	for (var i = 0; i< numLamps; i++){
 		serialport.sendToMega("D", i+1, String.fromCharCode(bulbMax));
 	}
@@ -119,6 +118,37 @@ function turnAllTintOff(){
 function turnAllTintOn(){
 	for (var i = 0; i< numLamps; i++){
 		serialport.sendToMega("R", i+1, String.fromCharCode(1));
+	}
+}
+
+var whichLamp = 0;
+var interval = 500;
+var timer1 = Date.now();
+var timer2 = Date.now();
+
+function swingBulbUp(){
+	if ((Date.now() - timer1) >= interval){
+		
+		turnAllOff();
+		serialport.sendToMega("D", whichLamp+1, String.fromCharCode(bulbMin);
+		
+		whichLamp = whichLamp + 1;
+		if (whichLamp > numLamps) whichLamp = 0;
+		
+		timer1 = Date.now();
+	}
+}
+
+function swingBulbDown(){
+	if ((Date.now() - timer1) >= interval){
+		
+		turnAllOff();
+		serialport.sendToMega("D", whichLamp, String.fromCharCode(bulbMax);
+		
+		whichLamp = whichLamp - 1;
+		if (whichLamp < 1) whichLamp = numLamps;
+		
+		timer1 = Date.now();
 	}
 }
 
