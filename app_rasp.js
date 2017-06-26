@@ -43,33 +43,43 @@ socket.on('turnAllTintOn', turnAllTintOn);
 socket.on('turnAllTintOff', turnAllTintOff)
 
 // Main Loop
+
+var numLamps = 8;
+var bulbMin = 95;
+var bulbMax = 20;
+
 setTimeout(function() {
   console.log('------------------- START ------------------------');
+  //turnAllBulbOn(bulbMax); 
   setInterval(function() {
-    swingBulbUp(200);
-    //swingBulbDown(1000);
+    swingBulbUp(200, bulbMax);
+    swingBulbDown(200, bulbMax);
     //swingTintUp(1000);
     //swingTintDown(1000);
     //randomBulb(1000);
 
-    //randomBulbBrightnessAll();
-    //randomTint(500);
+    //randomBulbBrightnessAll(200);
+    //randomTint(200);
 
   }, 30);
 }, 3000);
-var numLamps = 8;
-var bulbMin = 20;
-var bulbMax = 95;
 
-function turnAllBulbOn() {
-  for (var i = 0; i < numLamps; i++) {
-    serialport.sendToMega("D", i + 1, String.fromCharCode(bulbMin));
-  }
+
+//function turnAllBulbOn() {
+//  for (var i = 0; i < numLamps; i++) {
+//    serialport.sendToMega("D", i + 1, String.fromCharCode(bulbMin));
+//  }
+//}
+
+function turnAllBulbOn(brightness){
+	for (var i = 0; i < numLamps; i++) {
+	    serialport.sendToMega("D", i + 1, String.fromCharCode(brightness));
+	}
 }
 
 function turnAllBulbOff() {
   for (var i = 0; i < numLamps; i++) {
-    serialport.sendToMega("D", i + 1, String.fromCharCode(bulbMax));
+    serialport.sendToMega("D", i + 1, String.fromCharCode(bulbMin));
   }
 }
 
@@ -87,17 +97,16 @@ function turnAllTintOn() {
 
 var whichBulb1 = 0;
 var timerBulb1 = Date.now();
-
-function swingBulbUp(interval) {
+function swingBulbUp(interval, brightness) {
   if ((Date.now() - timerBulb1) >= interval) {
     //console.log("UP! "+bulbMin);
 
-    serialport.sendToMega("D", whichBulb1 + 1, String.fromCharCode(bulbMax));
+    serialport.sendToMega("D", whichBulb1 + 1, String.fromCharCode(bulbMin));
 
     whichBulb1 = whichBulb1 + 1;
     if (whichBulb1 > numLamps) whichBulb1 = 0;
 
-    serialport.sendToMega("D", whichBulb1 + 1, String.fromCharCode(bulbMin));
+    serialport.sendToMega("D", whichBulb1 + 1, String.fromCharCode(brightness));
 
     timerBulb1 = Date.now();
   }
@@ -105,17 +114,16 @@ function swingBulbUp(interval) {
 
 var whichBulb2 = 0;
 var timerBulb2 = Date.now();
-
-function swingBulbDown(interval) {
+function swingBulbDown(interval, brightness) {
   if ((Date.now() - timerBulb2) >= interval) {
     //console.log("DOWN! "+bulbMax);
 
-    serialport.sendToMega("D", whichBulb2, String.fromCharCode(bulbMax));
+    serialport.sendToMega("D", whichBulb2, String.fromCharCode(bulbMin));
 
     whichBulb2 = whichBulb2 - 1;
     if (whichBulb2 < 1) whichBulb2 = numLamps;
 
-    serialport.sendToMega("D", whichBulb2, String.fromCharCode(bulbMin));
+    serialport.sendToMega("D", whichBulb2, String.fromCharCode(brightness));
 
     timerBulb2 = Date.now();
   }
@@ -124,7 +132,6 @@ function swingBulbDown(interval) {
 
 var whichTint1 = 0;
 var timerTint1 = Date.now();
-
 function swingTintUp(interval) {
   if ((Date.now() - timerTint1) >= interval) {
     //console.log("UP! "+bulbMin);
@@ -143,7 +150,6 @@ function swingTintUp(interval) {
 
 var whichTint2 = 0;
 var timerTint2 = Date.now();
-
 function swingTintDown(interval) {
   if ((Date.now() - timerTint2) >= interval) {
     //console.log("UP! "+bulbMin);
@@ -165,15 +171,14 @@ function getRandomInt(min, max) {
 
 var whichRandomBulb = 3;
 var timerRandomBulb = Date.now();
-
-function randomBulb(interval) {
+function randomBulb(interval, maxBrightness) {
   if ((Date.now() - timerRandomBulb) >= interval) {
     //console.log(whichRandomBulb);
 
-    serialport.sendToMega("D", whichRandomBulb, String.fromCharCode(bulbMax));
+    serialport.sendToMega("D", whichRandomBulb, String.fromCharCode(bulbMim));
 
     whichRandomBulb = getRandomInt(1, 8);
-    var randomBright = getRandomInt(bulbMin, bulbMax);
+    var randomBright = getRandomInt(maxBrightness, bulbMin);
 
     serialport.sendToMega("D", whichRandomBulb, String.fromCharCode(randomBright));
 
@@ -184,7 +189,6 @@ function randomBulb(interval) {
 
 var whichRandomTint = 6;
 var timerRandomTint = Date.now();
-
 function randomTint(interval) {
   if ((Date.now() - timerRandomTint) >= interval) {
     //console.log("UP! "+bulbMin);
@@ -201,11 +205,10 @@ function randomTint(interval) {
 
 
 var timerRandomBrightnessAll = Date.now();
-
-function randomBulbBrightnessAll() {
-  if ((Date.now() - timerRandomBrightnessAll) >= 1000) {
+function randomBulbBrightnessAll(interval, maxBrightness) {
+  if ((Date.now() - timerRandomBrightnessAll) >= interval) {
     for (var i = 1; i <= 8; i++) {
-      var randomBright = getRandomInt(bulbMin, bulbMax);
+      var randomBright = getRandomInt(maxBrightness, bulbMin);
       serialport.sendToMega("D", i, String.fromCharCode(randomBright));
     }
 
