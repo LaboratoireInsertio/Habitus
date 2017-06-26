@@ -69,10 +69,6 @@ setInterval(function(){
 		swingBulbUp();
 },30);
 
-setInterval(function(){
-		s
-},30);
-
 var numLamps = 8;
 var bulbMin = 20;
 var bulbMax = 95;
