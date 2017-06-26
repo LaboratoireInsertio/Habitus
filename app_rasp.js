@@ -55,10 +55,10 @@ setTimeout(function() {
 
   setInterval(function() {
     if (!tintIsOn) {
-      serialport.sendToMega("R", "8", "1");
+      serialport.sendToMega("R", "8", 1);
       tintIsOn = true;
     } else {
-      serialport.sendToMega("R", "8", "0");
+      serialport.sendToMega("R", "8", 0);
       tintIsOn = false;
     }
   }, 2000);
