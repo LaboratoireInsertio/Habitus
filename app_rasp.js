@@ -98,13 +98,11 @@ function turnAllTintOn(){
 }
 
 var whichLamp1 = 0;
-var whichLamp2 = 0;
-var interval = 1000;
+var interval1 = 1000;
 var timer1 = Date.now();
-var timer2 = Date.now();
 
 function swingBulbUp(){
-	if ((Date.now() - timer1) >= interval){
+	if ((Date.now() - timer1) >= interval1){
 		console.log("UP! "+bulbMin);
 		
 		// turn last bulb off
@@ -120,8 +118,12 @@ function swingBulbUp(){
 	}
 }
 
+var whichLamp2 = 0;
+var interval2 = 1000;
+var timer2 = Date.now();
+
 function swingBulbDown(){
-	if ((Date.now() - timer2) >= interval){
+	if ((Date.now() - timer2) >= interval2){
 		console.log("DOWN! "+bulbMax);
 		//turnAllBulbOff();
 		
