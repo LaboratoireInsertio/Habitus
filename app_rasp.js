@@ -63,15 +63,8 @@ socket.on('swingDownTints', function(){
 	log.debug('Ask for swing Down Tints');
 });
 
-socket.on('turnAllBulbOn', function(){
-	turnAllBulbOn();
-	log.debug('Ask for turn all Bulbs On');
-});
-
-socket.on('turnAllBulbOff', function(){
-	turnAllBulbOff();
-	log.debug('Ask for turn all Bulbs Off');
-});
+socket.on('turnAllBulbOn', turnAllBulbOn);
+socket.on('turnAllBulbOff', turnAllBulbOff);
 
 socket.on('turnAllTintOn', function(){
 	log.debug('Ask for turn all Tints On');
