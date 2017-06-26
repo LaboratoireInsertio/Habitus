@@ -41,6 +41,8 @@ socket.on('turnAllTintOn', turnAllTintOn);
 socket.on('turnAllTintOff', turnAllTintOff)
 
 // Main Loop
+setTimeout(function(){
+console.log('------------------- START ------------------------');
 setInterval(function(){
 		swingBulbUp(500);
 		//swingBulbDown(1000);
@@ -52,7 +54,7 @@ setInterval(function(){
 		//randomTint(500);
 
 },30);
-
+},5000);
 var numLamps = 8;
 var bulbMin = 20;
 var bulbMax = 95;
