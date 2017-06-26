@@ -68,7 +68,7 @@ unsigned long lastDimStep = 0;
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(9600);
+  Serial.begin(57600);
 
   // mark the initial sensor reading time
   lastSensorReading = millis();
@@ -155,7 +155,7 @@ void loop() {
     // Serial.print(sensPhotoDown, DEC); // Photocell
     // Serial.print(",");
     // Serial.print(sensPhotoUp, DEC); // Photocell
-    
+
 
     lastSensorReading = millis();
   }

@@ -34,7 +34,7 @@ var arduinoPort = (process.env.ARDUINOPORT ? process.env.ARDUINOPORT : '/dec/tty
 // var arduinoPort = '/dev/ttyACM0';
 var serial = new SerialPort(arduinoPort, {
   parser: SerialPort.parsers.readline("\n"),
-  baudRate: 9600
+  baudRate: 57600
 });
 
 // Values to send over to Arduino.
