@@ -3,6 +3,9 @@ const _ = require('underscore');
 const moment = require('moment');
 const db = mongojs('sensors', ['sound_global', 'sound_loud', 'stairs', 'pir']);
 
+module.exports.insertData(function(table,data){
+  db[table].insert(data);
+});
 // Return all data of the DB for the sensors PIR in the entry
 module.exports.getPir = function(cb) {
   db.pir.find(function(err, docs) {
