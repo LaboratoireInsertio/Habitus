@@ -2,7 +2,7 @@ var SerialPort = require('serialport');
 var _ = require('underscore');
 var winston = log = require('winston');
 const config = require('./config.json');
-
+var socket;
 
 var pirActive = false,
 		CapturingSoundGlobal = false,
@@ -13,7 +13,16 @@ var count = 0;
 var averageSound = 0;
 var maxValueSound = 0;
 
-winston.level = config.debugLevel;
+module.exports.init = function(iosocket){
+  log.debug('Init serialport');
+  socket = iosocket;
+}
+
+
+//
+// module.exports.init = function(socketio, ) {
+//   socket = socketio;
+// }
 
 // var portArduino = '';
 // SerialPort.list(function (err, ports) {
@@ -51,7 +60,7 @@ serial.on('data', (data) => {
   // 1 = AnalogRead0 : Sound global
   // 2 = DigitalRead2 : Sound Loud
   // 3 = DigitalRead3 : PIR
-  log.debug('1:' + dataSplit[0] + ' 2:' + dataSplit[1] + ' 3:' + dataSplit[2]);
+  // log.debug('1:' + dataSplit[0] + ' 2:' + dataSplit[1] + ' 3:' + dataSplit[2]);
 
 
   if (lastTenValueSound.length >= 10) {
@@ -87,7 +96,7 @@ serial.on('data', (data) => {
 
   // PIR
 
-  if (dataSplit[4] == 1 && !pirActive) {
+  if (dataSplit[2] == 1 && !pirActive) {
     pirActive = true;
     socket.emit("insertData", "pir",{
       x: new Date().getTime(),
@@ -118,7 +127,7 @@ serial.on('data', (data) => {
 });
 
 module.exports.sendToMega = function(type, id, value, cb) {
-  log.debug("send arduino : ",type, id, value);
+  // log.debug("send arduino : ",type, id, value);
   serial.write(type + id + value + "~");
 }
 

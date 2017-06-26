@@ -29,7 +29,6 @@ module.exports.listen = function(server, log, db, _, moment) {
     socket.on('insertData', function(table, data) {
       log.debug('Ask for insertion :', table, data);
       io.sockets.emit('newData', table, data)
-      db.insertData(table, data);
     });
 
     socket.on("ctrl", function(typeCtrl){
