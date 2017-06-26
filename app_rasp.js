@@ -47,6 +47,32 @@ socket.on('newData', function(table, value) {
   log.debug('NEW DATA!', table, value);
 });
 
+socket.on('swingUP', function(){
+	log.debug('Ask for swing Up Bulb');
+})
+
+socket.on('swingDOWN', function(){
+	log.debug('Ask for swing Down Bulb');
+});
+
+socket.on('turnAllBulbOn', function(){
+	log.debug('Ask for turn all Bulbs On');
+});
+
+socket.on('turnAllTintOff', function(){
+	log.debug('Ask for turn all Bulbs Off');
+});
+
+socket.on('turnAllTintOn', function(){
+	log.debug('Ask for turn all Tints On');
+});
+
+socket.on('turnAllTintOff', function(){
+	log.debug('Ask for turn all Tints Off');
+})
+
+
+
 var tintIsOn = false;
 setTimeout(function() {
   console.log("Open Light 8 ");
@@ -56,10 +82,10 @@ setTimeout(function() {
 
   setInterval(function() {
     if (!tintIsOn) {
-      serialport.sendToMega("D", 8, String.fromCharCode(100));
+      serialport.sendToMega("D", 7, String.fromCharCode(90));
       tintIsOn = true;
     } else {
-      serialport.sendToMega("D", 8, String.fromCharCode(0));
+      serialport.sendToMega("D", 7, String.fromCharCode(15));
       tintIsOn = false;
     }
   }, 2000);
