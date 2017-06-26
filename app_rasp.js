@@ -174,6 +174,48 @@ function swingTintDown(interval){
 	}
 }
 
+function getRandomInt (min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+var whichRandomBulb = 0;
+var timerRandomBulb = Date.now();
+
+function randomBulb(interval){
+	if ((Date.now() - timerRandomBulb) >= interval){
+		console.log(whichRandomBulb);
+
+		serialport.sendToMega("D", whichRandomBulb, String.fromCharCode(bulbMax));
+
+		whichRandomBulb = getRandomInt(1, 8);
+		
+		serialport.sendToMega("D", whichRandomBulb, String.fromCharCode(bulbMin));
+
+		timerRandomBulb = Date.now();
+	}
+}
+
+/*
+var whichRandomTint = 0;
+var timerRandomTint = Date.now();
+
+function randomTint(interval){
+	if ((Date.now() - timerRandomTint) >= interval){
+		//console.log("UP! "+bulbMin);
+
+		serialport.sendToMega("R", whichRandomTint, String.fromCharCode(0));
+
+		whichRandomTint = getRandomInt(1, 8);
+		
+		serialport.sendToMega("R", whichRandomTint, String.fromCharCode(1));
+
+		timerRandomTint = Date.now();
+	}
+}
+*/
+
+
+
 
 
 // //----------- RECEIVE DATA FROM THE ARDUINO --------------------//
