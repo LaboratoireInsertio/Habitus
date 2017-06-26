@@ -101,6 +101,36 @@ setTimeout(function() {
 },3500);
 
 
+var numLamps = 8;
+var bulbMin = 5;
+var bulbMax = 90;
+
+
+function turnAllBulbOff(){
+	for (var i = 0; i< numLamps; i++){
+		serialport.sendToMega("D", i+1, String.fromCharCode(bulbMin));
+	}
+}
+
+function turnAllBulbOn(){
+	for (var i = 0; i< numLamps; i++){
+		serialport.sendToMega("D", i+1, String.fromCharCode(bulbMax));
+	}
+}
+
+function turnAllTintOff(){
+	for (var i = 0; i< numLamps; i++){
+		serialport.sendToMega("R", i+1, String.fromCharCode(0));
+	}
+}
+
+function turnAllTintOn(){
+	for (var i = 0; i< numLamps; i++){
+		serialport.sendToMega("R", i+1, String.fromCharCode(1));
+	}
+}
+
+
 
 // //----------- RECEIVE DATA FROM THE ARDUINO --------------------//
 
