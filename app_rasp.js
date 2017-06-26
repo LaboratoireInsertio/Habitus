@@ -49,6 +49,7 @@ setInterval(function(){
 		//randomBulb(1000);
 		
 		randomBulbBrightnessAll();
+		randomTint(1000);
 
 },30);
 
