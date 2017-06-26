@@ -96,7 +96,7 @@ serial.on('data', (data) => {
 
   // PIR
 
-  if (dataSplit[4] == 1 && !pirActive) {
+  if (dataSplit[2] == 1 && !pirActive) {
     pirActive = true;
     socket.emit("insertData", "pir",{
       x: new Date().getTime(),
