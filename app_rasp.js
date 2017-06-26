@@ -96,13 +96,13 @@ function turnAllTintOn(){
 }
 
 var whichLamp = 0;
-var interval = 500;
+var interval = 1000;
 var timer1 = Date.now();
 var timer2 = Date.now();
 
 function swingBulbUp(){
 	if ((Date.now() - timer1) >= interval){
-		console.log("UP!");
+		console.log("UP! "+bulbMin);
 		turnAllBulbOff();
 		serialport.sendToMega("D", whichLamp+1, String.fromCharCode(bulbMin));
 
