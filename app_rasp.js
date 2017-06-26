@@ -115,7 +115,7 @@ function swingBulbUp(){
 
 function swingBulbDown(){
 	if ((Date.now() - timer1) >= interval){
-
+		console.log("DOWN! "+bulbMin);
 		turnAllBulbOff();
 		serialport.sendToMega("D", whichLamp, String.fromCharCode(bulbMax));
 
