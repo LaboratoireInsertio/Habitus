@@ -56,7 +56,7 @@ setTimeout(function() {
 
   setInterval(function() {
     if (!tintIsOn) {
-      serialport.sendToMega("D", 8, String.fromCharCode(255));
+      serialport.sendToMega("D", 8, String.fromCharCode(100));
       tintIsOn = true;
     } else {
       serialport.sendToMega("D", 8, String.fromCharCode(0));
