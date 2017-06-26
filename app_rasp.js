@@ -64,10 +64,12 @@ socket.on('swingDownTints', function(){
 });
 
 socket.on('turnAllBulbOn', function(){
+	turnAllBulbOn();
 	log.debug('Ask for turn all Bulbs On');
 });
 
-socket.on('turnAllTintOff', function(){
+socket.on('turnAllBulbOff', function(){
+	turnAllBulbOff();
 	log.debug('Ask for turn all Bulbs Off');
 });
 
@@ -78,27 +80,6 @@ socket.on('turnAllTintOn', function(){
 socket.on('turnAllTintOff', function(){
 	log.debug('Ask for turn all Tints Off');
 })
-
-
-
-var tintIsOn = false;
-setTimeout(function() {
-  console.log("Open Light 8 ");
-	var value = String.fromCharCode(1);
-  serialport.sendToMega("D", 8, value);
-
-
-  setInterval(function() {
-    if (!tintIsOn) {
-    	turnAllBulbOn();
-      tintIsOn = true;
-    } else {
-      turnAllBulbOff();
-      tintIsOn = false;
-    }
-  }, 2000);
-
-},3500);
 
 
 var numLamps = 8;
