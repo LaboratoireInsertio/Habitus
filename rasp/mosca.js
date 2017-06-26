@@ -44,7 +44,7 @@ module.exports.listen = function(config, log, socket) {
       piez = parseInt(packet.payload.toString());
     }
     if(!receiveData){
-      info.log('Receive data from wifi arduino');
+      log.info('Receive data from wifi arduino');
       receiveData = true;
     }
     // log.debug(phoD+ ' '+phoU);
