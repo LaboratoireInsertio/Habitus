@@ -23,8 +23,8 @@ winston.level = config.debugLevel;
 
 ///dev/cu.usbserial-7QVCOHC
 // var serial = new SerialPort('/dev/ttyACM0', {
-var arduinoPort = '/dev/cu.usbmodemfa131';
-// var arduinoPort = '/dev/ttyACM0';
+// var arduinoPort = '/dev/cu.usbmodemfa131';
+var arduinoPort = '/dev/ttyACM0';
 var serial = new SerialPort(arduinoPort, {
   parser: SerialPort.parsers.readline("\n"),
   baudRate: 9600
