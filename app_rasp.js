@@ -159,7 +159,7 @@ function swingTintUp(interval){
 var whichTint2 = 0;
 var timerTint2 = Date.now();
 
-function swingTintDown(){
+function swingTintDown(interval){
 	if ((Date.now() - timerTint2) >= interval){
 		//console.log("UP! "+bulbMin);
 
