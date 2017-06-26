@@ -127,7 +127,7 @@ serial.on('data', (data) => {
 });
 
 module.exports.sendToMega = function(type, id, value, cb) {
-  log.debug("send arduino : ",type, id, value);
+  // log.debug("send arduino : ",type, id, value);
   serial.write(type + id + value + "~");
 }
 
