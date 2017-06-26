@@ -101,7 +101,7 @@ var timer2 = Date.now();
 function swingBulbUp(){
 	if ((Date.now() - timer1) >= interval){
 
-		turnAllOff();
+		turnAllBulbOff();
 		serialport.sendToMega("D", whichLamp+1, String.fromCharCode(bulbMin));
 
 		whichLamp = whichLamp + 1;
@@ -114,7 +114,7 @@ function swingBulbUp(){
 function swingBulbDown(){
 	if ((Date.now() - timer1) >= interval){
 
-		turnAllOff();
+		turnAllBulbOff();
 		serialport.sendToMega("D", whichLamp, String.fromCharCode(bulbMax));
 
 		whichLamp = whichLamp - 1;
