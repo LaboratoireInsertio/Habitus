@@ -66,6 +66,7 @@ socket.on('turnAllTintOff', turnAllTintOff)
 // Main Loop
 setInterval(function(){
 		swingBulbDown();
+		swingBulbUp();
 },30);
 
 var numLamps = 8;
@@ -119,7 +120,7 @@ function swingBulbUp(){
 }
 
 function swingBulbDown(){
-	if ((Date.now() - timer1) >= interval){
+	if ((Date.now() - timer2) >= interval){
 		console.log("DOWN! "+bulbMax);
 		//turnAllBulbOff();
 		
@@ -130,7 +131,7 @@ function swingBulbDown(){
 		
 		serialport.sendToMega("D", whichLamp, String.fromCharCode(bulbMin));
 
-		timer1 = Date.now();
+		timer2 = Date.now();
 	}
 }
 
