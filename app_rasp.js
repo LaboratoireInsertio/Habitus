@@ -49,6 +49,7 @@ bool tintIsOn = false;
 setTimeout(function(){
 		console.log("Open Light 8 ");
 		serialport.sendToMega("D", "8", "255");
+<<<<<<< HEAD
 		setInterval(function(){
 			if(!tintIsOn){
 				serialport.sendToMega("R", "8", "1");
@@ -61,6 +62,9 @@ setTimeout(function(){
 		},2000)
 
 });
+=======
+},4000);
+>>>>>>> db3b9a1a76353f8288bfb01c801eb86a4cf5332f
 
 
 
