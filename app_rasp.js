@@ -43,7 +43,7 @@ socket.on('turnAllTintOff', turnAllTintOff)
 // Main Loop
 setTimeout(function() {
   console.log('------------------- START ------------------------');
-  turnAllBulbOn(); 
+  turnAllBulbOff(); 
   setInterval(function() {
     //swingBulbUp(200);
     //swingBulbDown(1000);
