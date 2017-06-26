@@ -63,8 +63,10 @@ socket.on('turnAllBulbOff', turnAllBulbOff);
 socket.on('turnAllTintOn', turnAllTintOn);
 socket.on('turnAllTintOff', turnAllTintOff)
 
+// Main Loop
 setInterval(function(){
-		swingBulbDown();
+		//swingBulbDown();
+		swingTintDown();
 },30);
 
 var numLamps = 8;
@@ -95,34 +97,81 @@ function turnAllTintOn(){
 	}
 }
 
-var whichLamp = 0;
-var interval = 1000;
-var timer1 = Date.now();
-var timer2 = Date.now();
+var whichBulb1 = 0;
+var intervalBulb1 = 1000;
+var timerBulb1 = Date.now();
 
 function swingBulbUp(){
-	if ((Date.now() - timer1) >= interval){
-		console.log("UP! "+bulbMin);
-		turnAllBulbOff();
-		serialport.sendToMega("D", whichLamp+1, String.fromCharCode(bulbMin));
+	if ((Date.now() - timerBulb1) >= intervalBulb1){
+		//console.log("UP! "+bulbMin);
 
-		whichLamp = whichLamp + 1;
-		if (whichLamp > numLamps) whichLamp = 0;
+		serialport.sendToMega("D", whichBulb1+1, String.fromCharCode(bulbMax));
 
-		timer1 = Date.now();
+		whichBulb1 = whichBulb1 + 1;
+		if (whichBulb1 > numLamps) whichBulb1 = 0;
+		
+		serialport.sendToMega("D", whichBulb1+1, String.fromCharCode(bulbMin));
+
+		timerBulb1 = Date.now();
 	}
 }
 
+var whichBulb2 = 0;
+var intervalBulb2 = 1000;
+var timerBulb2 = Date.now();
+
 function swingBulbDown(){
-	if ((Date.now() - timer1) >= interval){
-		console.log("DOWN! "+bulbMax);
-		turnAllBulbOff();
-		serialport.sendToMega("D", whichLamp, String.fromCharCode(bulbMin));
+	if ((Date.now() - timerBulb2) >= intervalBulb2){
+		//console.log("DOWN! "+bulbMax);
+		
+		serialport.sendToMega("D", whichBulb2, String.fromCharCode(bulbMax));
 
-		whichLamp = whichLamp - 1;
-		if (whichLamp < 1) whichLamp = numLamps;
+		whichBulb2 = whichBulb2 - 1;
+		if (whichBulb2 < 1) whichBulb2 = numLamps;
+		
+		serialport.sendToMega("D", whichBulb2, String.fromCharCode(bulbMin));
 
-		timer1 = Date.now();
+		timerBulb2 = Date.now();
+	}
+}
+
+
+var whichTint1 = 0;
+var intervalTint1 = 1000;
+var timerTint1 = Date.now();
+
+function swingTintUp(){
+	if ((Date.now() - timerTint1) >= intervalTint1){
+		//console.log("UP! "+bulbMin);
+
+		serialport.sendToMega("R", whichTint1+1, String.fromCharCode(0));
+
+		whichTint1 = whichTint1 + 1;
+		if (whichTint1 > numLamps) whichTint1 = 0;
+		
+		serialport.sendToMega("R", whichTint1+1, String.fromCharCode(1));
+
+		timerTint1 = Date.now();
+	}
+}
+
+
+var whichTint2 = 0;
+var intervalTint2 = 1000;
+var timerTint2 = Date.now();
+
+function swingTintDown(){
+	if ((Date.now() - timerTint2) >= intervalTint2){
+		//console.log("UP! "+bulbMin);
+
+		serialport.sendToMega("R", whichTint2, String.fromCharCode(0));
+
+		whichTint2 = whichTint2 - 1;
+		if (whichTint2 < 1) whichTint2 = numLamps;
+		
+		serialport.sendToMega("R", whichTint2, String.fromCharCode(1));
+
+		timerTint2 = Date.now();
 	}
 }
 
