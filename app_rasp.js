@@ -43,7 +43,7 @@ socket.on('turnAllTintOff', turnAllTintOff)
 // Main Loop
 setTimeout(function() {
   console.log('------------------- START ------------------------');
-  turnAllBulbOn(90); 
+  turnAllBulbOn(); 
   setInterval(function() {
     //swingBulbUp(200);
     //swingBulbDown(1000);
@@ -52,10 +52,11 @@ setTimeout(function() {
     //randomBulb(1000);
 
     //randomBulbBrightnessAll(200);
-    randomTint(500);
+    randomTint(200);
 
   }, 30);
 }, 3000);
+
 var numLamps = 8;
 var bulbMin = 20;
 var bulbMax = 95;
@@ -92,7 +93,6 @@ function turnAllTintOn() {
 
 var whichBulb1 = 0;
 var timerBulb1 = Date.now();
-
 function swingBulbUp(interval) {
   if ((Date.now() - timerBulb1) >= interval) {
     //console.log("UP! "+bulbMin);
@@ -110,7 +110,6 @@ function swingBulbUp(interval) {
 
 var whichBulb2 = 0;
 var timerBulb2 = Date.now();
-
 function swingBulbDown(interval) {
   if ((Date.now() - timerBulb2) >= interval) {
     //console.log("DOWN! "+bulbMax);
@@ -129,7 +128,6 @@ function swingBulbDown(interval) {
 
 var whichTint1 = 0;
 var timerTint1 = Date.now();
-
 function swingTintUp(interval) {
   if ((Date.now() - timerTint1) >= interval) {
     //console.log("UP! "+bulbMin);
@@ -148,7 +146,6 @@ function swingTintUp(interval) {
 
 var whichTint2 = 0;
 var timerTint2 = Date.now();
-
 function swingTintDown(interval) {
   if ((Date.now() - timerTint2) >= interval) {
     //console.log("UP! "+bulbMin);
@@ -170,7 +167,6 @@ function getRandomInt(min, max) {
 
 var whichRandomBulb = 3;
 var timerRandomBulb = Date.now();
-
 function randomBulb(interval) {
   if ((Date.now() - timerRandomBulb) >= interval) {
     //console.log(whichRandomBulb);
@@ -189,7 +185,6 @@ function randomBulb(interval) {
 
 var whichRandomTint = 6;
 var timerRandomTint = Date.now();
-
 function randomTint(interval) {
   if ((Date.now() - timerRandomTint) >= interval) {
     //console.log("UP! "+bulbMin);
@@ -206,7 +201,6 @@ function randomTint(interval) {
 
 
 var timerRandomBrightnessAll = Date.now();
-
 function randomBulbBrightnessAll(interval) {
   if ((Date.now() - timerRandomBrightnessAll) >= interval) {
     for (var i = 1; i <= 8; i++) {
