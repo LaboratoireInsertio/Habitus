@@ -1,5 +1,5 @@
 var mosca = require('mosca');
-const config = require('./config.json');
+const config = require('../config.json');
 var winston = log = require('winston');
 winston.level = config.debugLevel;
 
