@@ -45,11 +45,23 @@ socket.on('newData', function(table, value){
 	log.debug('NEW DATA!', table, value);
 });
 
-
+bool tintIsOn = false;
 setTimeout(function(){
 		console.log("Open Light 8 ");
 		serialport.sendToMega("D", "8", "255");
+		setInterval(function(){
+			if(!tintIsOn){
+				serialport.sendToMega("R", "8", "1");
+				tintIsOn = true;
+			}
+			else{
+				serialport.sendToMega("R", "8", "0");
+				tintIsOn = false;
+			}
+		},2000)
+
 });
+
 
 
 // //----------- RECEIVE DATA FROM THE ARDUINO --------------------//

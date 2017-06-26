@@ -27,8 +27,8 @@ serial.on('close', () => {
   io.sockets.emit('close');
 });
 
-
-setInterval(function(){
-  console.log('Send');
-  serial.write('R' + 5 + '<' + '~');
-},2000);
+//test working
+// setInterval(function(){
+//   console.log('Send');
+//   serial.write('R' + 5 + '<' + '~');
+// },2000);
