@@ -49,7 +49,7 @@ socket.on('newData', function(table, value){
 setTimeout(function(){
 		console.log("Open Light 8 ");
 		serialport.sendToMega("D", "8", "255");
-});
+},4000);
 
 
 // //----------- RECEIVE DATA FROM THE ARDUINO --------------------//
