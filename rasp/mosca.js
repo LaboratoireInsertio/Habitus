@@ -32,7 +32,7 @@ mqtt_server.published = function(packet, client, cb) {
   if (packet.topic.indexOf('echo') === 0) {
     return cb();
   }
-  console.log(packet);
+  return console.log(packet);
 
   var newPacket = {
     topic: 'echo/' + packet.topic,
