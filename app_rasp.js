@@ -64,7 +64,7 @@ socket.on('turnAllTintOn', turnAllTintOn);
 socket.on('turnAllTintOff', turnAllTintOff)
 
 setInterval(function(){
-		swingBulbUp();
+		swingBulbDown();
 },30);
 
 var numLamps = 8;
