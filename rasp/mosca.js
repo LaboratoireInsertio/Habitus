@@ -42,6 +42,7 @@ module.exports.listen = function(config, log, socket) {
     } else if (packet.topic == "feeds/piezo") {
       piez = parseInt(packet.payload.toString());
     }
+    
     log.debug('photoD '+phoD+' --- photoU '+phoU );
     // PHOTOCELLS
     if (phoD >= 500 && !photoCellDownActive) {

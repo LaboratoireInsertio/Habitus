@@ -44,7 +44,7 @@ serial.on('data', (data) => {
      // 1 = AnalogRead0 : Sound global
      // 2 = DigitalRead2 : Sound Loud
      // 3 = DigitalRead3 : PIR
-    log.debug('1:' + dataSplit[0] + ' 2:' + dataSplit[1] +' 3:' + dataSplit[2]);
+    // log.debug('1:' + dataSplit[0] + ' 2:' + dataSplit[1] +' 3:' + dataSplit[2]);
 
 
 });
