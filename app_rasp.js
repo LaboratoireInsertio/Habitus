@@ -46,7 +46,9 @@ setInterval(function(){
 		//swingBulbDown(1000);
 		//swingTintUp(1000);
 		//swingTintDown(1000);
-		randomBulb(1000);
+		//randomBulb(1000);
+		
+		randomBulbBrightnessAll();
 
 },30);
 
@@ -189,5 +191,19 @@ function randomTint(interval){
 		serialport.sendToMega("R", whichRandomTint, String.fromCharCode(1));
 
 		timerRandomTint = Date.now();
+	}
+}
+
+
+var timerRandomBrightnessAll = Date.now();
+
+function randomBulbBrightnessAll(){
+	if ((Date.now() - timerRandomBrightnessAll) >= 1000){
+		for (var i = 1; i <= 8; i++){
+			var randomBright = getRandomInt(bulbMin, bulbMax);
+			serialport.sendToMega("D", i, String.fromCharCode(randomBright));
+		}
+		
+		timerRandomBrightnessAll = Date.now();
 	}
 }
