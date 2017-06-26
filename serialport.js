@@ -1,8 +1,8 @@
 var SerialPort = require('serialport');
 
 ///dev/cu.usbserial-7QVCOHC
-// var serial = new SerialPort('/dev/ttyACM0', {
-var serial = new SerialPort('/dev/cu.usbmodemfa131', {
+var serial = new SerialPort('/dev/ttyACM0', {
+// var serial = new SerialPort('/dev/cu.usbmodemfa131', {
   parser: SerialPort.parsers.readline("\n"),
   baudRate: 9600
 });
