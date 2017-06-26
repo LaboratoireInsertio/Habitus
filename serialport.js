@@ -1,4 +1,5 @@
 var SerialPort = require('serialport');
+
 ///dev/cu.usbserial-7QVCOHC
 var serial = new SerialPort('/dev/ttyACM0', {
   parser: SerialPort.parsers.readline("\n"),
@@ -17,10 +18,15 @@ serial.on('data', (data) => {
   console.log(data);
 });
 
+module.exports.sendToMega = function(type, id, value, cb) {
+  serial.write(type + id + value + "~");
+}
+
 serial.on('close', () => {
   console.log('Serial port disconnected.');
   io.sockets.emit('close');
 });
+
 
 setInterval(function(){
   console.log('Send');
