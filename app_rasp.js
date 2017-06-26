@@ -47,12 +47,20 @@ socket.on('newData', function(table, value) {
   log.debug('NEW DATA!', table, value);
 });
 
-socket.on('swingUP', function(){
+socket.on('swingUpBubls', function(){
 	log.debug('Ask for swing Up Bulb');
 })
 
-socket.on('swingDOWN', function(){
+socket.on('swingDownBulbs', function(){
 	log.debug('Ask for swing Down Bulb');
+});
+
+socket.on('swingUpTints', function(){
+	log.debug('Ask for swing Up Tints');
+})
+
+socket.on('swingDownTints', function(){
+	log.debug('Ask for swing Down Tints');
 });
 
 socket.on('turnAllBulbOn', function(){
