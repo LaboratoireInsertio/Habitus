@@ -44,14 +44,14 @@ socket.on('turnAllTintOff', turnAllTintOff)
 setTimeout(function() {
   console.log('------------------- START ------------------------');
   setInterval(function() {
-    swingBulbUp(200);
+    //swingBulbUp(200);
     //swingBulbDown(1000);
     //swingTintUp(1000);
     //swingTintDown(1000);
     //randomBulb(1000);
 
-    //randomBulbBrightnessAll();
-    //randomTint(500);
+    randomBulbBrightnessAll(200);
+    randomTint(500);
 
   }, 30);
 }, 3000);
@@ -200,8 +200,8 @@ function randomTint(interval) {
 
 var timerRandomBrightnessAll = Date.now();
 
-function randomBulbBrightnessAll() {
-  if ((Date.now() - timerRandomBrightnessAll) >= 1000) {
+function randomBulbBrightnessAll(interal) {
+  if ((Date.now() - timerRandomBrightnessAll) >= interval) {
     for (var i = 1; i <= 8; i++) {
       var randomBright = getRandomInt(bulbMin, bulbMax);
       serialport.sendToMega("D", i, String.fromCharCode(randomBright));
