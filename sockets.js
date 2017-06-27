@@ -43,12 +43,13 @@ module.exports.listen = function(server, log, db, _, moment, globalActivity) {
       if(typeof data == 'object' ){
 
         //Save Global Activity points (all sensors = 1 points, loud Sound = 5)
-        if(sensor = 'sound_loud'){
+        if(sensor == 'sound_loud'){
           globalActivity = globalActivity+5
         }
         else {
           globalActivity = globalActivity+1
         }
+        log.debug('Global Activity :'+globalActivity);
         io.sockets.emit('globalActivity',globalActivity);
 
         log.debug('Ask for insertion :', sensor, data);
