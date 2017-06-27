@@ -177,7 +177,7 @@ module.exports = {
 			
 		}
 		
-		log.debug("desired: " + desiredBright);
+		//log.debug("desired: " + desiredBright);
 		
 		timerRandomBrightnessAll = Date.now();
 	}
@@ -193,7 +193,7 @@ module.exports = {
 				individualTimer[i] = Date.now();
 			}
 			
-			log.debug("current: " + currentBright);
+			//log.debug("current: " + currentBright);
 		}
 	}
 
