@@ -111,7 +111,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 
 	// mainInterval should be a value between 500 and 60000
 	//animations.randomBulbBrightnessAll(mainInterval, mainBrightness);
-	animations.randomBulbBrightnessAll(60000, 20);
+	animations.randomBulbBrightnessAll(1000, 20);
 
 
 	if(lastCellDown != sensors.cellDown ){
@@ -121,12 +121,11 @@ function init(sensors, lamps, animations, log, serialport, socket) {
       lastCellDown = sensors.cellDown;
     }
 
-	if ((Date.now() - timerBulbSwingUpOnce) >= 500 && whichBulbSwingUpOnce < 8){
-
-		//serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(0));
+	if ((Date.now() - timerBulbSwingUpOnce) >= 500 && whichBulbSwingUpOnce <= 8){
+		log.debug(whichBulbSwingUpOnce);
+		serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(0));
         whichBulbSwingUpOnce++;
-		log.debug(whichBulbSwingUpOnce+1);
-		//serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(100));
+		serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(100));
 
 		timerBulbSwingUpOnce = Date.now();
 	}
