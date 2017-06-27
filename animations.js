@@ -178,7 +178,7 @@ module.exports = {
 		}
 		
 		log.debug("desired: " + desiredBright);
-		log.debug(Date().getHours());
+		log.debug(Date.getHours());
 		
 		timerRandomBrightnessAll = Date.now();
 	}
