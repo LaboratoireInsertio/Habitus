@@ -17,7 +17,7 @@ var globalActivity = {
 winston.level = config.debugLevel;
 
 require('./express').listen(express,server,app,log,db, moment,_);
-require('./sockets').listen(server, log, db, _, moment, globalActivity);
+var io = require('./sockets').listen(server, log, db, _, moment, globalActivity);
 require('./mosca').listen(server, log, db);
 
 setInterval(function(){

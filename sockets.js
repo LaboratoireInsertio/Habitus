@@ -47,8 +47,8 @@ module.exports.listen = function(server, log, db, _, moment, globalActivity) {
         else {
           globalActivity.value = globalActivity.value+1
         }
-        log.debug('Global Activity :'+globalActivity);
-        io.sockets.emit('globalActivity',globalActivity);
+        log.debug('Global Activity :'+globalActivity.value);
+        io.sockets.emit('globalActivity',globalActivity.value);
 
         log.debug('Ask for insertion :', sensor, data);
         db.insertData(sensor, data);
