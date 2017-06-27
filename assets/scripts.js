@@ -18,8 +18,6 @@ socket.on('data', function(sensor, value){
 var remapValue;
 socket.on('globalActivity', function(globalActivity){
 	remapValue = globalActivity.value.map(0,globalActivity.maxValue,0,100);
-	console.log('val',remapValue);
-
 	$("#globalActivity .value").html(remapValue);
 	$('#globalActivity #globalVal').css('width', remapValue+'%');
 });
@@ -119,7 +117,7 @@ function generateCharts(id, label, datas, type, bgColor, color){
 
 
 $(document).ready(function(){
-	// 
+	//
 	// var globalActivity = {
 	// 	maxValue  : 200,
 	// 	value : 200
@@ -140,7 +138,6 @@ $(document).ready(function(){
 		console.log(e.keyCode);
     if(e.keyCode == 13)
     {
-			console.log($('#function').val());
 			socket.emit("ctrl", $('#function').val());
     }
 });

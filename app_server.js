@@ -28,4 +28,8 @@ setInterval(function(){
     globalActivity.value--;
     io.sockets.emit('globalActivity',globalActivity);
   }
+  db.insertData("global_activity", {
+    x: new Date().getTime(),
+    y: globalActivity.value
+  });
 },5000);
