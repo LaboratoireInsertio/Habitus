@@ -192,7 +192,7 @@ module.exports = {
 				individualTimer[i] = Date.now();
 			}
 			
-			log.debug("current: " + dcurrentBright);
+			log.debug("current: " + currentBright);
 		}
 	}
 
