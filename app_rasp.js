@@ -37,7 +37,7 @@ var checkStatusModule = setInterval(function(){
 
 
 var io = require('socket.io-client'),
-  socket = io.connect(config.server, {
+  socket = io.connect(config.serverLocal, {
     reconnect: true
   });
 
@@ -53,7 +53,7 @@ socket.on('disconnect', function(){
 })
 //Initialization for serialport -> Communication between the arduino Mega and the Raspberry
 var serialport = require('./serialport');
-serialport.init(socket, modulesActive,sensors);
+serialport.init(socket, modulesActive,sensors,io);
 
 //Initialization for Mqtt (mosca) -> Communication between the remote arduino (Adafruit Feather) and the Raspberry
 require('./rasp/mosca').listen(config, log, socket, modulesActive, sensors);

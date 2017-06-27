@@ -25,6 +25,10 @@ module.exports.listen = function(server, log, db, _, moment) {
       })
     });
 
+    socket.on('pir', function(val){
+        io.sockets.emit('pir', val);
+    });
+
     //Receive Sensors activate
     socket.on('sensorsActive', function(id, value){
       log.debug('Sensor active ',id, value);
@@ -32,10 +36,13 @@ module.exports.listen = function(server, log, db, _, moment) {
       io.sockets.emit(id,value);
     });
 
-    //Insert data in mongo DB
-    socket.on('insertData', function(table, data) {
-      log.debug('Ask for insertion :', table, data);
-      io.sockets.emit('newData', table, data)
+    //Receive data from Rasppberry
+    socket.on('data', function(sensor, data) {
+      if(typeof data == 'object' ){
+        log.debug('Ask for insertion :', sensor, data);
+      }
+      io.sockets.emit('data', sensor, data)
+      
     });
 
     socket.on("ctrl", function(typeCtrl){

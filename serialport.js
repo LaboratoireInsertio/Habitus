@@ -30,10 +30,21 @@ module.exports.init = function(iosocket, modulesActive, sensors) {
 
   serial.on('close', () => {
     log.info('Serialport for arduino is disconnected.');
-    io.sockets.emit('close');
   });
 
 
+	setInterval(function(){
+		socket.emit('data','pir', {x : 1, y : 'a'});
+		console.log('send 1')
+		setTimeout(function(){
+			socket.emit('data','pir',0);
+			console.log('send 0');
+		},3000);
+	},5000);
+
+	socket.on('data', function(sensor, data){
+		console.log('DATA! ',sensor, data);
+	});
   serial.on('data', (data) => {
     var dataIn = data;
     dataSplit = dataIn.split(",");
@@ -66,7 +77,8 @@ module.exports.init = function(iosocket, modulesActive, sensors) {
       CapturingSoundGlobal = false;
       log.debug('max Value Captured : ' + maxValueSound);
       socket.emit("soundGlobal", maxValueSound);
-      socket.emit("insertData", "sound_global", {
+
+      socket.emit("data", "sound_global", {
         x: new Date().getTime(),
         y: maxValueSound
       });
@@ -79,17 +91,18 @@ module.exports.init = function(iosocket, modulesActive, sensors) {
 
     if (dataSplit[2] == 1 && !pirActive) {
       pirActive = true;
-      socket.emit("insertData", "pir", {
+      socket.emit("data", "pir", {
         x: new Date().getTime(),
         y: 1
       });
       log.debug('PIR is activate');
-      socket.emit('sensorsActive', 'pir', new Date().getTime());
+      socket.emit('pir', 1);
 			sensors.pir = 1;
       // the pir sensor take 3 seconds for be inactive
       setTimeout(function() {
         pirActive = false;
 				sensors.pir = 0;
+				socket.emit('pir', 0);
       }, 3000);
     }
 
@@ -99,7 +112,7 @@ module.exports.init = function(iosocket, modulesActive, sensors) {
       sensors.loudSound = 1;
       log.debug('Sound loud is active!');
       soundLoudActive = true;
-      socket.emit("insertData", "sound_loud", {
+      socket.emit("data", "sound_loud", {
         x: new Date().getTime(),
         y: 1
       });
