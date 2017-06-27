@@ -36,7 +36,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   var whichBulbSwingUpOnce = 9;
   var timerBulbSwingUpOnce = Date.now();
 
-  var whichBulbSwingDownOnce = 0;
+  var whichBulbSwingDownOnce = 9;
   var timerBulbSwingDownOnce = Date.now();
 
   var doingSecondaryAnimation = false;
@@ -157,7 +157,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	
 	if (whichBulbSwingDownOnce >= 1){
 		if ((Date.now() - timerBulbSwingDownOnce) >= 500){
-			//log.debug(whichBulbSwingUpOnce);
+			log.debug(whichBulbSwingDownOnce);
 			serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(0));
         	whichBulbSwingDownOnce--;
 			serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(100));
