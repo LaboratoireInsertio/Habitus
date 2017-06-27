@@ -33,18 +33,10 @@ module.exports.init = function(iosocket, modulesActive, sensors) {
   });
 
 
-	setInterval(function(){
-		socket.emit('data','pir', {x : 1, y : 'a'});
-		console.log('send 1')
-		setTimeout(function(){
-			socket.emit('data','pir',0);
-			console.log('send 0');
-		},3000);
-	},5000);
-
 	socket.on('data', function(sensor, data){
 		console.log('DATA! ',sensor, data);
 	});
+
   serial.on('data', (data) => {
     var dataIn = data;
     dataSplit = dataIn.split(",");
@@ -76,13 +68,14 @@ module.exports.init = function(iosocket, modulesActive, sensors) {
     if (averageSound < 10 && CapturingSoundGlobal) {
       CapturingSoundGlobal = false;
       log.debug('max Value Captured : ' + maxValueSound);
-      socket.emit("soundGlobal", maxValueSound);
 
       socket.emit("data", "sound_global", {
         x: new Date().getTime(),
         y: maxValueSound
       });
-
+			setTimeout(function(){
+				socket.emit("data", "sound_global", 0);
+			},3000);
       maxValueSound = 0;
     }
 
@@ -96,13 +89,12 @@ module.exports.init = function(iosocket, modulesActive, sensors) {
         y: 1
       });
       log.debug('PIR is activate');
-      socket.emit('pir', 1);
 			sensors.pir = 1;
       // the pir sensor take 3 seconds for be inactive
       setTimeout(function() {
+				  socket.emit("data", "pir", 0);
         pirActive = false;
 				sensors.pir = 0;
-				socket.emit('pir', 0);
       }, 3000);
     }
 
@@ -118,6 +110,7 @@ module.exports.init = function(iosocket, modulesActive, sensors) {
       });
       setTimeout(function() {
         sensors.loudSound = 0;
+				  socket.emit("data", "sound_loud", 0);
         soundLoudActive = false;
       }, 200);
     }
