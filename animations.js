@@ -1,8 +1,6 @@
 var serialport, log;
 var whichBulb1 = 0;
 var timerBulb1 = Date.now();
-var whichBulb1Once = 0;
-var timerBulb1Once = Date.now();
 var whichBulb2 = 0;
 var timerBulb2 = Date.now();
 var whichTint1 = 0;
