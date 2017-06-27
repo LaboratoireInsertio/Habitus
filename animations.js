@@ -165,7 +165,7 @@ module.exports = {
 			timeBetweenSteps[i] = Math.floor(inteval/diference);
 			
 			if (timeBetweenSteps[i] < 1)
-				serialport.sendToMega("D", i+1, String.fromCharCode(desiredBright);
+				serialport.sendToMega("D", i+1, String.fromCharCode(desiredBright));
 	
 			
 			timerRandomBrightnessAll = Date.now();
