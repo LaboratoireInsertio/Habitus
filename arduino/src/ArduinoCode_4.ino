@@ -117,10 +117,10 @@ void loop() {
         // to convert from char to decimal
         byte relayNumber = inputString[1] - '0';
         if (relayNumber == i + 1) relays[i] = inputString[2];
-        Serial.print(relays[i]);
-        Serial.print(" ");
+        //Serial.print(relays[i]);
+        //Serial.print(" ");
       }
-      Serial.println();
+      //Serial.println();
     } else if (inputString[0] == 'D') {
       for (byte i = 0; i < 8; i++) {
         // from char to decimal
@@ -136,10 +136,10 @@ void loop() {
           dimmerValue = bulbMax - dimmerValue + bulbMin;
           dimersDes[i] = dimmerValue;
         }
-        Serial.print(dimersDes[i]);
-        Serial.print(" ");
+        //Serial.print(dimersDes[i]);
+        //Serial.print(" ");
       }
-      Serial.println();
+      //Serial.println();
     }
     inputString = "";
     received = false;
