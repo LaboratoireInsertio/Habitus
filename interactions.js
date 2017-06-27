@@ -20,8 +20,8 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   var timeBlink = 5;
   var countTime = 0;
   var lastPir = 0;
-  var lastCelDown = 0;
-  var lastCelUp = 0;
+  var lastCellDown = 0;
+  var lastCellUp = 0;
 
   var mainBrightness = 20;
   var mainInterval = 60000;
@@ -64,7 +64,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 
 	// sensors.pir			0-1
 	// sensors.cellUp		0-1
-	// sensors.celDown		0-1
+	// sensors.cellDown		0-1
 	// sensors.loudSound	0-1
 	// sensors.globalSound	0-1024
 
@@ -113,11 +113,11 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	animations.randomBulbBrightnessAll(mainInterval, mainBrightness);
 
 
-	if(lastelDown != sensors.elDown ){
-      if(sensors.pir == 1){
+	if(lastCellDown != sensors.cellDown ){
+      if(sensors.cellDown == 1){
         whichBulbSwingUpOnce = 0;
       }
-      lastelDown = sensors.elDown;
+      lastCellDown = sensors.cellDown;
     }
 
 	if ((Date.now() - timerBulbSwingUpOnce) >= 500 && whichBulbSwingUpOnce < 8){
