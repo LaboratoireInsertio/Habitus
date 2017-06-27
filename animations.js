@@ -165,7 +165,7 @@ module.exports = {
 			log.debug(desiredBright);
 			var diference = Math.abs(desiredBright - currentBright[i]);
 			log.debug(diference);
-			timeBetweenSteps[i] = Math.floor(inteval/diference);
+			timeBetweenSteps[i] = Math.floor(interval/diference);
 			
 			if (timeBetweenSteps[i] < 1)
 				serialport.sendToMega("D", i+1, String.fromCharCode(desiredBright));
