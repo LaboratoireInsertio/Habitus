@@ -70,31 +70,3 @@ require('./rasp/mosca').listen(config, log, socket, modulesActive);
 // socket.on('turnAllTintOff', turnAllTintOff)
 
 // Main Loop
-
-var numLamps = 8;
-var bulbMin = 95;
-var bulbMid = 58;
-var bulbMax = 20;
-
-setTimeout(function() {
-  console.log('------------------- START ------------------------');
-  //turnAllBulbOn(bulbMax);
-  setInterval(function() {
-    //swingBulbUp(200, bulbMid);
-    //swingBulbDown(200, bulbMid);
-    //swingTintUp(1000);
-    //swingTintDown(1000);
-    //randomBulb(1000, bulbMid);
-
-    randomBulbBrightnessAll(200, bulbMid);
-    //randomTint(200);
-
-  }, 30);
-}, 3000);
-
-
-//function turnAllBulbOn() {
-//  for (var i = 0; i < numLamps; i++) {
-//    serialport.sendToMega("D", i + 1, String.fromCharCode(bulbMin));
-//  }
-//}
