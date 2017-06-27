@@ -159,6 +159,24 @@ module.exports = {
     //  timerRandomBrightnessAll = Date.now();
     //}
 
+	if ((Date.now() - timerRandomBrightnessAll) >= interval) {
+		for (var i = 0; i < 8; i++) {
+			var desiredBright = getRandomInt(maxBrightness, bulbMin);
+			log.debug("desiredBright " + i + " " + desiredBright);
+			var diference = Math.abs(desiredBright - currentBright[i]);
+			log.debug("diference " + i + " " + diference);
+			timeBetweenSteps[i] = Math.floor(interval/diference);
+			log.debug("timeBetweenSteps " + i + " " + timeBetweenSteps[i]);
+
+			if (timeBetweenSteps[i] < 1)
+				serialport.sendToMega("D", i+1, String.fromCharCode(desiredBright));
+			
+		}
+		
+		timerRandomBrightnessAll = Date.now();
+	}
+
+	/*
 	for (var i = 0; i < 8; i++) {
 		if ((Date.now() - timerRandomBrightnessAll) >= interval) {
 			var desiredBright = getRandomInt(maxBrightness, bulbMin);
@@ -185,6 +203,7 @@ module.exports = {
 		
 	
 	}
+	*/
 
   }	,
   randomTintToggleAll: function(interval) {
