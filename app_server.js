@@ -21,4 +21,4 @@ require('./mosca').listen(server, log, db);
 setInterval(function(){
   log.debug('global Activity : '+globalActivity);
   globalActivity--;
-}5000);
+},5000);
