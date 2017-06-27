@@ -111,12 +111,12 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	// mainInterval should be a value between 500 and 60000
 	//animations.randomBulbBrightnessAll(mainInterval, mainBrightness);
 		
-	if(lastelDown != sensors.elDown ){
-      if(sensors.pir == 1){
-        whichBulbSwingUpOnce = 0;
-      }
-      lastelDown = sensors.elDown;
-    }
+	//if(lastelDown != sensors.elDown ){
+    //  if(sensors.pir == 1){
+    //    whichBulbSwingUpOnce = 0;
+    //  }
+    //  lastelDown = sensors.elDown;
+    //}
 	
 	if ((Date.now() - timerBulbSwingUpOnce) >= 500 && whichBulbSwingUpOnce < 8){
 		
