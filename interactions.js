@@ -39,7 +39,8 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   var whichBulbSwingDownOnce = 9;
   var timerBulbSwingDownOnce = Date.now();
 
-  var doingSecondaryAnimation = false;
+  var doingSecondaryAnimation1 = false;
+  var doingSecondaryAnimation2 = false;
 
   var loop = setInterval(function() {
 
@@ -119,7 +120,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	//animations.randomBulbBrightnessAll(1000, 20);
 	
 	// ------------------- Run Main Animation ------------------- //
-	if (!doingSecondaryAnimation){
+	if (!doingSecondaryAnimation1 && !doingSecondaryAnimation2){
 		animations.randomBulbBrightnessAll(1000, 20);
 	}
 	
@@ -128,7 +129,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	if(lastCellDown != sensors.cellDown ){
       if(sensors.cellDown == 1){
         whichBulbSwingUpOnce = 0;
-		doingSecondaryAnimation = true;
+		doingSecondaryAnimation1 = true;
       }
       lastCellDown = sensors.cellDown;
     }
@@ -150,7 +151,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	if(lastCellUp != sensors.cellUp ){
       if(sensors.cellUp == 1){
         whichBulbSwingDownOnce = 9;
-		doingSecondaryAnimation = true;
+		doingSecondaryAnimation2 = true;
       }
       lastCellUp = sensors.cellUp;
     }
@@ -165,7 +166,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 			timerBulbSwingDownOnce = Date.now();
 		}
 	} else {
-		doingSecondaryAnimation = false;
+		doingSecondaryAnimation2 = false;
 	}
 
   }, 30);
