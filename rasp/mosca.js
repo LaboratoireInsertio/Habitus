@@ -65,7 +65,9 @@ module.exports.listen = function(config, log, socket, modulesActive, sensors) {
       socket.emit('data', 'photocell_up', {x : new Date().getTime(), y : 1 });
     }
     if(phoU > 850 && upActive){
-      upActive = false;
+      setTimeout(function(){
+        upActive = false;
+      },1000);
       sensors.cellUp = 0;
       socket.emit('data', 'photocell_up', 0);
     }
@@ -76,7 +78,9 @@ module.exports.listen = function(config, log, socket, modulesActive, sensors) {
       socket.emit('data', 'photocell_down', {x : new Date().getTime(), y : 1 });
     }
     if(phoD > 850 && downActive){
-      downActive = false;
+      setTimeout(function(){
+        downActive = false;
+      },1000);
       sensors.cellDown = 0;
       socket.emit('data', 'photocell_down', 0);
     }
