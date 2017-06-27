@@ -162,10 +162,11 @@ module.exports = {
 	for (var i = 0; i < 8; i++) {
 		if ((Date.now() - timerRandomBrightnessAll) >= interval) {
 			var desiredBright = getRandomInt(maxBrightness, bulbMin);
-			log.debug(desiredBright);
+			log.debug("desiredBright " + i + " " + desiredBright);
 			var diference = Math.abs(desiredBright - currentBright[i]);
-			log.debug(diference);
+			log.debug("diference " + i + " " + diference);
 			timeBetweenSteps[i] = Math.floor(interval/diference);
+			log.debug("timeBetweenSteps " + i + " " + timeBetweenSteps[i]);
 			
 			if (timeBetweenSteps[i] < 1)
 				serialport.sendToMega("D", i+1, String.fromCharCode(desiredBright));
