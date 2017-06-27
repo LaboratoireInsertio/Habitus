@@ -54,6 +54,20 @@ module.exports.listen = function(config, log, socket, modulesActive, sensors) {
       receiveData = true;
     }
     // log.debug(phoD + ' ' + phoU);
+
+    if(phoU > 850){
+      sensors.cellUp = 0;
+    }else{
+      sensors.cellUp = 1;
+    }
+
+    if(phoD > 850){
+      sensors.cellDown = 0;
+    }else{
+      sensors.cellDown = 1;
+    }
+
+
     // PHOTOCELLS
     if (phoD <= 850 && !photoCellDownActive) {
       photoCellDownActive = new Date().getTime();
@@ -69,11 +83,7 @@ module.exports.listen = function(config, log, socket, modulesActive, sensors) {
       log.debug('Photocell Up active');
     }
 
-    if(phoU > 850){
-      sensors.cellUp = 0;
-    }else{
-      sensors.cellUp = 1;
-    }
+
 
     if (photoCellUpActive && photoCellDownActive && SomeOneInStairs && phoU >= 750 && phoD >= 750) {
       SomeOneInStairs = false;

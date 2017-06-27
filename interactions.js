@@ -10,7 +10,11 @@ function init(sensors, animations, winstonLog, sp, socketio) {
   var loop = setInterval(function() {
 
     if(sensors.cellUp == 1){
-      console.log('AAAAAAAAAAAAAA TCHOUM');
+      animations.swingBulbDown(500, 50);
+    }
+
+    if(sensors.cellDown == 1){
+      animations.swingBulbUp(500, 50);
     }
     // animations.randomBulbBrightnessAll(200, 50);
     // animations.swingBulbUp(1000, 50);
