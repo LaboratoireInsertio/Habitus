@@ -36,11 +36,13 @@ module.exports.listen = function(server, log, db, _, moment, globalActivity) {
       if(typeof data == 'object' ){
 
         //Save Global Activity points (all sensors = 1 points, loud Sound = 5)
-        if(sensor == 'sound_loud' && globalActivity.value < globalActivity.maxValue ){
-          globalActivity.value = globalActivity.value+5
-        }
-        else {
-          globalActivity.value = globalActivity.value+1
+        if(globalActivity.value < globalActivity.maxValue){
+          if(sensor == 'sound_loud'){
+            globalActivity.value = globalActivity.value+5
+          }
+          else {
+            globalActivity.value = globalActivity.value+1
+          }
         }
         log.debug('Global Activity :'+globalActivity.value);
         io.sockets.emit('globalActivity',globalActivity);
