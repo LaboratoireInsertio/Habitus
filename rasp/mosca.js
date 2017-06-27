@@ -1,12 +1,5 @@
 var mosca = require('mosca');
 
-var mqtt_settings = {
-  port: 1883,
-  persistence: mosca.persistence.Memory
-};
-var mqtt_server = new mosca.Server(mqtt_settings, function() {
-  log.info('Mosca server is up and running (port : 1883)');
-});
 
 var photoCellDownActive = false,
   photoCellUpActive = false,
@@ -19,8 +12,16 @@ var phoU = 1000;
 var piez = 0;
 var receiveData = false;
 
-module.exports.listen = function(config, log, socket) {
+module.exports.listen = function(config, log, socket, modulesActive) {
 
+  var mqtt_settings = {
+    port: 1883,
+    persistence: mosca.persistence.Memory
+  };
+  var mqtt_server = new mosca.Server(mqtt_settings, function() {
+    modulesActive.mqtt = true;
+    log.info('Mosca server is up and running (port : 1883)');
+  });
 
   // Recieve data from remote Arduino
 
@@ -43,11 +44,11 @@ module.exports.listen = function(config, log, socket) {
     } else if (packet.topic == "feeds/piezo") {
       piez = parseInt(packet.payload.toString());
     }
-    if(!receiveData){
+    if (!receiveData) {
       log.info('Receive data from wifi arduino');
       receiveData = true;
     }
-    log.debug(phoD+ ' '+phoU);
+    // log.debug(phoD + ' ' + phoU);
     // PHOTOCELLS
     if (phoD <= 750 && !photoCellDownActive) {
       photoCellDownActive = new Date().getTime();
