@@ -40,9 +40,10 @@ module.exports.listen = function(server, log, db, _, moment) {
     socket.on('data', function(sensor, data) {
       if(typeof data == 'object' ){
         log.debug('Ask for insertion :', sensor, data);
+        db.insertData(sensor, data);
       }
       io.sockets.emit('data', sensor, data)
-      
+
     });
 
     socket.on("ctrl", function(typeCtrl){
