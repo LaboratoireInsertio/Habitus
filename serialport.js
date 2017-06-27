@@ -12,7 +12,7 @@ var socket,
   averageSound = 0,
   maxValueSound = 0;
 
-var arduinoPort = (process.env.ARDUINOPORT ? process.env.ARDUINOPORT : '/dec/ttyACM0');
+var arduinoPort = (process.env.ARDUINOPORT ? process.env.ARDUINOPORT : '/dev/ttyACM0');
 // var arduinoPort = '/dev/ttyACM0';
 var serial = new SerialPort(arduinoPort, {
   parser: SerialPort.parsers.readline("\n"),

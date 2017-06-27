@@ -30,7 +30,6 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 
   }, 30);
 
-  sensors.pir = 1;
 
   //
   // socket.on('cellUp', myAnimation);
