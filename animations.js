@@ -12,6 +12,7 @@ var timerRandomBulb = Date.now();
 var whichTint2 = 0;
 var timerTint2 = Date.now();
 var timerRandomBrightnessAll = Date.now();
+var timerRandomTintToggleAll = Date.now();
 
 //@todo : check this list
 var numLamps = 8;
@@ -141,6 +142,17 @@ module.exports = {
       }
 
       timerRandomBrightnessAll = Date.now();
+    }
+  }	,
+  randomTintToggleAll: function(interval) {
+    // log.debug('active random Bulb Rightness All');
+    if ((Date.now() - timerRandomTintToggleAll) >= interval) {
+      for (var i = 1; i <= 8; i++) {
+        var randomToggle = getRandomInt(0, 1);
+        serialport.sendToMega("D", i, String.fromCharCode(randomToggle));
+      }
+
+      timerRandomTintToggleAll = Date.now();
     }
   }
 }

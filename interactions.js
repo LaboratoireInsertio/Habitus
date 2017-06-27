@@ -9,6 +9,7 @@ function init(animations) {
     //animations.turnAllBulbOn(100);
 	//animations.randomBulb(500,20);
 	animations.randomBulbBrightnessAll(500, 20);
+	animations.randomTintToggleAll(500);
   }, 30);
 
 
