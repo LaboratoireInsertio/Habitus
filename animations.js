@@ -163,6 +163,7 @@ module.exports = {
 			var desiredBright = getRandomInt(maxBrightness, bulbMin);
 			log.debug(desiredBright);
 			var diference = Math.abs(desiredBright - currentBright[i]);
+			log.debug(diference);
 			timeBetweenSteps[i] = Math.floor(inteval/diference);
 			
 			if (timeBetweenSteps[i] < 1)
