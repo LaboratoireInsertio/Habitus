@@ -149,7 +149,7 @@ module.exports = {
     if ((Date.now() - timerRandomTintToggleAll) >= interval) {
       for (var i = 1; i <= 8; i++) {
         var randomToggle = getRandomInt(0, 1);
-        serialport.sendToMega("D", i, String.fromCharCode(randomToggle));
+        serialport.sendToMega("R", i, String.fromCharCode(randomToggle));
       }
 
       timerRandomTintToggleAll = Date.now();
