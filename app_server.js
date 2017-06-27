@@ -26,6 +26,6 @@ setInterval(function(){
   log.debug('global Activity : '+globalActivity.value);
   if(globalActivity.value >0){
     globalActivity.value--;
-    io.sockets.emit('globalActivity',globalActivity.value);
+    io.sockets.emit('globalActivity',globalActivity);
   }
 },5000);

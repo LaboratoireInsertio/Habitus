@@ -11,7 +11,7 @@ module.exports.listen = function(server, log, db, _, moment, globalActivity) {
       log.debug('Ask for datas');
 
       socket.emit('globalActivity', globalActivity);
-      
+
       db.getPir(function(datas) {
         socket.emit('pirData', datas);
       });
@@ -43,7 +43,7 @@ module.exports.listen = function(server, log, db, _, moment, globalActivity) {
           globalActivity.value = globalActivity.value+1
         }
         log.debug('Global Activity :'+globalActivity.value);
-        io.sockets.emit('globalActivity',globalActivity.value);
+        io.sockets.emit('globalActivity',globalActivity);
 
         log.debug('Ask for insertion :', sensor, data);
         db.insertData(sensor, data);
