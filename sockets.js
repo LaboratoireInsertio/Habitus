@@ -43,7 +43,7 @@ module.exports.listen = function(server, log, db, _, moment, globalActivity) {
           globalActivity.value = globalActivity.value + 1
         }
 
-        if (globalActivity.value < globalActivity.maxValue) globalActivity.value = globalActivity.maxValue;
+        if (globalActivity.value > globalActivity.maxValue) globalActivity.value = globalActivity.maxValue;
 
         log.debug('Global Activity :' + globalActivity.value);
         io.sockets.emit('globalActivity', globalActivity);
