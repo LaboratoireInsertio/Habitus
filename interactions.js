@@ -8,7 +8,7 @@ function init(animations) {
     //animations.turnAllBulbOff();
     //animations.turnAllBulbOn(100);
 	//animations.randomBulb(500,20);
-	animations.randomBulbBrightness(500, 20);
+	animations.randomBulbBrightnessAll(500, 20);
   }, 30);
 
 
