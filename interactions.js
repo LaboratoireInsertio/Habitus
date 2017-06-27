@@ -121,7 +121,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
       lastCellDown = sensors.cellDown;
     }
 
-	if (whichBulbSwingUpOnce <= 8){}
+	if (whichBulbSwingUpOnce <= 8){
 	if ((Date.now() - timerBulbSwingUpOnce) >= 500){
 		log.debug(whichBulbSwingUpOnce);
 		serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(0));
@@ -129,6 +129,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 		serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(100));
 
 		timerBulbSwingUpOnce = Date.now();
+	}
 	}
 	else{
 		animations.randomBulbBrightnessAll(1000, 20);
