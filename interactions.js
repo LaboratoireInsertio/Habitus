@@ -23,8 +23,8 @@ function init(sensors, lamps, animations, log, serialport, socket) {
     // animations.randomBulbBrightnessAll(200, 50);
     // animations.swingBulbUp(1000, 50);
 
-    if(lastPir != sensors.pir && sensors.pir == 1){
-      someOneComing();
+    if(lastPir != sensors.pir ){
+      if(sensors.pir == 1) someOneComing();
       lastPir = sensors.pir;
     }
 
