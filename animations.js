@@ -176,13 +176,15 @@ module.exports = {
 			
 		}
 		
+		log.debug(desiredBright);
+		
 		timerRandomBrightnessAll = Date.now();
 	}
 	
 	for (var i = 0; i < 8; i++) {
 		if (timeBetweenSteps[i] >= 1){
-			//log.debug("timeBetweenSteps " + i + " " + timeBetweenSteps[i]);
 			if ((Date.now() - individualTimer[i] >= timeBetweenSteps[i])){
+				//log.debug("timeBetweenSteps " + i + " " + timeBetweenSteps[i]);
 				if (desiredBright[i] > currentBright[i]) currentBright[i]++;
 				else currentBright[i]--;
 				serialport.sendToMega("D", i+1, String.fromCharCode(currentBright[i]));
