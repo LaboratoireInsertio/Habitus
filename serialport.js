@@ -2,43 +2,16 @@ var SerialPort = require('serialport');
 var _ = require('underscore');
 var winston = log = require('winston');
 const config = require('./config.json');
-var socket;
 
-var pirActive = false,
-		CapturingSoundGlobal = false,
-		soundLoudActive = false;
+var socket,
+  pirActive = false,
+  CapturingSoundGlobal = false,
+  soundLoudActive = false,
+  lastTenValueSound = [],
+  count = 0,
+  averageSound = 0,
+  maxValueSound = 0;
 
-var lastTenValueSound = [];
-var count = 0;
-var averageSound = 0;
-var maxValueSound = 0;
-
-module.exports.init = function(iosocket){
-  log.debug('Init serialport');
-  socket = iosocket;
-}
-
-
-//
-// module.exports.init = function(socketio, ) {
-//   socket = socketio;
-// }
-
-// var portArduino = '';
-// SerialPort.list(function (err, ports) {
-//   ports.forEach(function(port) {
-//     if(port.manufacturer && port.manufacturer.indexOf('Arduino') <= 0){
-//       log.debug('Arduino detected  : '+port.comName);
-//       portArduino  = port.comName;
-//     }
-//   });
-// });
-// return;
-
-
-///dev/cu.usbserial-7QVCOHC
-// var serial = new SerialPort('/dev/ttyACM0', {
-// var arduinoPort = '/dev/cu.usbmodemfa131';
 var arduinoPort = (process.env.ARDUINOPORT ? process.env.ARDUINOPORT : '/dec/ttyACM0');
 // var arduinoPort = '/dev/ttyACM0';
 var serial = new SerialPort(arduinoPort, {
@@ -46,13 +19,20 @@ var serial = new SerialPort(arduinoPort, {
   baudRate: 57600
 });
 
-// Values to send over to Arduino.
-// const MESSAGE = Buffer.from([R5<~]);
-// const LOW = Buffer.from([0]);
+module.exports.init = function(iosocket, modulesActive) {
+  log.debug('Init serialport');
+  socket = iosocket;
 
-serial.on('open', () => {
-  log.info('Arduino port ' + arduinoPort + ' is open');
-});
+  serial.on('open', () => {
+    modulesActive.serialport = true;
+    log.info('Arduino port ' + arduinoPort + ' is open');
+  });
+
+  serial.on('close', () => {
+    log.info('Serialport for arduino is disconnected.');
+    io.sockets.emit('close');
+  });
+}
 
 serial.on('data', (data) => {
   var dataIn = data;
@@ -85,6 +65,7 @@ serial.on('data', (data) => {
   if (averageSound < 10 && CapturingSoundGlobal) {
     CapturingSoundGlobal = false;
     log.debug('max Value Captured : ' + maxValueSound);
+    socket.emit("soundGlobal", maxValueSound);
     socket.emit("insertData", "sound_global", {
       x: new Date().getTime(),
       y: maxValueSound
@@ -98,7 +79,7 @@ serial.on('data', (data) => {
 
   if (dataSplit[2] == 1 && !pirActive) {
     pirActive = true;
-    socket.emit("insertData", "pir",{
+    socket.emit("insertData", "pir", {
       x: new Date().getTime(),
       y: 1
     });
@@ -114,7 +95,7 @@ serial.on('data', (data) => {
   if (dataSplit[1] == 1 && !soundLoudActive) {
     log.debug('Sound loud is active!');
     soundLoudActive = true;
-    socket.emit("insertData", "sound_loud",{
+    socket.emit("insertData", "sound_loud", {
       x: new Date().getTime(),
       y: 1
     });
@@ -131,10 +112,6 @@ module.exports.sendToMega = function(type, id, value, cb) {
   serial.write(type + id + value + "~");
 }
 
-serial.on('close', () => {
-  log.info('Serial port disconnected.');
-  io.sockets.emit('close');
-});
 
 //test working
 // setInterval(function(){
