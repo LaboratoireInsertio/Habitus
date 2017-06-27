@@ -36,7 +36,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   var whichBulbSwingUpOnce = 9;
   var timerBulbSwingUpOnce = Date.now();
 
-  var whichBulbSwingDownOnce = 9;
+  var whichBulbSwingDownOnce = 0;
   var timerBulbSwingDownOnce = Date.now();
 
   var doingSecondaryAnimation1 = false;
@@ -144,7 +144,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 			timerBulbSwingUpOnce = Date.now();
 		}
 	} else {
-		doingSecondaryAnimation = false;
+		doingSecondaryAnimation1 = false;
 	}
 	
 	// ----------------- Swing Down When Someone ----------------- //
