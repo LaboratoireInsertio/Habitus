@@ -45,9 +45,9 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	if (sunriseTime < currentTime && currentTime < sunsetTime) brightness = 100;
 	else brightness = 20;
 	
-	//animations.randomBulbBrightnessAll(1000, 100);
+	animations.randomBulbBrightnessAll(1000, 100);
 	
-	animations.swingBulbUp(1000,100);
+	//animations.swingBulbUp(1000,100);
 	
 >>>>>>> e5f9b8604199f30e6aa3e29fc773e13e3465cd07
 
