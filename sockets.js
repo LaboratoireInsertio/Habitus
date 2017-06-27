@@ -26,26 +26,27 @@ module.exports.listen = function(server, log, db, _, moment, globalActivity) {
       })
     });
 
-    socket.on('pir', function(val){
-        io.sockets.emit('pir', val);
+    socket.on('pir', function(val) {
+      io.sockets.emit('pir', val);
     });
 
     //Receive data from Rasppberry
     socket.on('data', function(sensor, data) {
 
-      if(typeof data == 'object' ){
+      if (typeof data == 'object') {
 
         //Save Global Activity points (all sensors = 1 points, loud Sound = 5)
-        if(globalActivity.value < globalActivity.maxValue){
-          if(sensor == 'sound_loud'){
-            globalActivity.value = globalActivity.value+5
-          }
-          else {
-            globalActivity.value = globalActivity.value+1
-          }
+
+        if (sensor == 'sound_loud') {
+          globalActivity.value = globalActivity.value + 5
+        } else {
+          globalActivity.value = globalActivity.value + 1
         }
-        log.debug('Global Activity :'+globalActivity.value);
-        io.sockets.emit('globalActivity',globalActivity);
+
+        if (globalActivity.value < globalActivity.maxValue) globalActivity.value = globalActivity.maxValue;
+
+        log.debug('Global Activity :' + globalActivity.value);
+        io.sockets.emit('globalActivity', globalActivity);
 
         log.debug('Ask for insertion :', sensor, data);
         db.insertData(sensor, data);
@@ -54,9 +55,9 @@ module.exports.listen = function(server, log, db, _, moment, globalActivity) {
 
     });
 
-    socket.on("ctrl", function(typeCtrl){
-      log.debug("Ask for : "+typeCtrl);
-      io.sockets.emit(typeCtrl,"1");
+    socket.on("ctrl", function(typeCtrl) {
+      log.debug("Ask for : " + typeCtrl);
+      io.sockets.emit(typeCtrl, "1");
     });
 
     socket.on("disconnect", function() {
