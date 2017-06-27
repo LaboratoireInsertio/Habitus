@@ -11,7 +11,12 @@ var whichRandomBulb = 3;
 var timerRandomBulb = Date.now();
 var whichTint2 = 0;
 var timerTint2 = Date.now();
+
 var timerRandomBrightnessAll = Date.now();
+var currentBright=[];
+var timeBetweenSteps = [];
+var individualTimer=[];
+
 var timerRandomTintToggleAll = Date.now();
 
 //@todo : check this list
@@ -133,16 +138,50 @@ module.exports = {
       timerRandomTint = Date.now();
     }
   },
+  //randomBulbBrightnessAll: function(interval, maxBrightness) {
+  //  // log.debug('active random Bulb Rightness All');
+  //  if ((Date.now() - timerRandomBrightnessAll) >= interval) {
+  //    for (var i = 1; i <= 8; i++) {
+  //      var randomBright = getRandomInt(maxBrightness, bulbMin);
+  //      serialport.sendToMega("D", i, String.fromCharCode(randomBright));
+  //    }
+  //    timerRandomBrightnessAll = Date.now();
+  //  }
+  //}	,
   randomBulbBrightnessAll: function(interval, maxBrightness) {
     // log.debug('active random Bulb Rightness All');
-    if ((Date.now() - timerRandomBrightnessAll) >= interval) {
-      for (var i = 1; i <= 8; i++) {
-        var randomBright = getRandomInt(maxBrightness, bulbMin);
-        serialport.sendToMega("D", i, String.fromCharCode(randomBright));
-      }
+    //if ((Date.now() - timerRandomBrightnessAll) >= interval) {
+    //  for (var i = 1; i <= 8; i++) {
+    //    var randomBright = getRandomInt(maxBrightness, bulbMin);
+    //    serialport.sendToMega("D", i, String.fromCharCode(randomBright));
+    //  }
+    //  timerRandomBrightnessAll = Date.now();
+    //}
 
-      timerRandomBrightnessAll = Date.now();
-    }
+	for (var i = 0; i < 8; i++) {
+		if ((Date.now() - timerRandomBrightnessAll) >= interval) {
+			var desiredBright = getRandomInt(maxBrightness, bulbMin);
+			var diference = Math.abs(desiredBright - currentBright[i]);
+			timeBetweenSteps[i] = Math.floor(inteval/diference);
+			
+			if (timeBetweenSteps[i] < 1)
+				serialport.sendToMega("D", i+1, String.fromCharCode(desiredBright);
+	
+			
+			timerRandomBrightnessAll = Date.now();
+		}
+		
+		if (timeBetweenSteps >= 1){
+			if ((Date.now() - individualTimer[i] >= timeBetweenSteps[i])){
+				currentBright[i]++;
+				serialport.sendToMega("D", i+1, String.fromCharCode(currentBright[i]));
+
+			}
+		}
+		
+	
+	}
+
   }	,
   randomTintToggleAll: function(interval) {
     // log.debug('active random Bulb Rightness All');
