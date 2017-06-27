@@ -20,5 +20,8 @@ require('./mosca').listen(server, log, db);
 
 setInterval(function(){
   log.debug('global Activity : '+globalActivity);
-  globalActivity--;
+  if(globalActivity >0){
+    globalActivity--;
+    io.sockets.emit('globalActivity',globalActivity);
+  }
 },5000);

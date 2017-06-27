@@ -1,7 +1,7 @@
 var socketio = require('socket.io');
 
 
-module.exports.listen = function(server, log, db, _, moment, globalActiity) {
+module.exports.listen = function(server, log, db, _, moment, globalActivity) {
   var io = socketio.listen(server);
 
   // Listen connection Client Side for send datas of sensors from MongoDB
@@ -49,7 +49,7 @@ module.exports.listen = function(server, log, db, _, moment, globalActiity) {
         else {
           globalActivity = globalActivity+1
         }
-        socket.emit('globalActivity',globalActivity);
+        io.sockets.emit('globalActivity',globalActivity);
 
         log.debug('Ask for insertion :', sensor, data);
         db.insertData(sensor, data);
@@ -69,4 +69,5 @@ module.exports.listen = function(server, log, db, _, moment, globalActiity) {
 
 
   });
+  return io;
 };
