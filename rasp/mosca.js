@@ -81,7 +81,6 @@ module.exports.listen = function(config, log, socket, modulesActive, sensors) {
       socket.emit('data', 'photocell_down', 0);
     }
 
-
     //
     // // PHOTOCELLS
     // if (phoD <= 850 && !photoCellDownActive) {
