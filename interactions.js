@@ -33,8 +33,10 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 
   var timerBrightnessCalculation = Date.now();
 
-  var whichBulbSwingUpOnce = 0;
+  var whichBulbSwingUpOnce = 9;
   var timerBulbSwingUpOnce = Date.now();
+
+  var doingSecondaryAnimation = false;
 
   var loop = setInterval(function() {
 
@@ -112,27 +114,30 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	// mainInterval should be a value between 500 and 60000
 	//animations.randomBulbBrightnessAll(mainInterval, mainBrightness);
 	//animations.randomBulbBrightnessAll(1000, 20);
-
-
+	
+	if (!doingSecondaryAnimation){
+		animations.randomBulbBrightnessAll(mainInterval, mainBrightness);
+	}
+		
 	if(lastCellDown != sensors.cellDown ){
       if(sensors.cellDown == 1){
         whichBulbSwingUpOnce = 0;
+		doingSecondaryAnimation = true;
       }
       lastCellDown = sensors.cellDown;
     }
-
+	
 	if (whichBulbSwingUpOnce <= 8){
-	if ((Date.now() - timerBulbSwingUpOnce) >= 500){
-		log.debug(whichBulbSwingUpOnce);
-		serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(0));
-        whichBulbSwingUpOnce++;
-		serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(100));
+		if ((Date.now() - timerBulbSwingUpOnce) >= 500){
+			log.debug(whichBulbSwingUpOnce);
+			serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(0));
+        	whichBulbSwingUpOnce++;
+			serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(100));
 
-		timerBulbSwingUpOnce = Date.now();
-	}
-	}
-	else{
-		animations.randomBulbBrightnessAll(1000, 20);
+			timerBulbSwingUpOnce = Date.now();
+		}
+	} else {
+		doingSecondaryAnimation = false;
 	}
 
   }, 30);
