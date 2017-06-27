@@ -28,6 +28,8 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   var currentTime = Math.floor(Date.now()/1000);
   var lastSunUpdateTime = 0;
 
+  var timerBrightnessCalculation = Date.now();
+
   var loop = setInterval(function() {
 
     // --------- Direct Interaction Examples --------- //
@@ -74,14 +76,30 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 		
 		lastSunUpdateTime = Date.now();
 	}
-	
 
 	// max brightness during night: 20
 	// max brightness during inactivity: 60
 	// max brightness when someone: 100
-	currentTime = Math.floor(Date.now()/1000);
-	if (sunriseTime < currentTime && currentTime < sunsetTime) brightness = 60;
-	else brightness = 20;
+	//if (Date.now() - timerBrightnessCalculation >= 1000){
+		currentTime = Math.floor(Date.now()/1000);
+		if (sunriseTime < currentTime && currentTime < sunsetTime){
+			if (sensors.cellUp == 1 
+				|| sensors.celDown == 1){
+					brightness = 100;
+					timerBrightnessCalculation = Date.now();
+				} else {
+					brightness = 60;
+				}
+		} else {
+			if (sensors.cellUp == 1 
+				|| sensors.celDown == 1){
+					brightness = 40;
+					timerBrightnessCalculation = Date.now();
+				} else {
+					brightness = 20;
+				}
+		}
+	//}
 	
 	animations.randomBulbBrightnessAll(60000, brightness);
 
