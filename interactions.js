@@ -116,7 +116,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	//animations.randomBulbBrightnessAll(1000, 20);
 	
 	if (!doingSecondaryAnimation){
-		animations.randomBulbBrightnessAll(mainInterval, mainBrightness);
+		animations.randomBulbBrightnessAll(1000, 20);
 	}
 		
 	if(lastCellDown != sensors.cellDown ){
