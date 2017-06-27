@@ -25,7 +25,7 @@
 
 #define SPEED 2
 
-#define GATE_IMPULSE 5
+#define GATE_IMPULSE 2
 
 #define FREQ 84
 
@@ -45,22 +45,24 @@ void setup() {
   pinMode(channel_6, OUTPUT);
   pinMode(channel_7, OUTPUT);
   pinMode(channel_8, OUTPUT);
-  attachInterrupt(1, zero_crosss_int, RISING);
+  attachInterrupt(0, zero_crosss_int, RISING);
   Timer1.initialize(10);
   Timer1.attachInterrupt( timerIsr );
-
+  Serial.begin(115200);
 }
 
 void timerIsr()
 {
     clock_tick++;
-
     if (clock_cn)
      {
       clock_cn++;
+      // Serial.print("clock cn :");
+      // Serial.println(clock_cn);
 
        if (clock_cn==GATE_IMPULSE)
        {
+
         digitalWrite(channel_1, LOW);
         digitalWrite(channel_2, LOW);
         digitalWrite(channel_3, LOW);
@@ -130,8 +132,8 @@ void zero_crosss_int()
      CH4=buf_CH4;
       CH5=buf_CH5;
        CH6=buf_CH6;
-       // CH7=buf_CH7;
-        // CH8=buf_CH8;
+       CH7=buf_CH7;
+        CH8=buf_CH8;
 
   clock_tick=0;
 }
@@ -149,18 +151,27 @@ unsigned int DIMM_VALUE (unsigned char level)
 
 
 void loop() {
-
-  for (i=255;i>1;i--) {buf_CH1=DIMM_VALUE(i); delay(SPEED);}
-   for (i=255;i>1;i--) {buf_CH2=DIMM_VALUE(i); delay(SPEED);}
-    for (i=255;i>1;i--) {buf_CH3=DIMM_VALUE(i); delay(SPEED);}
-     for (i=255;i>1;i--) {buf_CH4=DIMM_VALUE(i); delay(SPEED);}
-      for (i=255;i>1;i--) {buf_CH5=DIMM_VALUE(i); delay(SPEED);}
-       for (i=255;i>1;i--) {buf_CH6=DIMM_VALUE(i); delay(SPEED);}
-
-  for (i=0;i<255;i++) {buf_CH1=DIMM_VALUE(i); delay(SPEED);}
-   for (i=0;i<255;i++) {buf_CH2=DIMM_VALUE(i); delay(SPEED);}
-    for (i=0;i<255;i++) {buf_CH3=DIMM_VALUE(i); delay(SPEED);}
-     for (i=0;i<255;i++) {buf_CH4=DIMM_VALUE(i); delay(SPEED);}
-      for (i=0;i<255;i++) {buf_CH5=DIMM_VALUE(i); delay(SPEED);}
-       for (i=0;i<255;i++) {buf_CH6=DIMM_VALUE(i); delay(SPEED);}
+  for (i=255;i>1;i--) {
+    buf_CH1=buf_CH2=buf_CH3=buf_CH4=buf_CH5=buf_CH6=buf_CH7=buf_CH8=DIMM_VALUE(i);
+    delay(SPEED);
+  }
+  for (i=0;i<255;i++) {
+    buf_CH1=buf_CH2=buf_CH3=buf_CH4=buf_CH5=buf_CH6=buf_CH7=buf_CH8=DIMM_VALUE(i);
+    delay(SPEED);
+  }
 }
+//
+//   for (i=255;i>1;i--) {buf_CH1=DIMM_VALUE(i); delay(SPEED);}
+//    for (i=255;i>1;i--) {buf_CH2=DIMM_VALUE(i); delay(SPEED);}
+//     for (i=255;i>1;i--) {buf_CH3=DIMM_VALUE(i); delay(SPEED);}
+//      for (i=255;i>1;i--) {buf_CH4=DIMM_VALUE(i); delay(SPEED);}
+//       for (i=255;i>1;i--) {buf_CH5=DIMM_VALUE(i); delay(SPEED);}
+//        for (i=255;i>1;i--) {buf_CH6=DIMM_VALUE(i); delay(SPEED);}
+//
+//   for (i=0;i<255;i++) {buf_CH1=DIMM_VALUE(i); delay(SPEED);}
+//    for (i=0;i<255;i++) {buf_CH2=DIMM_VALUE(i); delay(SPEED);}
+//     for (i=0;i<255;i++) {buf_CH3=DIMM_VALUE(i); delay(SPEED);}
+//      for (i=0;i<255;i++) {buf_CH4=DIMM_VALUE(i); delay(SPEED);}
+//       for (i=0;i<255;i++) {buf_CH5=DIMM_VALUE(i); delay(SPEED);}
+//        for (i=0;i<255;i++) {buf_CH6=DIMM_VALUE(i); delay(SPEED);}
+// }
