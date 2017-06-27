@@ -63,8 +63,8 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	
 	// update sunrise and sunset every day at 3:00 am.
 	
-	log.debug(Date.getHours());
-	if ((Date.getHours() == 3) && (Date.now() - lastSunUpdateTime > 86400000)){
+	log.debug(Date().getHours());
+	if ((Date().getHours() == 3) && (Date.now() - lastSunUpdateTime > 86400000)){
 		forecast.get([46.8078623, -71.2202719], function(err, weather) {
 			if(err) return console.dir(err);
 		
