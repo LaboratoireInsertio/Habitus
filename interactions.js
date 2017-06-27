@@ -20,8 +20,11 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   var timeBlink = 5;
   var countTime = 0;
   var lastPir = 0;
+  var lastCelDown = 0;
+  var lastCelUp = 0;
 
-  var brightness = 20;
+  var mainBrightness = 20;
+  var mainInterval = 60000;
   // should be updated once a day from forecast
   var sunriseTime = 1498553634;
   var sunsetTime = 1498610667;
@@ -29,6 +32,9 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   var lastSunUpdateTime = 0;
 
   var timerBrightnessCalculation = Date.now();
+
+  var whichBulbSwingUpOnce = 0;
+  var timerBulbSwingUpOnce = Date.now();
 
   var loop = setInterval(function() {
 
@@ -80,29 +86,49 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	// max brightness during night: 20
 	// max brightness during inactivity: 60
 	// max brightness when someone: 100
-	//if (Date.now() - timerBrightnessCalculation >= 1000){
-		currentTime = Math.floor(Date.now()/1000);
+	if (Date.now() - timerBrightnessCalculation >= 1000){
+		currentTime = Math.floor(Date.now()/10000);
 		if (sunriseTime < currentTime && currentTime < sunsetTime){
 			if (sensors.cellUp == 1 
 				|| sensors.celDown == 1){
-					brightness = 100;
+					mainBrightness = 100;
 					timerBrightnessCalculation = Date.now();
 				} else {
-					brightness = 60;
+					mainBrightness = 60;
 				}
 		} else {
 			if (sensors.cellUp == 1 
 				|| sensors.celDown == 1){
-					brightness = 40;
+					mainBrightness = 40;
 					timerBrightnessCalculation = Date.now();
 				} else {
-					brightness = 20;
+					mainBrightness = 20;
 				}
-		}
-	//}
+		}	
+		//log.debug(mainBrightness);
+	}
 	
-	animations.randomBulbBrightnessAll(60000, brightness);
-
+	// mainInterval should be a value between 500 and 60000
+	animations.randomBulbBrightnessAll(mainInterval, mainBrightness);
+	
+	if (sensors.celDown == 1)
+	
+	if(lastelDown != sensors.elDown ){
+      if(sensors.pir == 1){
+        whichBulbSwingUpOnce = 0;
+      }
+      lastelDown = sensors.elDown;
+    }
+	
+	if ((Date.now() - timerBulbSwingUpOnce) >= 500 && whichBulbSwingUpOnce < 8){
+		
+		serialport.sendToMega("D", whichBulbSwingUpOnce + 1, String.fromCharCode(0));
+        whichBulbSwingUpOnce++;
+		log.debug(whichBulbSwingUpOnce+1);
+		serialport.sendToMega("D", whichBulbSwingUpOnce + 1, String.fromCharCode(100));
+		
+		timerBulbSwingUpOnce = Date.now();
+	}
 
   }, 30);
 
