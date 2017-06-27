@@ -56,7 +56,7 @@ module.exports.listen = function(config, log, socket, modulesActive, sensors) {
       receiveData = true;
     }
 
-    // log.debug(phoD + ' ' + phoU);
+    log.debug(phoD + ' ' + phoU);
 
 
     if(phoU <= 850 && !upActive ){
@@ -72,12 +72,12 @@ module.exports.listen = function(config, log, socket, modulesActive, sensors) {
 
     if(phoU <= 850 && !downActive ){
       downActive = true;
-      sensors.cellUp = 1;
+      sensors.cellDown = 1;
       socket.emit('data', 'photocell_down', {x : new Date().getTime(), y : 1 });
     }
     if(phoU > 850 && downActive){
       downActive = false;
-      sensors.cellUp = 0;
+      sensors.cellDown = 0;
       socket.emit('data', 'photocell_down', 0);
     }
 
