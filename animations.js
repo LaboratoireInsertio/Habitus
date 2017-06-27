@@ -162,11 +162,11 @@ module.exports = {
 	if ((Date.now() - timerRandomBrightnessAll) >= interval) {
 		for (var i = 0; i < 8; i++) {
 			var desiredBright = getRandomInt(maxBrightness, bulbMin);
-			log.debug("desiredBright " + i + " " + desiredBright);
+			//log.debug("desiredBright " + i + " " + desiredBright);
 			var diference = Math.abs(desiredBright - currentBright[i]);
-			log.debug("diference " + i + " " + diference);
+			//log.debug("diference " + i + " " + diference);
 			timeBetweenSteps[i] = Math.floor(interval/diference);
-			log.debug("timeBetweenSteps " + i + " " + timeBetweenSteps[i]);
+			//log.debug("timeBetweenSteps " + i + " " + timeBetweenSteps[i]);
 
 			if (timeBetweenSteps[i] < 1)
 				serialport.sendToMega("D", i+1, String.fromCharCode(desiredBright));
@@ -174,6 +174,16 @@ module.exports = {
 		}
 		
 		timerRandomBrightnessAll = Date.now();
+	}
+	
+	for (var i = 0; i < 8; i++) {
+		if (timeBetweenSteps[i] >= 1){
+			if ((Date.now() - individualTimer[i] >= timeBetweenSteps[i])){
+				currentBright[i]++;
+				serialport.sendToMega("D", i+1, String.fromCharCode(currentBright[i]));
+
+			}
+		}
 	}
 
 	/*
@@ -193,7 +203,7 @@ module.exports = {
 			timerRandomBrightnessAll = Date.now();
 		}
 		
-		if (timeBetweenSteps >= 1){
+		if (timeBetweenSteps[i] >= 1){
 			if ((Date.now() - individualTimer[i] >= timeBetweenSteps[i])){
 				currentBright[i]++;
 				serialport.sendToMega("D", i+1, String.fromCharCode(currentBright[i]));
