@@ -2,8 +2,8 @@ function init(animations) {
   log.info('Module Interactions is initialized');
 
   var loop = setInterval(function() {
-    animations.randomBulbBrightnessAll(200, 50);
-    // log.verbose('looooop');
+    // animations.randomBulbBrightnessAll(200, 50);
+    animations.swingBulbUp(200, 50);
   }, 30);
 
 

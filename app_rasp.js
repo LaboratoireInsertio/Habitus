@@ -21,7 +21,6 @@ var checkStatusModule = setInterval(function(){
     setTimeout(function(){
       interactions.init(animations);
     },2000);
-
   }
 }, 500);
 
