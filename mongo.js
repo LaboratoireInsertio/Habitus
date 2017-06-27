@@ -9,6 +9,16 @@ module.exports.insertData = function(table, data) {
 }
 
 // Return all data of the DB for the sensors PIR in the entry
+module.exports.getGlobalActivity = function(cb) {
+  db.global_activity.find(function(err, docs) {
+    var datas = _.groupBy(docs, function(doc) {
+      return moment(doc.x).startOf('minute').format();
+    });
+    cb(datas);
+  });
+}
+
+// Return all data of the DB for the sensors PIR in the entry
 module.exports.getPir = function(cb) {
   db.pir.find(function(err, docs) {
     var datas = _.groupBy(docs, function(doc) {
@@ -17,6 +27,7 @@ module.exports.getPir = function(cb) {
     cb(datas);
   });
 }
+
 // Return all data of the DB for the sensors loud sound sensor in the office
 module.exports.getSoundLoud = function(cb) {
   db.sound_loud.find(function(err, docs) {

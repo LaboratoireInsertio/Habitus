@@ -12,6 +12,10 @@ module.exports.listen = function(server, log, db, _, moment, globalActivity) {
 
       socket.emit('globalActivity', globalActivity);
 
+      db.getGlobalActivity(function(datas){
+          socket.emit('globalActivity', datas);
+      });
+
       db.getPir(function(datas) {
         socket.emit('pirData', datas);
       });
