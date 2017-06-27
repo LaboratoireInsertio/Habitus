@@ -183,8 +183,8 @@ module.exports = {
 		if (timeBetweenSteps[i] >= 1){
 			//log.debug("timeBetweenSteps " + i + " " + timeBetweenSteps[i]);
 			if ((Date.now() - individualTimer[i] >= timeBetweenSteps[i])){
-				if (desiredBright[i] > urrentBright[i]) currentBright[i]++;
-				else currentBright[i]++;
+				if (desiredBright[i] > currentBright[i]) currentBright[i]++;
+				else currentBright[i]--;
 				serialport.sendToMega("D", i+1, String.fromCharCode(currentBright[i]));
 				
 				individualTimer[i] = Date.now();
