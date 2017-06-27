@@ -61,7 +61,7 @@ byte increment = 1;
 // min no less than 5 (maximum brightness)
 byte bulbMin = 20;
 // max no more than 90 (minimum brightness)
-byte bulbMax = 90;
+byte bulbMax = 95;
 byte bulbOff = 95;
 // dimer time
 unsigned long lastDimStep = 0;
@@ -115,8 +115,8 @@ void loop() {
     if (inputString[0] == 'R') {
       for (byte i = 0; i < 8; i++) {
         // to convert from char to decimal
-        byte temp = inputString[1] - '0';
-        if (temp == i + 1) relays[i] = inputString[2];
+        byte relayNumber = inputString[1] - '0';
+        if (relayNumber == i + 1) relays[i] = inputString[2];
         Serial.print(relays[i]);
         Serial.print(" ");
       }
@@ -124,8 +124,18 @@ void loop() {
     } else if (inputString[0] == 'D') {
       for (byte i = 0; i < 8; i++) {
         // from char to decimal
-        byte temp = inputString[1] - '0';
-        if (temp == i + 1) dimersDes[i] = inputString[2];
+        byte dimmerNumber = inputString[1] - '0';
+
+        if (dimmerNumber == i + 1) {
+          // inputString[2] should be a value between 0 and 100.
+          // Recieves the incoming value between 0 and 100 and
+          // transforms it into a value between 95 and 20. Those
+          // are the real values accepted by the bulbs.
+          int dimmerValue = map(inputString[2], 0, 100, bulbMin, bulbMax);
+          dimmerValue = constrain(dimmerValue, bulbMin, bulbMax);
+          dimmerValue = bulbMax - dimmerValue + bulbMin;
+          dimersDes[i] = dimmerValue;
+        }
         Serial.print(dimersDes[i]);
         Serial.print(" ");
       }
@@ -172,8 +182,8 @@ void loop() {
     */
 
     for (int i = 0; i < 8; i++) {
-      if (relays[i] == 0) digitalWrite(RELAY_CH1+i, LOW);
-      else digitalWrite(RELAY_CH1+i, HIGH);
+      if (relays[i] == 0) digitalWrite(RELAY_CH1 + i, LOW);
+      else digitalWrite(RELAY_CH1 + i, HIGH);
     }
 
     lastRelayOn = millis();

@@ -15,8 +15,8 @@ var timerRandomBrightnessAll = Date.now();
 
 //@todo : check this list
 var numLamps = 8;
-var bulbMin = 95;
-var bulbMax = 20;
+var bulbMin = 0;
+var bulbMax = 100;
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
