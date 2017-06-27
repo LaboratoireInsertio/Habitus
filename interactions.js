@@ -111,7 +111,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 
 	// mainInterval should be a value between 500 and 60000
 	//animations.randomBulbBrightnessAll(mainInterval, mainBrightness);
-	animations.randomBulbBrightnessAll(500, 100);
+	animations.randomBulbBrightnessAll(500, 20);
 
 
 	if(lastCellDown != sensors.cellDown ){
