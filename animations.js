@@ -14,6 +14,7 @@ var timerTint2 = Date.now();
 
 var timerRandomBrightnessAll = Date.now();
 var currentBright=[];
+for (var i = 0; i < 8; i++) currentBright[i] = 0;
 var timeBetweenSteps = [];
 var individualTimer=[];
 
