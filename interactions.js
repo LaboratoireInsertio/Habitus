@@ -26,6 +26,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   var sunriseTime = 1498553634;
   var sunsetTime = 1498610667;
   var currentTime = Math.floor(Date.now()/1000);
+  var lastSunUpdateTime = 0;
 
   var loop = setInterval(function() {
 
@@ -59,15 +60,27 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	// sensors.loudSound	0-1
 	// sensors.globalSound	0-1024
 	
-	currentTime = Math.floor(Date.now()/1000);
+	// update sunrise and sunset every day at 3:00 am.
+	//if ((Date.now().getHours() == 3) && (Date.now() - lastSunUpdateTime > 86400000)){
+	//	forecast.get([46.8078623, -71.2202719], function(err, weather) {
+	//		if(err) return console.dir(err);
+	//	
+	//		sunriseTime = weather.daily.data[0].sunriseTime;
+	//		sunsetTime = weather.daily.data[0].sunsetTime;
+	//	});
+	//	
+	//	lastSunUpdateTime = Date.now();
+	//}
 	
-	if (sunriseTime < currentTime && currentTime < sunsetTime) brightness = 100;
+	// max brightness during night: 20
+	// max brightness during inactivity: 60
+	// max brightness when someone: 100
+	currentTime = Math.floor(Date.now()/1000);
+	if (sunriseTime < currentTime && currentTime < sunsetTime) brightness = 60;
 	else brightness = 20;
 	
-	animations.randomBulbBrightnessAll(60000, 100);
-	
-	//animations.swingBulbUp(1000,100);
-	
+	animations.randomBulbBrightnessAll(60000, brightness);
+		
 
   }, 30);
 
