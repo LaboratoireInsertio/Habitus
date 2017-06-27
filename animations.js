@@ -109,7 +109,7 @@ module.exports = {
     if ((Date.now() - timerRandomBulb) >= interval) {
       //console.log(whichRandomBulb);
 
-      serialport.sendToMega("D", whichRandomBulb, String.fromCharCode(bulbMim));
+      serialport.sendToMega("D", whichRandomBulb, String.fromCharCode(bulbMin));
 
       whichRandomBulb = getRandomInt(1, 8);
       var randomBright = getRandomInt(maxBrightness, bulbMin);
