@@ -148,7 +148,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	}
 	
 	// ----------------- Swing Down When Someone ----------------- //
-	if(lastCellUp != sensors.cellUp ){
+	if(lastCellUp != sensors.cellUp){
       if(sensors.cellUp == 1){
         whichBulbSwingDownOnce = 9;
 		doingSecondaryAnimation2 = true;
@@ -158,7 +158,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	
 	if (whichBulbSwingDownOnce >= 1){
 		if ((Date.now() - timerBulbSwingDownOnce) >= 500){
-			log.debug(whichBulbSwingDownOnce);
+			//log.debug(whichBulbSwingDownOnce);
 			serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(0));
         	whichBulbSwingDownOnce--;
 			serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(100));
