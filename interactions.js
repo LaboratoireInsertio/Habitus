@@ -30,8 +30,6 @@ function init(sensors, lamps, animations, log, serialport, socket) {
       }
       lastPir = sensors.pir;
     }
-<<<<<<< HEAD
-=======
 	*/
 	
 	// sensors.pir			0-1
@@ -39,17 +37,16 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	// sensors.celDown		0-1
 	// sensors.loudSound	0-1
 	// sensors.globalSound	0-1024
-	
+
 	currentTime = Math.floor(Date.now()/1000);
-	
+
 	if (sunriseTime < currentTime && currentTime < sunsetTime) brightness = 100;
 	else brightness = 20;
-	
+
 	animations.randomBulbBrightnessAll(60000, 100);
-	
+
 	//animations.swingBulbUp(1000,100);
-	
->>>>>>> 089b2e98f12cb92c0d6147956c43a21de8036011
+
 
   }, 30);
 
