@@ -1,12 +1,12 @@
-var serialport, log, socket;
-// var sensors;
 
-function init(sensors, animations, winstonLog, sp, socketio) {
-  log = winstonLog;
-  serialport = sp;
-  socket = socketio;
+function init(sensors, lamps, animations, log, serialport, socket) {
 
   log.info('Module Interactions is initialized');
+
+  var timeBlink = 5;
+  var countTime = 0;
+  var lastPir = 0;
+
   var loop = setInterval(function() {
 
     if(sensors.cellUp == 1){
@@ -23,13 +23,41 @@ function init(sensors, animations, winstonLog, sp, socketio) {
     // animations.randomBulbBrightnessAll(200, 50);
     // animations.swingBulbUp(1000, 50);
 
+    if(lastPir != sensors.pir && sensors.pir == 1){
+      someOneComing();
+      lastPir = sensors.pir;
+    }
+
   }, 30);
+
+  sensors.pir = 1;
+
   //
   // socket.on('cellUp', myAnimation);
   //
   // function myAnimation(value){
   //   log.debug("Launch my custom animation BulbsDownOne", value);
   // }
+
+
+  function someOneComing(){
+    log.debug('launch function someOneComing '+timeBlink);
+    lamps.floorLamp.on();
+    lamps.floorLamp.color(360, 50, 100, 2500, 0);
+    setTimeout(function(){
+      lamps.floorLamp.off();
+    },250);
+    // console.log('finish!',countTime, timeBlink);
+    if(countTime < timeBlink){
+      setTimeout(someOneComing,500);
+      countTime++;
+    }else{
+      countTime = 0;
+      console.log('FINISH!');
+    }
+  }
+
+  // someOneComing();
 
 
   //Example creation animation

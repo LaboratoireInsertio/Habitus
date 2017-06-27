@@ -55,7 +55,7 @@ module.exports.init = function(iosocket, modulesActive, sensors) {
 
     averageSound = count / lastTenValueSound.length;
 
-
+		sensors.globalSound = averageSound;
     // GLOBAL SOUND
     if (averageSound > 10) {
       CapturingSoundGlobal = true;
@@ -85,10 +85,11 @@ module.exports.init = function(iosocket, modulesActive, sensors) {
       });
       log.debug('PIR is activate');
       socket.emit('sensorsActive', 'pir', new Date().getTime());
-
+			sensors.pir = 1;
       // the pir sensor take 3 seconds for be inactive
       setTimeout(function() {
         pirActive = false;
+				sensors.pir = 0;
       }, 3000);
     }
 

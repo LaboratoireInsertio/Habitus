@@ -9,6 +9,8 @@ var sensors = {
   globalSound : 0,
   loudSound : 0,
 }
+
+var lifx = require('./lifx');
 var interactions = require('./interactions');
 var moduleAnimationActive = false;
 var animations = require('./animations');
@@ -17,6 +19,11 @@ var modulesActive = {
   serialport : false,
   mqtt : false
 }
+var lamps = {
+  dinningTable : 'd073d51375c8',
+  floorLamp : 'd073d5139da2'
+}
+
 
 var checkStatusModule = setInterval(function(){
   log.debug('Check if modules activate', modulesActive);
@@ -26,7 +33,7 @@ var checkStatusModule = setInterval(function(){
     //Start animation
     animations.init(log, serialport);
     setTimeout(function(){
-      interactions.init(sensors, animations, log, serialport, socket);
+      interactions.init(sensors, lamps, animations, log, serialport, socket);
     },2000);
   }
 }, 500);
@@ -53,6 +60,9 @@ serialport.init(socket, modulesActive,sensors);
 
 //Initialization for Mqtt (mosca) -> Communication between the remote arduino (Adafruit Feather) and the Raspberry
 require('./rasp/mosca').listen(config, log, socket, modulesActive, sensors);
+
+//Initialization Lifx Lamps
+lifx.init(log, lamps);
 
 //
 //
