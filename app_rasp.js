@@ -71,6 +71,29 @@ require('./rasp/mosca').listen(config, log, socket, modulesActive);
 
 // Main Loop
 
+<<<<<<< HEAD
+=======
+var numLamps = 8;
+var bulbMin = 95;
+var bulbMid = 58;
+var bulbMax = 20;
+
+setTimeout(function() {
+  console.log('------------------- START ------------------------');
+  //turnAllBulbOn(bulbMax); 
+  setInterval(function() {
+    //swingBulbUp(200, bulbMid);
+    //swingBulbDown(200, bulbMid);
+    //swingTintUp(1000);
+    //swingTintDown(1000);
+    //randomBulb(1000, bulbMid);
+
+    randomBulbBrightnessAll(200, bulbMid);
+    //randomTint(200);
+
+  }, 30);
+}, 3000);
+>>>>>>> 57a1e0566e46be819508e708870adb0b6681c24e
 
 
 //function turnAllBulbOn() {
