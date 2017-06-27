@@ -153,6 +153,7 @@ module.exports = {
   //  }
   //}	,
   randomBulbBrightnessAll: function(interval, maxBrightness) {
+	// OLD RANDOM BULB
     // log.debug('active random Bulb Rightness All');
     //if ((Date.now() - timerRandomBrightnessAll) >= interval) {
     //  for (var i = 1; i <= 8; i++) {
@@ -195,35 +196,6 @@ module.exports = {
 			log.debug("current: " + currentBright);
 		}
 	}
-
-	/*
-	for (var i = 0; i < 8; i++) {
-		if ((Date.now() - timerRandomBrightnessAll) >= interval) {
-			var desiredBright = getRandomInt(maxBrightness, bulbMin);
-			log.debug("desiredBright " + i + " " + desiredBright);
-			var diference = Math.abs(desiredBright - currentBright[i]);
-			log.debug("diference " + i + " " + diference);
-			timeBetweenSteps[i] = Math.floor(interval/diference);
-			log.debug("timeBetweenSteps " + i + " " + timeBetweenSteps[i]);
-			
-			if (timeBetweenSteps[i] < 1)
-				serialport.sendToMega("D", i+1, String.fromCharCode(desiredBright));
-	
-			
-			timerRandomBrightnessAll = Date.now();
-		}
-		
-		if (timeBetweenSteps[i] >= 1){
-			if ((Date.now() - individualTimer[i] >= timeBetweenSteps[i])){
-				currentBright[i]++;
-				serialport.sendToMega("D", i+1, String.fromCharCode(currentBright[i]));
-
-			}
-		}
-		
-	
-	}
-	*/
 
   }	,
   randomTintToggleAll: function(interval) {
