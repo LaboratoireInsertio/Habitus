@@ -49,7 +49,7 @@ socket.on('disconnect', function(){
 })
 //Initialization for serialport -> Communication between the arduino Mega and the Raspberry
 var serialport = require('./serialport');
-serialport.init(socket, modulesActive);
+serialport.init(socket, modulesActive,sensors);
 
 //Initialization for Mqtt (mosca) -> Communication between the remote arduino (Adafruit Feather) and the Raspberry
 require('./rasp/mosca').listen(config, log, socket, modulesActive, sensors);

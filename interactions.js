@@ -16,6 +16,10 @@ function init(sensors, animations, winstonLog, sp, socketio) {
     if(sensors.cellDown == 1){
       animations.swingBulbUp(500, 50);
     }
+
+    if(sensors.loudSound == 1){
+      animations.turnAllBulbOff();
+    }
     // animations.randomBulbBrightnessAll(200, 50);
     // animations.swingBulbUp(1000, 50);
 
