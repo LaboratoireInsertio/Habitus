@@ -30,9 +30,12 @@ module.exports.init = function(iosocket, modulesActive, sensors) {
 
   serial.on('close', () => {
     log.info('Serialport for arduino is disconnected.');
-    io.sockets.emit('close');
   });
 
+
+	socket.on('data', function(sensor, data){
+		console.log('DATA! ',sensor, data);
+	});
 
   serial.on('data', (data) => {
     var dataIn = data;
@@ -65,12 +68,14 @@ module.exports.init = function(iosocket, modulesActive, sensors) {
     if (averageSound < 10 && CapturingSoundGlobal) {
       CapturingSoundGlobal = false;
       log.debug('max Value Captured : ' + maxValueSound);
-      socket.emit("soundGlobal", maxValueSound);
-      socket.emit("insertData", "sound_global", {
+
+      socket.emit("data", "sound_global", {
         x: new Date().getTime(),
         y: maxValueSound
       });
-
+			setTimeout(function(){
+				socket.emit("data", "sound_global", 0);
+			},3000);
       maxValueSound = 0;
     }
 
@@ -79,15 +84,15 @@ module.exports.init = function(iosocket, modulesActive, sensors) {
 
     if (dataSplit[2] == 1 && !pirActive) {
       pirActive = true;
-      socket.emit("insertData", "pir", {
+      socket.emit("data", "pir", {
         x: new Date().getTime(),
         y: 1
       });
       log.debug('PIR is activate');
-      socket.emit('sensorsActive', 'pir', new Date().getTime());
 			sensors.pir = 1;
       // the pir sensor take 3 seconds for be inactive
       setTimeout(function() {
+				  socket.emit("data", "pir", 0);
         pirActive = false;
 				sensors.pir = 0;
       }, 3000);
@@ -99,12 +104,13 @@ module.exports.init = function(iosocket, modulesActive, sensors) {
       sensors.loudSound = 1;
       log.debug('Sound loud is active!');
       soundLoudActive = true;
-      socket.emit("insertData", "sound_loud", {
+      socket.emit("data", "sound_loud", {
         x: new Date().getTime(),
         y: 1
       });
       setTimeout(function() {
         sensors.loudSound = 0;
+				  socket.emit("data", "sound_loud", 0);
         soundLoudActive = false;
       }, 200);
     }

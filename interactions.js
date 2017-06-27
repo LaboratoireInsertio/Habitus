@@ -6,8 +6,8 @@ var forecast = new Forecast({
   service: 'darksky',
   key: '8a8d56f392652507b26ba8c906f6a21a',
   units: 'celcius',
-  cache: true,      // Cache API requests 
-  ttl: {            // How long to cache requests. Uses syntax from moment.js: http://momentjs.com/docs/#/durations/creating/ 
+  cache: true,      // Cache API requests
+  ttl: {            // How long to cache requests. Uses syntax from moment.js: http://momentjs.com/docs/#/durations/creating/
     minutes: 27,
     seconds: 45
   }
@@ -53,12 +53,13 @@ function init(sensors, lamps, animations, log, serialport, socket) {
       lastPir = sensors.pir;
     }
 	*/
-	
+
 	// sensors.pir			0-1
 	// sensors.cellUp		0-1
 	// sensors.celDown		0-1
 	// sensors.loudSound	0-1
 	// sensors.globalSound	0-1024
+
 	
 	// update sunrise and sunset every day at 3:00 am.
 	//if ((Date.now().getHours() == 3) && (Date.now() - lastSunUpdateTime > 86400000)){
@@ -72,6 +73,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	//	lastSunUpdateTime = Date.now();
 	//}
 	
+
 	// max brightness during night: 20
 	// max brightness during inactivity: 60
 	// max brightness when someone: 100
@@ -81,6 +83,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	
 	animations.randomBulbBrightnessAll(60000, brightness);
 		
+
 
   }, 30);
 

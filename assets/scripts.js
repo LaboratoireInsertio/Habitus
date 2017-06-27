@@ -7,6 +7,14 @@ var activityPIR = [],
 
 socket.emit('datas');
 
+socket.on('data', function(sensor, value){
+		if(value == 0){
+			$('#'+sensor).removeClass('active');
+		}else{
+			$('#'+sensor).addClass('active');
+		}
+});
+
 socket.on('pirData', function (datas) {
 
   $.each(datas, function(time, activation){
