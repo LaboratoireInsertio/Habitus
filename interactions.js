@@ -60,20 +60,20 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	// sensors.loudSound	0-1
 	// sensors.globalSound	0-1024
 
-	
+
 	// update sunrise and sunset every day at 3:00 am.
-	
-	if ((Date.getHours() == 3) && (Date.now() - lastSunUpdateTime > 86400000)){
-		forecast.get([46.8078623, -71.2202719], function(err, weather) {
-			if(err) return console.dir(err);
-		
-			sunriseTime = weather.daily.data[0].sunriseTime;
-			sunsetTime = weather.daily.data[0].sunsetTime;
-		});
-		
-		lastSunUpdateTime = Date.now();
-	}
-	
+	// 
+	// if ((Date.getHours() == 3) && (Date.now() - lastSunUpdateTime > 86400000)){
+	// 	forecast.get([46.8078623, -71.2202719], function(err, weather) {
+	// 		if(err) return console.dir(err);
+	//
+	// 		sunriseTime = weather.daily.data[0].sunriseTime;
+	// 		sunsetTime = weather.daily.data[0].sunsetTime;
+	// 	});
+	//
+	// 	lastSunUpdateTime = Date.now();
+	// }
+
 
 	// max brightness during night: 20
 	// max brightness during inactivity: 60
@@ -81,7 +81,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	currentTime = Math.floor(Date.now()/1000);
 	if (sunriseTime < currentTime && currentTime < sunsetTime) brightness = 60;
 	else brightness = 20;
-	
+
 	animations.randomBulbBrightnessAll(60000, brightness);
 
 
