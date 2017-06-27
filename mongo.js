@@ -1,7 +1,7 @@
 const mongojs = require('mongojs');
 const _ = require('underscore');
 const moment = require('moment');
-const db = mongojs('sensors', ['sound_global', 'sound_loud', 'stairs', 'pir']);
+const db = mongojs('sensors', ['sound_global', 'sound_loud', 'stairs', 'pir', 'photocell_up', 'photocell_down']);
 
 
 module.exports.insertData = function(table, data) {
