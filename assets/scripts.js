@@ -15,6 +15,16 @@ socket.on('data', function(sensor, value){
 		}
 });
 
+var remapValue;
+socket.on('globalActivity', function(globalActivity){
+	remapValue = globalActivity.value.map(0,globalActivity.maxValue,0,100);
+	console.log('val',remapValue);
+
+	$("#globalActivity .value").html(remapValue);
+	$('#globalActivity #globalVal').css('width', remapValue+'%');
+});
+
+
 socket.on('pirData', function (datas) {
 
   $.each(datas, function(time, activation){
@@ -107,7 +117,24 @@ function generateCharts(id, label, datas, type, bgColor, color){
 }
 
 
+
 $(document).ready(function(){
+	// 
+	// var globalActivity = {
+	// 	maxValue  : 200,
+	// 	value : 200
+	// }
+	// var remapValue;
+	//
+	//
+	// setInterval(function(){
+	// 	globalActivity.value--;
+	// 	remapValue = globalActivity.value.map(0,globalActivity.maxValue,0,100);
+	// 	console.log('val',remapValue);
+	//
+	// 	$("#globalActivity .value").html(remapValue);
+	// 	$('#globalActivity #globalVal').css('width', remapValue+'%');
+	// },1000);
 
 	$('#function').keyup(function(e){
 		console.log(e.keyCode);
@@ -119,3 +146,7 @@ $(document).ready(function(){
 });
 
 });
+
+Number.prototype.map = function (in_min, in_max, out_min, out_max) {
+  return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}

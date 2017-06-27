@@ -11,6 +11,8 @@ var db = require('./mongo');
 var app = express();
 var server = require('http').Server(app);
 var globalActivity = {
+  minValue : 0,
+  maxValue : 200,
   value : 0
 };
 

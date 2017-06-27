@@ -10,6 +10,8 @@ module.exports.listen = function(server, log, db, _, moment, globalActivity) {
     socket.on('datas', function() {
       log.debug('Ask for datas');
 
+      socket.emit('globalActivity', globalActivity);
+      
       db.getPir(function(datas) {
         socket.emit('pirData', datas);
       });
@@ -28,20 +30,13 @@ module.exports.listen = function(server, log, db, _, moment, globalActivity) {
         io.sockets.emit('pir', val);
     });
 
-    //Receive Sensors activate
-    socket.on('sensorsActive', function(id, value){
-      log.debug('Sensor active ',id, value);
-      //re-send to the raspberry
-      io.sockets.emit(id,value);
-    });
-
     //Receive data from Rasppberry
     socket.on('data', function(sensor, data) {
 
       if(typeof data == 'object' ){
 
         //Save Global Activity points (all sensors = 1 points, loud Sound = 5)
-        if(sensor == 'sound_loud'){
+        if(sensor == 'sound_loud' && globalActivity.value < globalActivity.maxValue ){
           globalActivity.value = globalActivity.value+5
         }
         else {
