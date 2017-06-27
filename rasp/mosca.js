@@ -53,7 +53,7 @@ module.exports.listen = function(config, log, socket, modulesActive, sensors) {
       log.info('Receive data from wifi arduino');
       receiveData = true;
     }
-    log.debug(phoD + ' ' + phoU);
+    // log.debug(phoD + ' ' + phoU);
     // PHOTOCELLS
     if (phoD <= 850 && !photoCellDownActive) {
       photoCellDownActive = new Date().getTime();
