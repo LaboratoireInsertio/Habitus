@@ -62,16 +62,16 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 
 	
 	// update sunrise and sunset every day at 3:00 am.
-	//if ((Date.now().getHours() == 3) && (Date.now() - lastSunUpdateTime > 86400000)){
-	//	forecast.get([46.8078623, -71.2202719], function(err, weather) {
-	//		if(err) return console.dir(err);
-	//	
-	//		sunriseTime = weather.daily.data[0].sunriseTime;
-	//		sunsetTime = weather.daily.data[0].sunsetTime;
-	//	});
-	//	
-	//	lastSunUpdateTime = Date.now();
-	//}
+	if ((Date.getHours() == 3) && (Date.now() - lastSunUpdateTime > 86400000)){
+		forecast.get([46.8078623, -71.2202719], function(err, weather) {
+			if(err) return console.dir(err);
+		
+			sunriseTime = weather.daily.data[0].sunriseTime;
+			sunsetTime = weather.daily.data[0].sunsetTime;
+		});
+		
+		lastSunUpdateTime = Date.now();
+	}
 	
 
 	// max brightness during night: 20
@@ -82,7 +82,6 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	else brightness = 20;
 	
 	animations.randomBulbBrightnessAll(60000, brightness);
-		
 
 
   }, 30);
