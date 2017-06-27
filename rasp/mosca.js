@@ -66,11 +66,13 @@ module.exports.listen = function(config, log, socket, modulesActive, sensors) {
       photoCellUpActive = new Date().getTime();
       SomeOneInStairs = true;
       socket.emit('sensorsActive', 'cellUp', photoCellUpActive);
-      sensors.cellUp = 1;
       log.debug('Photocell Up active');
     }
-    if(phoU > 850){
+
+    if(phoU > 850 && sensors.cellUp == 1){
       sensors.cellUp = 0;
+    }else{
+      sensors.cellUp = 1;
     }
 
     if (photoCellUpActive && photoCellDownActive && SomeOneInStairs && phoU >= 750 && phoD >= 750) {
