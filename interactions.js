@@ -5,7 +5,7 @@ function init(animations) {
     // animations.randomBulbBrightnessAll(200, 50);
     //animations.swingBulbUp(1000, 100);
     //animations.turnAllBulbOff();
-    animations.turnAllBulbOn();
+    animations.turnAllBulbOn(100);
   }, 30);
 
 
