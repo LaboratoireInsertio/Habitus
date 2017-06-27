@@ -25,6 +25,13 @@ module.exports.listen = function(server, log, db, _, moment) {
       })
     });
 
+    //Receive Sensors activate
+    socket.on('sensorsActive', function(id, value){
+      log.debug('Sensor active ',id, value);
+      //re-send to the raspberry
+      io.sockets.emit(id,value);
+    });
+
     //Insert data in mongo DB
     socket.on('insertData', function(table, data) {
       log.debug('Ask for insertion :', table, data);

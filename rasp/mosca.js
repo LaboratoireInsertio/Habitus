@@ -12,7 +12,7 @@ var phoU = 1000;
 var piez = 0;
 var receiveData = false;
 
-module.exports.listen = function(config, log, socket, modulesActive) {
+module.exports.listen = function(config, log, socket, modulesActive, sensors) {
 
   var mqtt_settings = {
     port: 1883,
@@ -22,6 +22,11 @@ module.exports.listen = function(config, log, socket, modulesActive) {
     modulesActive.mqtt = true;
     log.info('Mosca server is up and running (port : 1883)');
   });
+
+  setInterval(function(){
+    socket.emit('sensorsActive', 'cellUp', new Date().getTime());
+    // log.debug('test');
+  },1000);
 
   // Recieve data from remote Arduino
 
@@ -50,16 +55,22 @@ module.exports.listen = function(config, log, socket, modulesActive) {
     }
     // log.debug(phoD + ' ' + phoU);
     // PHOTOCELLS
-    if (phoD <= 750 && !photoCellDownActive) {
+    if (phoD <= 850 && !photoCellDownActive) {
       photoCellDownActive = new Date().getTime();
       SomeOneInStairs = true;
+      socket.emit('sensorsActive', 'cellDown', photoCellUpActive);
       log.debug('Photocell Down active');
     }
 
-    if (phoU <= 750 && !photoCellUpActive) {
+    if (phoU <= 850 && !photoCellUpActive) {
       photoCellUpActive = new Date().getTime();
       SomeOneInStairs = true;
+      socket.emit('sensorsActive', 'cellUp', photoCellUpActive);
+      sensors.cellUp = 1;
       log.debug('Photocell Up active');
+    }
+    if(phoU > 850){
+      sensors.cellUp = 0;
     }
 
     if (photoCellUpActive && photoCellDownActive && SomeOneInStairs && phoU >= 750 && phoD >= 750) {

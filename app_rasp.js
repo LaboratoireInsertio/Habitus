@@ -2,6 +2,13 @@ const config = require('./config.json');
 var _ = require('underscore');
 winston = log = require('winston');
 winston.level = config.debugLevel;
+var sensors = {
+  cellUp : 0,
+  cellDown : 0,
+  pir : 0,
+  globalSound : 0,
+  loudSound : 0,
+}
 var interactions = require('./interactions');
 var moduleAnimationActive = false;
 var animations = require('./animations');
@@ -19,14 +26,14 @@ var checkStatusModule = setInterval(function(){
     //Start animation
     animations.init(log, serialport);
     setTimeout(function(){
-      interactions.init(animations);
+      interactions.init(sensors, animations, log, serialport, socket);
     },2000);
   }
 }, 500);
 
 
 var io = require('socket.io-client'),
-  socket = io.connect(config.server, {
+  socket = io.connect(config.serverLocal, {
     reconnect: true
   });
 
@@ -45,7 +52,7 @@ var serialport = require('./serialport');
 serialport.init(socket, modulesActive);
 
 //Initialization for Mqtt (mosca) -> Communication between the remote arduino (Adafruit Feather) and the Raspberry
-require('./rasp/mosca').listen(config, log, socket, modulesActive);
+require('./rasp/mosca').listen(config, log, socket, modulesActive, sensors);
 
 //
 //

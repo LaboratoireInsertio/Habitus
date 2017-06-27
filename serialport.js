@@ -84,6 +84,8 @@ serial.on('data', (data) => {
       y: 1
     });
     log.debug('PIR is activate');
+		socket.emit('sensorsActive', 'pir', new Date().getTime());
+
     // the pir sensor take 3 seconds for be inactive
     setTimeout(function() {
       pirActive = false;

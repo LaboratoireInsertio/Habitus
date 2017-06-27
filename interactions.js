@@ -1,12 +1,26 @@
-function init(animations) {
-  log.info('Module Interactions is initialized');
+var serialport, log, socket;
+// var sensors;
 
+function init(sensors, animations, winstonLog, sp, socketio) {
+  log = winstonLog;
+  serialport = sp;
+  socket = socketio;
+
+  log.info('Module Interactions is initialized');
   var loop = setInterval(function() {
     // animations.randomBulbBrightnessAll(200, 50);
-    animations.swingBulbUp(1000, 50);
+    // animations.swingBulbUp(1000, 50);
+    log.debug('CELLUP : ',sensors.cellUp);
   }, 30);
+  //
+  // socket.on('cellUp', myAnimation);
+  //
+  // function myAnimation(value){
+  //   log.debug("Launch my custom animation BulbsDownOne", value);
+  // }
 
 
+  //Example creation animation
   //
   // setTimeout(function() {
   //   console.log('------------------- START ------------------------');
@@ -26,6 +40,7 @@ function init(animations) {
 
 
 }
+
 
 
 module.exports = {
