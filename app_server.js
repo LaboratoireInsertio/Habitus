@@ -10,7 +10,9 @@ var db = require('./mongo');
 
 var app = express();
 var server = require('http').Server(app);
-var globalActivity = 0;
+var globalActivity = {
+  value : 0
+};
 
 winston.level = config.debugLevel;
 
@@ -19,9 +21,9 @@ require('./sockets').listen(server, log, db, _, moment, globalActivity);
 require('./mosca').listen(server, log, db);
 
 setInterval(function(){
-  log.debug('global Activity : '+globalActivity);
-  if(globalActivity >0){
-    globalActivity--;
-    io.sockets.emit('globalActivity',globalActivity);
+  log.debug('global Activity : '+globalActivity.value);
+  if(globalActivity.value >0){
+    globalActivity.value--;
+    io.sockets.emit('globalActivity',globalActivity.value);
   }
 },5000);

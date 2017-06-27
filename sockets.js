@@ -1,9 +1,7 @@
 var socketio = require('socket.io');
 
-
 module.exports.listen = function(server, log, db, _, moment, globalActivity) {
   var io = socketio.listen(server);
-
   // Listen connection Client Side for send datas of sensors from MongoDB
   io.on('connection', function(socket) {
     //Get informations abouts sensors
@@ -44,10 +42,10 @@ module.exports.listen = function(server, log, db, _, moment, globalActivity) {
 
         //Save Global Activity points (all sensors = 1 points, loud Sound = 5)
         if(sensor == 'sound_loud'){
-          globalActivity = globalActivity+5
+          globalActivity.value = globalActivity.value+5
         }
         else {
-          globalActivity = globalActivity+1
+          globalActivity.value = globalActivity.value+1
         }
         log.debug('Global Activity :'+globalActivity);
         io.sockets.emit('globalActivity',globalActivity);
