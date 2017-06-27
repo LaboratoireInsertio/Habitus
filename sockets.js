@@ -1,6 +1,7 @@
 var socketio = require('socket.io');
 
-module.exports.listen = function(server, log, db, _, moment) {
+
+module.exports.listen = function(server, log, db, _, moment, globalActiity) {
   var io = socketio.listen(server);
 
   // Listen connection Client Side for send datas of sensors from MongoDB
@@ -38,7 +39,18 @@ module.exports.listen = function(server, log, db, _, moment) {
 
     //Receive data from Rasppberry
     socket.on('data', function(sensor, data) {
+
       if(typeof data == 'object' ){
+
+        //Save Global Activity points (all sensors = 1 points, loud Sound = 5)
+        if(sensor = 'sound_loud'){
+          globalActivity = globalActivity+5
+        }
+        else {
+          globalActivity = globalActivity+1
+        }
+        socket.emit('globalActivity',globalActivity);
+
         log.debug('Ask for insertion :', sensor, data);
         db.insertData(sensor, data);
       }

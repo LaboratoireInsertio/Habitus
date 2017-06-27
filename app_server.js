@@ -10,8 +10,15 @@ var db = require('./mongo');
 
 var app = express();
 var server = require('http').Server(app);
+var globalActivity = 0;
+
 winston.level = config.debugLevel;
 
 require('./express').listen(express,server,app,log,db, moment,_);
 require('./sockets').listen(server, log, db, _, moment);
 require('./mosca').listen(server, log, db);
+
+setInterval(function(){
+  log.debug('global Activity : '+globalActivity);
+  globalActivity--;
+}5000);
