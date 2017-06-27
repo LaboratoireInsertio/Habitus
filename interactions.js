@@ -8,7 +8,10 @@ function init(sensors, animations, winstonLog, sp, socketio) {
 
   log.info('Module Interactions is initialized');
   var loop = setInterval(function() {
-    log.debug('CELLUP : ',sensors.cellUp);
+
+    if(sensors.cellUp == 1){
+      console.log('AAAAAAAAAAAAAA TCHOUM');
+    }
     // animations.randomBulbBrightnessAll(200, 50);
     // animations.swingBulbUp(1000, 50);
 
