@@ -3,8 +3,8 @@ function init(animations) {
 
   var loop = setInterval(function() {
     // animations.randomBulbBrightnessAll(200, 50);
-    animations.swingBulbUp(1000, 100);
-    animations.swingBulbDown(1000, 30);
+    //animations.swingBulbUp(1000, 100);
+    animations.swingBulbDown(1000, 10);
     //animations.turnAllBulbOff();
     //animations.turnAllBulbOn(100);
   }, 30);
