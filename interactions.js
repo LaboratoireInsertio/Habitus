@@ -68,28 +68,29 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	// sensors.loudSound	0-1
 	// sensors.globalSound	0-1024
 
-	
+
 	// update sunrise and sunset every day at 3:00 am.
 	var date = new Date();
 	var currentHour = date.getHours();
 	if ((currentHour == 3) && (Date.now() - lastSunUpdateTime > 86400000)){
 		forecast.get([46.8078623, -71.2202719], function(err, weather) {
 			if(err) return console.dir(err);
-		
+
 			sunriseTime = weather.daily.data[0].sunriseTime;
 			sunsetTime = weather.daily.data[0].sunsetTime;
 		});
-		
+
 		lastSunUpdateTime = Date.now();
 	}
 
+  
 	// max brightness during night: 20
 	// max brightness during inactivity: 60
 	// max brightness when someone: 100
 	if (Date.now() - timerBrightnessCalculation >= 1000){
 		currentTime = Math.floor(Date.now()/10000);
 		if (sunriseTime < currentTime && currentTime < sunsetTime){
-			if (sensors.cellUp == 1 
+			if (sensors.cellUp == 1
 				|| sensors.celDown == 1){
 					mainBrightness = 100;
 					timerBrightnessCalculation = Date.now();
@@ -97,34 +98,34 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 					mainBrightness = 60;
 				}
 		} else {
-			if (sensors.cellUp == 1 
+			if (sensors.cellUp == 1
 				|| sensors.celDown == 1){
 					mainBrightness = 40;
 					timerBrightnessCalculation = Date.now();
 				} else {
 					mainBrightness = 20;
 				}
-		}	
+		}
 		//log.debug(mainBrightness);
 	}
-	
+
 	// mainInterval should be a value between 500 and 60000
 	//animations.randomBulbBrightnessAll(mainInterval, mainBrightness);
-		
+
 	//if(lastelDown != sensors.elDown ){
     //  if(sensors.pir == 1){
     //    whichBulbSwingUpOnce = 0;
     //  }
     //  lastelDown = sensors.elDown;
     //}
-	
+
 	if ((Date.now() - timerBulbSwingUpOnce) >= 500 && whichBulbSwingUpOnce < 8){
-		
+
 		serialport.sendToMega("D", whichBulbSwingUpOnce + 1, String.fromCharCode(0));
         whichBulbSwingUpOnce++;
 		log.debug(whichBulbSwingUpOnce+1);
 		serialport.sendToMega("D", whichBulbSwingUpOnce +1, String.fromCharCode(100));
-		
+
 		timerBulbSwingUpOnce = Date.now();
 	}
 

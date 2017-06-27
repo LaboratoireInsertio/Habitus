@@ -12,6 +12,8 @@ var phoU = 1000;
 var piez = 0;
 var receiveData = false;
 
+var upActive = false, downActive = false;
+
 module.exports.listen = function(config, log, socket, modulesActive, sensors) {
 
   var mqtt_settings = {
@@ -23,10 +25,10 @@ module.exports.listen = function(config, log, socket, modulesActive, sensors) {
     log.info('Mosca server is up and running (port : 1883)');
   });
 
-  setInterval(function(){
-    socket.emit('sensorsActive', 'cellUp', new Date().getTime());
-    // log.debug('test');
-  },1000);
+  // setInterval(function(){
+  //   socket.emit('sensorsActive', 'cellUp', new Date().getTime());
+  //   // log.debug('test');
+  // },1000);
 
   // Recieve data from remote Arduino
 
@@ -53,59 +55,77 @@ module.exports.listen = function(config, log, socket, modulesActive, sensors) {
       log.info('Receive data from wifi arduino');
       receiveData = true;
     }
+
     // log.debug(phoD + ' ' + phoU);
 
-    if(phoU > 850){
-      sensors.cellUp = 0;
-    }else{
+
+    if(phoU <= 850 && !upActive ){
+      upActive = true;
       sensors.cellUp = 1;
+      socket.emit('data', 'photocell_up', {x : new Date().getTime(), y : 1 });
+    }
+    if(phoU > 850 && upActive){
+      setTimeout(function(){
+        upActive = false;
+      },1000);
+      sensors.cellUp = 0;
+      socket.emit('data', 'photocell_up', 0);
     }
 
-    if(phoD > 850){
-      sensors.cellDown = 0;
-    }else{
+    if(phoD <= 850 && !downActive ){
+      downActive = true;
       sensors.cellDown = 1;
+      socket.emit('data', 'photocell_down', {x : new Date().getTime(), y : 1 });
+    }
+    if(phoD > 850 && downActive){
+      setTimeout(function(){
+        downActive = false;
+      },1000);
+      sensors.cellDown = 0;
+      socket.emit('data', 'photocell_down', 0);
     }
 
-
-    // PHOTOCELLS
-    if (phoD <= 850 && !photoCellDownActive) {
-      photoCellDownActive = new Date().getTime();
-      SomeOneInStairs = true;
-      socket.emit('sensorsActive', 'cellDown', photoCellUpActive);
-      log.debug('Photocell Down active');
-    }
-
-    if (phoU <= 850 && !photoCellUpActive) {
-      photoCellUpActive = new Date().getTime();
-      SomeOneInStairs = true;
-      socket.emit('sensorsActive', 'cellUp', photoCellUpActive);
-      log.debug('Photocell Up active');
-    }
-
-
-
-    if (photoCellUpActive && photoCellDownActive && SomeOneInStairs && phoU >= 750 && phoD >= 750) {
-      SomeOneInStairs = false;
-
-      TimeInStairs = photoCellUpActive - photoCellDownActive;
-      if (TimeInStairs > 0) {
-        log.debug('Someone up the stairs!', TimeInStairs);
-        UpOrDown = "up";
-      } else {
-        log.debug('Someone down the stairs', Math.abs(TimeInStairs));
-        UpOrDown = "down";
-      }
-
-      socket.emit("insertData", "stairs", {
-        up: photoCellUpActive,
-        down: photoCellDownActive
-      });
-
-      setTimeout(function() {
-        photoCellDownActive = photoCellUpActive = false;
-      }, 500);
-    }
+    //
+    // // PHOTOCELLS
+    // if (phoD <= 850 && !photoCellDownActive) {
+    //   photoCellDownActive = new Date().getTime();
+    //   SomeOneInStairs = true;
+    //   socket.emit('data', 'photocell_down', 1);
+    //   log.debug('Photocell Down active');
+    // }else if(){
+    //
+    // }
+    //
+    // if (phoU <= 850 && !photoCellUpActive) {
+    //   photoCellUpActive = new Date().getTime();
+    //   SomeOneInStairs = true;
+    //   socket.emit('sensorsActive', 'cellUp', photoCellUpActive);
+    //   log.debug('Photocell Up active');
+    // }
+    //
+    //
+    //
+    // if (photoCellUpActive && photoCellDownActive && SomeOneInStairs && phoU >= 850 && phoD >= 850) {
+    //   SomeOneInStairs = false;
+    //
+    //   TimeInStairs = photoCellUpActive - photoCellDownActive;
+    //   if (TimeInStairs > 0) {
+    //     log.debug('Someone up the stairs!', TimeInStairs);
+    //     UpOrDown = "up";
+    //   } else {
+    //     log.debug('Someone down the stairs', Math.abs(TimeInStairs));
+    //     UpOrDown = "down";
+    //   }
+    //
+    //   socket.emit("insertData", "stairs", {
+    //     up: photoCellUpActive,
+    //     down: photoCellDownActive
+    //   });
+    //
+    //   setTimeout(function() {
+    //     photoCellDownActive = photoCellUpActive = false;
+    //   }, 500);
+    // }
 
     // forward messages to subscribed clients
     mqtt_server.publish(newPacket, cb);

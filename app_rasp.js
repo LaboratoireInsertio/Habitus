@@ -8,6 +8,7 @@ var sensors = {
   pir : 0,
   globalSound : 0,
   loudSound : 0,
+  globalActivity : 0
 }
 
 var lifx = require('./lifx');
@@ -45,6 +46,10 @@ var io = require('socket.io-client'),
 socket.on('connect', function() {
   modulesActive.socketDigital = true;
   log.info('websocket open on the server ' + config.server);
+});
+
+socket.on('globalActivity', function(globalActivity){
+    sensors.globalActivity = globalActivity.value;
 });
 
 socket.on('disconnect', function(){

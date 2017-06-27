@@ -1,8 +1,7 @@
 var socketio = require('socket.io');
 
-module.exports.listen = function(server, log, db, _, moment) {
+module.exports.listen = function(server, log, db, _, moment, globalActivity) {
   var io = socketio.listen(server);
-
   // Listen connection Client Side for send datas of sensors from MongoDB
   io.on('connection', function(socket) {
     //Get informations abouts sensors
@@ -10,6 +9,8 @@ module.exports.listen = function(server, log, db, _, moment) {
 
     socket.on('datas', function() {
       log.debug('Ask for datas');
+
+      socket.emit('globalActivity', globalActivity);
 
       db.getPir(function(datas) {
         socket.emit('pirData', datas);
@@ -25,29 +26,38 @@ module.exports.listen = function(server, log, db, _, moment) {
       })
     });
 
-    socket.on('pir', function(val){
-        io.sockets.emit('pir', val);
-    });
-
-    //Receive Sensors activate
-    socket.on('sensorsActive', function(id, value){
-      log.debug('Sensor active ',id, value);
-      //re-send to the raspberry
-      io.sockets.emit(id,value);
+    socket.on('pir', function(val) {
+      io.sockets.emit('pir', val);
     });
 
     //Receive data from Rasppberry
     socket.on('data', function(sensor, data) {
-      if(typeof data == 'object' ){
+
+      if (typeof data == 'object') {
+
+        //Save Global Activity points (all sensors = 1 points, loud Sound = 5)
+
+        if (sensor == 'sound_loud') {
+          globalActivity.value = globalActivity.value + 5
+        } else {
+          globalActivity.value = globalActivity.value + 1
+        }
+
+        if (globalActivity.value > globalActivity.maxValue) globalActivity.value = globalActivity.maxValue;
+
+        log.debug('Global Activity :' + globalActivity.value);
+        io.sockets.emit('globalActivity', globalActivity);
+
         log.debug('Ask for insertion :', sensor, data);
+        db.insertData(sensor, data);
       }
       io.sockets.emit('data', sensor, data)
-      
+
     });
 
-    socket.on("ctrl", function(typeCtrl){
-      log.debug("Ask for : "+typeCtrl);
-      io.sockets.emit(typeCtrl,"1");
+    socket.on("ctrl", function(typeCtrl) {
+      log.debug("Ask for : " + typeCtrl);
+      io.sockets.emit(typeCtrl, "1");
     });
 
     socket.on("disconnect", function() {
@@ -56,4 +66,5 @@ module.exports.listen = function(server, log, db, _, moment) {
 
 
   });
+  return io;
 };
