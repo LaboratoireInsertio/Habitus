@@ -166,7 +166,7 @@ module.exports = {
 			var diference = Math.abs(desiredBright - currentBright[i]);
 			//log.debug("diference " + i + " " + diference);
 			timeBetweenSteps[i] = Math.floor(interval/diference);
-			log.debug("timeBetweenSteps " + i + " " + timeBetweenSteps[i]);
+			//log.debug("timeBetweenSteps " + i + " " + timeBetweenSteps[i]);
 
 			if (timeBetweenSteps[i] < 1)
 				serialport.sendToMega("D", i+1, String.fromCharCode(desiredBright));
@@ -178,6 +178,7 @@ module.exports = {
 	
 	for (var i = 0; i < 8; i++) {
 		if (timeBetweenSteps[i] >= 1){
+			log.debug("timeBetweenSteps " + i + " " + timeBetweenSteps[i]);
 			if ((Date.now() - individualTimer[i] >= timeBetweenSteps[i])){
 				currentBright[i]++;
 				serialport.sendToMega("D", i+1, String.fromCharCode(currentBright[i]));
