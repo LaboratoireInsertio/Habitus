@@ -17,6 +17,7 @@ var currentBright=[];
 for (var i = 0; i < 8; i++) currentBright[i] = 0;
 var timeBetweenSteps = [];
 var individualTimer=[];
+for (var i = 0; i < 8; i++) individualTimer[i] = Date.now();
 
 var timerRandomTintToggleAll = Date.now();
 
@@ -182,7 +183,8 @@ module.exports = {
 			if ((Date.now() - individualTimer[i] >= timeBetweenSteps[i])){
 				currentBright[i]++;
 				serialport.sendToMega("D", i+1, String.fromCharCode(currentBright[i]));
-
+				
+				individualTimer[i] = Date.now();
 			}
 		}
 	}
