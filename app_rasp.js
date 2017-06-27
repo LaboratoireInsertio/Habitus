@@ -33,7 +33,7 @@ var checkStatusModule = setInterval(function(){
 
 
 var io = require('socket.io-client'),
-  socket = io.connect(config.serverLocal, {
+  socket = io.connect(config.server, {
     reconnect: true
   });
 
