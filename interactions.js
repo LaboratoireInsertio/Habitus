@@ -24,35 +24,33 @@ function init(sensors, lamps, animations, log, serialport, socket) {
     // animations.swingBulbUp(1000, 50);
 
     if(lastPir != sensors.pir ){
-      if(sensors.pir == 1) someOneComing();
+      if(sensors.pir == 1){
+        log.debug('launch function someOneComing '+timeBlink);
+        someOneComing();
+      }
       lastPir = sensors.pir;
     }
 
   }, 30);
 
 
-  //
-  // socket.on('cellUp', myAnimation);
-  //
-  // function myAnimation(value){
-  //   log.debug("Launch my custom animation BulbsDownOne", value);
-  // }
-
-
+  // Demo - Make blink lifx lampfloor when someone active the PIR in the entry
   function someOneComing(){
-    log.debug('launch function someOneComing '+timeBlink);
-    lamps.floorLamp.on();
-    lamps.floorLamp.color(360, 50, 100, 2500, 0);
-    setTimeout(function(){
-      lamps.floorLamp.off();
-    },250);
-    // console.log('finish!',countTime, timeBlink);
-    if(countTime < timeBlink){
-      setTimeout(someOneComing,500);
-      countTime++;
-    }else{
-      countTime = 0;
-      console.log('FINISH!');
+    //Check if the lamp is present
+    if(lamps.floorLamp){
+      //Turn on the lamp before sending informations
+      lamps.floorLamp.on();
+      lamps.floorLamp.color(360, 50, 100, 2500, 0);
+      setTimeout(function(){
+        lamps.floorLamp.off();
+      },250);
+      // console.log('finish!',countTime, timeBlink);
+      if(countTime < timeBlink){
+        setTimeout(someOneComing,500);
+        countTime++;
+      }else{
+        countTime = 0;
+      }
     }
   }
 

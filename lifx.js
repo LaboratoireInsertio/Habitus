@@ -1,6 +1,12 @@
 var LifxClient = require('node-lifx').Client;
 var client = new LifxClient();
 var _ = require('underscore');
+var lampsId = {
+  dinningTable : 'd073d51375c8',
+  floorLamp : 'd073d5139da2',
+  kitchen : 'd073d51379f3'
+}
+
 
   module.exports.init = function(log, lamps) {
 
@@ -9,20 +15,21 @@ var _ = require('underscore');
       client.destroy();
     });
 
+
     client.on('light-new', function(light) {
-      // console.log(light);
-      log.debug('New light found. ID:' + light.id + ', IP:' + light.address + ':' + light.port);
-      _.each(lamps, function(lamp, name){
-        if(lamp == light.id) lamps[name] = light;
+      _.each(lampsId, function(lamp, name){
+        if(lamp == light.id) addLamp(name, light);
       });
     });
 
     client.on('light-online', function(light) {
-      log.info('Light back online. ID:' + light.id + ', IP:' + light.address + ':' + light.port);
+      _.each(lampsId, function(lamp, name){
+        if(lamp == light.id) addLamp(name, light);
+      });
     });
 
     client.on('light-offline', function(light) {
-      log.info('Light offline. ID:' + light.id + ', IP:' + light.address + ':' + light.port);
+      log.debug('Light offline. ID:' + light.id + ', IP:' + light.address + ':' + light.port);
     });
 
     client.on('listening', function() {
@@ -32,6 +39,12 @@ var _ = require('underscore');
         address.address + ':' + address.port + '\n'
       );
     });
+
+    //Add Lamp
+    function addLamp(name, light){
+      log.debug('New light found. ID:' + light.id + ', IP:' + light.address + ':' + light.port);
+      lamps[name] = light;
+    }
 
     client.init();
   }

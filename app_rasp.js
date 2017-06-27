@@ -19,10 +19,7 @@ var modulesActive = {
   serialport : false,
   mqtt : false
 }
-var lamps = {
-  dinningTable : 'd073d51375c8',
-  floorLamp : 'd073d5139da2'
-}
+var lamps = {}
 
 
 var checkStatusModule = setInterval(function(){
