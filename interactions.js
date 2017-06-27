@@ -1,17 +1,3 @@
-// Require forecast module
-var Forecast = require('forecast');
-
-// Initialize foreecast
-var forecast = new Forecast({
-  service: 'darksky',
-  key: '8a8d56f392652507b26ba8c906f6a21a',
-  units: 'celcius',
-  cache: true,      // Cache API requests 
-  ttl: {            // How long to cache requests. Uses syntax from moment.js: http://momentjs.com/docs/#/durations/creating/ 
-    minutes: 27,
-    seconds: 45
-  }
-});
 
 function init(sensors, lamps, animations, log, serialport, socket) {
 
@@ -21,29 +7,22 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   var countTime = 0;
   var lastPir = 0;
 
-  var brightness = 20;
-  // should be updated once a day from forecast
-  var sunriseTime = 1498553634;
-  var sunsetTime = 1498610667;
-  var currentTime = Math.floor(Date.now()/1000);
-
   var loop = setInterval(function() {
 
-    // --------- Direct Interaction Examples --------- //
-	/*
-	if(sensors.cellUp == 1){
+    if(sensors.cellUp == 1){
       animations.swingBulbDown(500, 50);
     }
+
     if(sensors.cellDown == 1){
       animations.swingBulbUp(500, 50);
     }
+
     if(sensors.loudSound == 1){
       animations.turnAllBulbOff();
     }
-	*/
+    // animations.randomBulbBrightnessAll(200, 50);
+    // animations.swingBulbUp(1000, 50);
 
-	// --------- LIFX Examples --------- //
-	/*
     if(lastPir != sensors.pir ){
       if(sensors.pir == 1){
         log.debug('launch function someOneComing '+timeBlink);
@@ -51,26 +30,13 @@ function init(sensors, lamps, animations, log, serialport, socket) {
       }
       lastPir = sensors.pir;
     }
-	*/
-	
-	// sensors.pir			0-1
-	// sensors.cellUp		0-1
-	// sensors.celDown		0-1
-	// sensors.loudSound	0-1
-	// sensors.globalSound	0-1024
-	
-	currentTime = Math.floor(Date.now()/1000);
-	
-	if (sunriseTime < currentTime && currentTime < sunsetTime) brightness = 100;
-	else brightness = 20;
-	
-	animations.randomBulbBrightnessAll(1000, 100);
-	
 
   }, 30);
 
 
   // Demo - Make blink lifx lampfloor when someone active the PIR in the entry
+  // All function listed on the site : https://github.com/MariusRumpf/node-lifx
+
   function someOneComing(){
     //Check if the lamp is present
     if(lamps.floorLamp){
