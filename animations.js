@@ -161,6 +161,7 @@ module.exports = {
 	for (var i = 0; i < 8; i++) {
 		if ((Date.now() - timerRandomBrightnessAll) >= interval) {
 			var desiredBright = getRandomInt(maxBrightness, bulbMin);
+			log.debug(desiredBright);
 			var diference = Math.abs(desiredBright - currentBright[i]);
 			timeBetweenSteps[i] = Math.floor(inteval/diference);
 			
