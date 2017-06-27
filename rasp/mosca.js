@@ -69,7 +69,7 @@ module.exports.listen = function(config, log, socket, modulesActive, sensors) {
       log.debug('Photocell Up active');
     }
 
-    if(phoU > 850 && sensors.cellUp == 1){
+    if(phoU > 850){
       sensors.cellUp = 0;
     }else{
       sensors.cellUp = 1;
