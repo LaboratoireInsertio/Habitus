@@ -18,7 +18,9 @@ var checkStatusModule = setInterval(function(){
     clearInterval(checkStatusModule);
     //Start animation
     animations.init(log, serialport);
-    interactions.init(animations);
+    setTimeout(function(){
+      interactions.init(animations);
+    },2000);
 
   }
 }, 500);
