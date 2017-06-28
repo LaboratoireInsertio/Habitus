@@ -26,7 +26,7 @@ module.exports.init = function(iosocket, modulesActive, sensorsR, stateS) {
   log.debug('Init serialport');
   stateStairs = stateS;
   socket = iosocket;
-  
+
   serial.on('open', () => {
     modulesActive.serialport = true;
     log.info('Arduino port ' + arduinoPort + ' is open');
@@ -35,11 +35,6 @@ module.exports.init = function(iosocket, modulesActive, sensorsR, stateS) {
   serial.on('close', () => {
     log.info('Serialport for arduino is disconnected.');
   });
-
-
-	// socket.on('data', function(sensor, data){
-	// 	console.log('DATA! ',sensor, data);
-	// });
 
   serial.on('data', (data) => {
     var dataIn = data;
@@ -62,7 +57,7 @@ module.exports.init = function(iosocket, modulesActive, sensorsR, stateS) {
 
     averageSound = count / lastTenValueSound.length;
 
-		sensors.globalSound = averageSound;
+    sensors.globalSound = averageSound;
     // GLOBAL SOUND
     if (averageSound > 10) {
       CapturingSoundGlobal = true;
@@ -77,9 +72,9 @@ module.exports.init = function(iosocket, modulesActive, sensorsR, stateS) {
         x: new Date().getTime(),
         y: maxValueSound
       });
-			setTimeout(function(){
-				socket.emit("data", "sound_global", 0);
-			},3000);
+      setTimeout(function() {
+        socket.emit("data", "sound_global", 0);
+      }, 3000);
       maxValueSound = 0;
     }
 
@@ -93,12 +88,12 @@ module.exports.init = function(iosocket, modulesActive, sensorsR, stateS) {
         y: 1
       });
       log.debug('PIR is activate');
-			sensors.pir = 1;
+      sensors.pir = 1;
       // the pir sensor take 3 seconds for be inactive
       setTimeout(function() {
-				  socket.emit("data", "pir", 0);
+        socket.emit("data", "pir", 0);
         pirActive = false;
-				sensors.pir = 0;
+        sensors.pir = 0;
       }, 3000);
     }
 
@@ -114,33 +109,22 @@ module.exports.init = function(iosocket, modulesActive, sensorsR, stateS) {
       });
       setTimeout(function() {
         sensors.loudSound = 0;
-				  socket.emit("data", "sound_loud", 0);
+        socket.emit("data", "sound_loud", 0);
         soundLoudActive = false;
       }, 200);
     }
-
-
   });
-
 }
 
 
 module.exports.sendToMega = function(type, id, value, cb) {
   // log.debug("send arduino : ",type, id, value);
-  if(sensors.BulbsTintsActive){
+  if (sensors.BulbsTintsActive) {
     serial.write(type + id + String.fromCharCode(value) + "~");
 
-    if(type == "D") stateStairs.bulbs[id-1] = value;
-    if(type == "R") stateStairs.tints[id-1] = value;
-  }else{
+    if (type == "D") stateStairs.bulbs[id - 1] = value;
+    if (type == "R") stateStairs.tints[id - 1] = value;
+  } else {
     log.debug('Bulbs and Tints turn OFF');
   }
-  
 }
-
-
-//test working
-// setInterval(function(){
-//   console.log('Send');
-//   serial.write('R' + 5 + '<' + '~');
-// },2000);

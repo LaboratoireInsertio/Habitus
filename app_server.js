@@ -6,7 +6,10 @@ const config = require('./config.json');
 const express = require('express'),
     winston = log = require('winston');
 
-var db = require('./mongo');
+var db = require('./digital_ocean/mongo');
+
+var path = require('path');
+global.appRoot = path.resolve(__dirname);
 
 var app = express();
 var server = require('http').Server(app);
@@ -21,14 +24,11 @@ var globalActivity = {
   photocell_down : 2
 };
 
-setTimeout(function(){
-  test();
-},5000);
 winston.level = config.debugLevel;
 
-require('./express').listen(express,server,app,log,db, moment,_);
-var io = require('./sockets').listen(server, log, db, _, moment, globalActivity);
-require('./mosca').listen(server, log, db);
+require('./digital_ocean/express').listen(express,server,app,log,db, moment,_);
+var io = require('./digital_ocean/sockets').listen(server, log, db, _, moment, globalActivity);
+require('./digital_ocean/mosca').listen(server, log, db);
 
 setInterval(function(){
   log.debug('global Activity : '+globalActivity.value);
