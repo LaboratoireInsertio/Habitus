@@ -167,6 +167,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	}
 	
 	// ----------------- Swing Down When Someone ----------------- //
+	if (timeOutCellDown == 0){
 	if(lastCellUp != sensors.cellUp){
       if(sensors.cellUp == 1){
         whichBulbSwingDownOnce = 9;
@@ -175,7 +176,6 @@ function init(sensors, lamps, animations, log, serialport, socket) {
       lastCellUp = sensors.cellUp;
     }
 	
-	if (timeOutCellDown == 0){
 	if (whichBulbSwingDownOnce >= 1){
 		if ((Date.now() - timerBulbSwingDownOnce) >= 500){
 			//log.debug(whichBulbSwingDownOnce);
