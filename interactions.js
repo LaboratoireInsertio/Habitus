@@ -61,6 +61,8 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   var doingSecondaryAnimation1 = false;
   var doingSecondaryAnimation2 = false;
 
+  var timerPrintDebug = Date.now();
+
 
   //////////////////////////   MAIN LOOP   //////////////////////////
   var loop = setInterval(function() {
@@ -116,31 +118,42 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	}
 
     
-	if (sunriseTime != 0){
-	// max brightness during night: 20
-	// max brightness during inactivity: 60
-	// max brightness when someone: 100
-	if (Date.now() - timerBrightnessCalculation >= 1000){
-		currentTime = Math.floor(Date.now()/10000);
-		if (sunriseTime < currentTime && currentTime < sunsetTime){
-			if (sensors.cellUp == 1
-				|| sensors.celDown == 1){
+	if (Date.now() - timerBrightnessCalculation >= 1000){	
+		// max brightness during night: 20
+		// max brightness during inactivity: 60
+		// max brightness when someone: 100
+		currentTime = Math.floor(Date.now()/1000);
+		if (sunriseTime != 0){
+			if (sunriseTime < currentTime && currentTime < sunsetTime){
+				if (sensors.cellUp == 1 || sensors.celDown == 1){
 					mainBrightness = 100;
 					timerBrightnessCalculation = Date.now();
 				} else {
 					mainBrightness = 60;
 				}
-		} else {
-			if (sensors.cellUp == 1
-				|| sensors.celDown == 1){
+			} else {
+				if (sensors.cellUp == 1 || sensors.celDown == 1){
 					mainBrightness = 40;
 					timerBrightnessCalculation = Date.now();
 				} else {
 					mainBrightness = 20;
 				}
+			}
 		}
-		//log.debug(mainBrightness);
+		//log.debug("Sunrise Time: " + sunriseTime);
+		//log.debug("Sunset Time: " + sunsetTime);
+		//log.debug("Current Time: " + currentTime);
+		//log.debug("Main Brightness: " + mainBrightness);
 	}
+	
+	// Prints to the console everu 30 seconds for debuging
+	if (Date.now() - timerPrintDebug >= 30000){
+		log.debug("Sunrise Time: " + sunriseTime);
+		log.debug("Sunset Time: " + sunsetTime);
+		log.debug("Current Time: " + currentTime);
+		log.debug("Main Brightness: " + mainBrightness);
+		
+		timerPrintDebug = Date.now();
 	}
 
 	// mainInterval should be a value between 500 and 60000
