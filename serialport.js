@@ -122,10 +122,6 @@ module.exports.init = function(iosocket, modulesActive, sensors, stateS) {
 }
 
 
-setTimeout(function(){
-  console.log(stateStairs);
-},1000);
-
 module.exports.sendToMega = function(type, id, value, cb) {
   // log.debug("send arduino : ",type, id, value);
   serial.write(type + id + String.fromCharCode(value) + "~");

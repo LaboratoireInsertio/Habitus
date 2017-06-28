@@ -39,6 +39,12 @@ module.exports.listen = function(server, log, db, _, moment, globalActivity) {
       })
     });
 
+    //Receive from the rasppberry the state of bulbs and tints
+    //We resend the value for the interface web on the digitalOcean server
+    socket.on('stateStairs', function(stateStairs){
+        io.sockets.emit('stateStairs', stateStairs);
+    });
+
     socket.on('pir', function(val) {
       io.sockets.emit('pir', val);
     });

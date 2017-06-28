@@ -37,6 +37,10 @@ socket.on('globalActivityData', function (datas) {
 
 });
 
+socket.on('stateStairs', function(stateStairs){
+	console.log(stateStairs);
+});
+
 socket.on('pirData', function (datas) {
 
   $.each(datas, function(time, activation){
@@ -95,9 +99,6 @@ socket.on('CellUpData', function (datas) {
   	activityCellUp.push({'x' : time, 'y' : activation.length});
   });
   generateCharts("graphCellUp", "Sensor Photocell Up", activityCellUp, "line", 'rgba(234,86,61,0.5)', 'rgba(234,86,61,1)');
-
-  // generateCharts("sound_2", "Sensor sound 2", datas, "line", 'rgba(234,86,61,0.5)', 'rgba(234,86,61,1)');
-  // generateCharts("piezo", "Main courante", datas, "line", 'rgba(163,216,106,0.5)', 'rgba(163,216,106,1)');
 
 });
 
@@ -158,22 +159,6 @@ function generateCharts(id, label, datas, type, bgColor, color){
 
 
 $(document).ready(function(){
-	//
-	// var globalActivity = {
-	// 	maxValue  : 200,
-	// 	value : 200
-	// }
-	// var remapValue;
-	//
-	//
-	// setInterval(function(){
-	// 	globalActivity.value--;
-	// 	remapValue = globalActivity.value.map(0,globalActivity.maxValue,0,100);
-	// 	console.log('val',remapValue);
-	//
-	// 	$("#globalActivity .value").html(remapValue);
-	// 	$('#globalActivity #globalVal').css('width', remapValue+'%');
-	// },1000);
 
 	$('#function').keyup(function(e){
 		console.log(e.keyCode);
