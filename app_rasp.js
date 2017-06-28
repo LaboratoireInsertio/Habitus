@@ -11,6 +11,12 @@ var sensors = {
   globalActivity : 0
 }
 
+// var stateBulbs = [0,0,0,0,0,0,0,0];
+var stateStairs = {
+  bulbs : [0,0,0,0,0,0,0,0],
+  tints : [0,0,0,0,0,0,0,0]
+}
+
 var lifx = require('./lifx');
 var interactions = require('./interactions');
 var moduleAnimationActive = false;
@@ -21,7 +27,6 @@ var modulesActive = {
   mqtt : false
 }
 var lamps = {}
-
 
 var checkStatusModule = setInterval(function(){
   log.debug('Check if modules activate', modulesActive);
@@ -58,13 +63,20 @@ socket.on('disconnect', function(){
 })
 //Initialization for serialport -> Communication between the arduino Mega and the Raspberry
 var serialport = require('./serialport');
-serialport.init(socket, modulesActive,sensors,io);
+serialport.init(socket, modulesActive,sensors, stateStairs);
 
 //Initialization for Mqtt (mosca) -> Communication between the remote arduino (Adafruit Feather) and the Raspberry
-require('./rasp/mosca').listen(config, log, socket, modulesActive, sensors);
+require('./rasp/mosca').listen(config, log, socket, modulesActive, sensors, stateStairs);
 
 //Initialization Lifx Lamps
 lifx.init(log, lamps);
+
+
+//Send to the server Digital Ocean the value of Tints and Bublbs Every 0.5s
+setInterval(function(){
+  log.debug('states', stateStairs);
+  socket.emit('stateStairs', stateStairs);
+},2000);
 
 //
 //

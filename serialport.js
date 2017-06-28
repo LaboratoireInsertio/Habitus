@@ -4,6 +4,7 @@ var winston = log = require('winston');
 const config = require('./config.json');
 
 var socket,
+  stateStairs,
   pirActive = false,
   CapturingSoundGlobal = false,
   soundLoudActive = false,
@@ -19,9 +20,9 @@ var serial = new SerialPort(arduinoPort, {
   baudRate: 57600
 });
 
-module.exports.init = function(iosocket, modulesActive, sensors) {
+module.exports.init = function(iosocket, modulesActive, sensors, stateS) {
   log.debug('Init serialport');
-  socket = iosocket;
+  stateStairs = stateS;
 
   serial.on('open', () => {
     modulesActive.serialport = true;
@@ -33,9 +34,9 @@ module.exports.init = function(iosocket, modulesActive, sensors) {
   });
 
 
-	socket.on('data', function(sensor, data){
-		console.log('DATA! ',sensor, data);
-	});
+	// socket.on('data', function(sensor, data){
+	// 	console.log('DATA! ',sensor, data);
+	// });
 
   serial.on('data', (data) => {
     var dataIn = data;
@@ -121,9 +122,17 @@ module.exports.init = function(iosocket, modulesActive, sensors) {
 }
 
 
+setTimeout(function(){
+  console.log(stateStairs);
+},1000);
+
 module.exports.sendToMega = function(type, id, value, cb) {
   // log.debug("send arduino : ",type, id, value);
-  serial.write(type + id + value + "~");
+  serial.write(type + id + String.fromCharCode(value) + "~");
+
+  if(type == "D") stateStairs.bulbs[id-1] = value;
+  if(type == "R") stateStairs.tints[id-1] = value;
+
 }
 
 
