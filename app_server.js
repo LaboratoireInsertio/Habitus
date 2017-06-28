@@ -32,4 +32,4 @@ setInterval(function(){
     x: new Date().getTime(),
     y: globalActivity.value
   });
-},5000);
+},60000);
