@@ -1,5 +1,10 @@
 const config = require('./config.json');
 var _ = require('underscore');
+
+const express = require('express');
+var app = express();
+var server = require('http').Server(app);
+
 winston = log = require('winston');
 winston.level = config.debugLevel;
 var sensors = {
@@ -8,7 +13,8 @@ var sensors = {
   pir : 0,
   globalSound : 0,
   loudSound : 0,
-  globalActivity : 0
+  globalActivity : 0,
+  BulbsTintsActive : true
 }
 
 // var stateBulbs = [0,0,0,0,0,0,0,0];
@@ -27,6 +33,26 @@ var modulesActive = {
   mqtt : false
 }
 var lamps = {}
+
+server.listen(8844, function() {
+    log.info('Server Express launch on : ' + 8844);
+    
+  });
+
+  app.get('/on', function(req, res) {
+    sensors.BulbsTintsActive = true;
+    log.debug('Turn ON Bulbs and Tints');
+    res.send('Turn ON Bulbs and Tints');
+  });
+  app.get('/off', function(req, res) {
+   
+    animations.turnAllBulbOff();
+    animations.turnAllTintOff();
+    sensors.BulbsTintsActive = false;
+    log.debug('Turn OFF Bulbs and Tints');
+    res.send('Turn OFF Bulbs and Tints');
+  });
+
 
 var checkStatusModule = setInterval(function(){
   log.debug('Check if modules activate', modulesActive);

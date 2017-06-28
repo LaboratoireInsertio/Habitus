@@ -11,7 +11,8 @@ var socket,
   lastTenValueSound = [],
   count = 0,
   averageSound = 0,
-  maxValueSound = 0;
+  maxValueSound = 0,
+  sensors;
 
 var arduinoPort = (process.env.ARDUINOPORT ? process.env.ARDUINOPORT : '/dev/ttyACM0');
 // var arduinoPort = '/dev/ttyACM0';
@@ -20,7 +21,8 @@ var serial = new SerialPort(arduinoPort, {
   baudRate: 57600
 });
 
-module.exports.init = function(iosocket, modulesActive, sensors, stateS) {
+module.exports.init = function(iosocket, modulesActive, sensorsR, stateS) {
+  sensors = sensorsR;
   log.debug('Init serialport');
   stateStairs = stateS;
   socket = iosocket;
@@ -125,11 +127,15 @@ module.exports.init = function(iosocket, modulesActive, sensors, stateS) {
 
 module.exports.sendToMega = function(type, id, value, cb) {
   // log.debug("send arduino : ",type, id, value);
-  serial.write(type + id + String.fromCharCode(value) + "~");
+  if(sensors.BulbsTintsActive){
+    serial.write(type + id + String.fromCharCode(value) + "~");
 
-  if(type == "D") stateStairs.bulbs[id-1] = value;
-  if(type == "R") stateStairs.tints[id-1] = value;
-
+    if(type == "D") stateStairs.bulbs[id-1] = value;
+    if(type == "R") stateStairs.tints[id-1] = value;
+  }else{
+    log.debug('Bulbs and Tints turn OFF');
+  }
+  
 }
 
 
