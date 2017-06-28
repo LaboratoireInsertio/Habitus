@@ -56,8 +56,6 @@ module.exports.listen = function(server, log, db, _, moment, globalActivity) {
 
         log.debug('Global Activity :' + globalActivity.value);
         io.sockets.emit('globalActivity', globalActivity);
-
-        log.debug('Ask for insertion :', sensor, data);
         db.insertData(sensor, data);
       }
       io.sockets.emit('data', sensor, data)
