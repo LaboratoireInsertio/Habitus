@@ -23,7 +23,8 @@ var serial = new SerialPort(arduinoPort, {
 module.exports.init = function(iosocket, modulesActive, sensors, stateS) {
   log.debug('Init serialport');
   stateStairs = stateS;
-
+  socket = iosocket;
+  
   serial.on('open', () => {
     modulesActive.serialport = true;
     log.info('Arduino port ' + arduinoPort + ' is open');
