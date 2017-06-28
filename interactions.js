@@ -139,55 +139,63 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	
 	
 	// ----------------- Swing Up When Someone ----------------- //	
-	if(lastCellDown != sensors.cellDown ){
-      if(sensors.cellDown == 1){
-        whichBulbSwingUpOnce = 0;
-		doingSecondaryAnimation1 = true;
-		timeOutCellDown = 1;
-		timerTimeOutCellDown = Date.now();
-      }
-      lastCellDown = sensors.cellDown;
-    }
+	if (timeOutCellUp == 0){
+		if(lastCellDown != sensors.cellDown ){
+      		if(sensors.cellDown == 1){
+        		whichBulbSwingUpOnce = 0;
+				doingSecondaryAnimation1 = true;
+				timeOutCellDown = 1;
+				timerTimeOutCellDown = Date.now();
+      		}
+      		lastCellDown = sensors.cellDown;
+    	}
 
-	if (Date.now() - timerTimeOutCellDown >= 15000){
-		timeOutCellDown = 0;
-	}
-	
-	if (whichBulbSwingUpOnce <= 8){
-		if ((Date.now() - timerBulbSwingUpOnce) >= 500){
-			//log.debug(whichBulbSwingUpOnce);
-			serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(0));
-        	whichBulbSwingUpOnce++;
-			serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(mainBrightness));
-
-			timerBulbSwingUpOnce = Date.now();
+		if (Date.now() - timerTimeOutCellDown >= 15000){
+			timeOutCellDown = 0;
 		}
-	} else {
-		doingSecondaryAnimation1 = false;
+	
+		if (whichBulbSwingUpOnce <= 8){
+			if ((Date.now() - timerBulbSwingUpOnce) >= 500){
+				//log.debug(whichBulbSwingUpOnce);
+				serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(0));
+        		whichBulbSwingUpOnce++;
+				serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(mainBrightness));
+
+				timerBulbSwingUpOnce = Date.now();
+			}
+		} else {
+			doingSecondaryAnimation1 = false;
+		}
 	}
 	
 	// ----------------- Swing Down When Someone ----------------- //
 	if (timeOutCellDown == 0){
-	if(lastCellUp != sensors.cellUp){
-      if(sensors.cellUp == 1){
-        whichBulbSwingDownOnce = 9;
-		doingSecondaryAnimation2 = true;
-      }
-      lastCellUp = sensors.cellUp;
-    }
-	
-	if (whichBulbSwingDownOnce >= 1){
-		if ((Date.now() - timerBulbSwingDownOnce) >= 500){
-			//log.debug(whichBulbSwingDownOnce);
-			serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(0));
-        	whichBulbSwingDownOnce--;
-			serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(mainBrightness));
+		if(lastCellUp != sensors.cellUp){
+      		if(sensors.cellUp == 1){
+        		whichBulbSwingDownOnce = 9;
+				doingSecondaryAnimation2 = true;
+				timeOutCellUp = 1;
+				timerTimeOutCellUp = Date.now();
+      		}
+      		lastCellUp = sensors.cellUp;
+    	}
 
-			timerBulbSwingDownOnce = Date.now();
+		if (Date.now() - timerTimeOutCellUp >= 15000){
+			timeOutCellUp = 0;
 		}
-	} else {
-		doingSecondaryAnimation2 = false;
-	}
+	
+		if (whichBulbSwingDownOnce >= 1){
+			if ((Date.now() - timerBulbSwingDownOnce) >= 500){
+				//log.debug(whichBulbSwingDownOnce);
+				serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(0));
+        		whichBulbSwingDownOnce--;
+				serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(mainBrightness));
+
+				timerBulbSwingDownOnce = Date.now();
+			}
+		} else {
+			doingSecondaryAnimation2 = false;
+		}
 	}
 
   }, 30);
