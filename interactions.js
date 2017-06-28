@@ -29,6 +29,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   var timerTimeOutCellDown = 0
   var lastCellUp = 0;
   var timeOutCellUp = 0;
+  var timerTimeOutCellUp = 0
 
   var mainBrightness = 20;
   var mainInterval = 60000;
