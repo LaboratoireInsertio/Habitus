@@ -13,6 +13,10 @@ var forecast = new Forecast({
   }
 });
 
+Number.prototype.map = function (in_min, in_max, out_min, out_max) {
+  return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
 function init(sensors, lamps, animations, log, serialport, socket) {
 
   log.info('Module Interactions is initialized');
@@ -68,11 +72,12 @@ function init(sensors, lamps, animations, log, serialport, socket) {
     }
 	*/
 
-	// sensors.pir			0-1
-	// sensors.cellUp		0-1
-	// sensors.cellDown		0-1
-	// sensors.loudSound	0-1
-	// sensors.globalSound	0-1024
+	// sensors.pir				0-1
+	// sensors.cellUp			0-1
+	// sensors.cellDown			0-1
+	// sensors.loudSound		0-1
+	// sensors.globalSound		0-1024
+	// sensors.globalActivity	0-200
 
 
 	// update sunrise and sunset every day at 3:00 am.
@@ -119,9 +124,14 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	//animations.randomBulbBrightnessAll(mainInterval, mainBrightness);
 	//animations.randomBulbBrightnessAll(1000, 20);
 	
+	mainInterval = 1000;
+	mainInterval = sensors.globalActivity.map(0, 200, 500, 60000);
+	mainInterval = 60000 - mainInterval + 500;
+	mainBrightness = 20;
+	
 	// ------------------- Run Main Animation ------------------- //
 	if (!doingSecondaryAnimation1 && !doingSecondaryAnimation2){
-		animations.randomBulbBrightnessAll(1000, 20);
+		animations.randomBulbBrightnessAll(mainInterval, mainBrightness);
 	}
 	
 	
@@ -139,7 +149,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 			//log.debug(whichBulbSwingUpOnce);
 			serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(0));
         	whichBulbSwingUpOnce++;
-			serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(100));
+			serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(mainBrightness));
 
 			timerBulbSwingUpOnce = Date.now();
 		}
@@ -161,7 +171,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 			//log.debug(whichBulbSwingDownOnce);
 			serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(0));
         	whichBulbSwingDownOnce--;
-			serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(100));
+			serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(mainBrightness));
 
 			timerBulbSwingDownOnce = Date.now();
 		}
