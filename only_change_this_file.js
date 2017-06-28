@@ -1,9 +1,20 @@
-// sensors.pir				0-1
-// sensors.cellUp			0-1
-// sensors.cellDown			0-1
-// sensors.loudSound		0-1
-// sensors.globalSound		0-1024
-// sensors.globalActivity	0-200
+
+// Global accessible variables
+
+//---- SENSORS -----//
+/*
+ sensors.pir				0-1
+ sensors.cellUp			0-1
+ sensors.cellDown			0-1
+ sensors.loudSound		0-1
+ sensors.globalSound		0-1024
+ sensors.globalActivity	0-200
+ */
+
+// ---- ANIMATIONS -----//
+
+
+// ---- LAMPS LIFX -----//
 
 
 var lastPir = 0;
@@ -14,7 +25,7 @@ var countTime = 0;
 function loop(){
 
   //-------- THIS FUNCTION IS EXECUTED EVERY 30MS -------------//
-  //--------- RIGHT YOUR CODE HERE ! ------------------------//
+  //--------- WRITE YOUR CODE HERE ! ------------------------//
 
 
   // -------------- LIFX Examples -------------- //
@@ -54,6 +65,7 @@ function someOneComing(){
 }
 
 
+// Don't change the code below -------- //
 module.exports = {
   loop: loop
 }
