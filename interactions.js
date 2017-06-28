@@ -177,9 +177,9 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 		if (whichBulbSwingUpOnce <= 8){
 			if ((Date.now() - timerBulbSwingUpOnce) >= 500){
 				//log.debug(whichBulbSwingUpOnce);
-				/////////////serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(0));
+				/////////////serialport.sendToMega("D", whichBulbSwingUpOnce, 0);
         		whichBulbSwingUpOnce++;
-				/////////////serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(mainBrightness));
+				/////////////serialport.sendToMega("D", whichBulbSwingUpOnce, mainBrightness);
 
 				timerBulbSwingUpOnce = Date.now();
 			}
@@ -207,9 +207,9 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 		if (whichBulbSwingDownOnce >= 1){
 			if ((Date.now() - timerBulbSwingDownOnce) >= 500){
 				//log.debug(whichBulbSwingDownOnce);
-				/////////////////serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(0));
+				/////////////////serialport.sendToMega("D", whichBulbSwingDownOnce, 0);
         		whichBulbSwingDownOnce--;
-				/////////////////serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(mainBrightness));
+				/////////////////serialport.sendToMega("D", whichBulbSwingDownOnce, mainBrightness);
 
 				timerBulbSwingDownOnce = Date.now();
 			}
