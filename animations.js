@@ -52,25 +52,25 @@ module.exports = {
   // Turns all the bulbs on, to the given bightness.
   turnAllBulbOn: function(brightness) {
     for (var i = 0; i < numLamps; i++) {
-      serialport.sendToMega("D", i + 1, String.fromCharCode(brightness));
+      serialport.sendToMega("D", i + 1, brightness);
     }
   },
   // Turns all the bulbs off.
   turnAllBulbOff: function() {
     for (var i = 0; i < numLamps; i++) {
-      serialport.sendToMega("D", i + 1, String.fromCharCode(bulbMin));
+      serialport.sendToMega("D", i + 1, bulbMin);
     }
   },
   // Turns all the tints off
   turnAllTintOff: function() {
     for (var i = 0; i < numLamps; i++) {
-      serialport.sendToMega("R", i + 1, String.fromCharCode(0));
+      serialport.sendToMega("R", i + 1, 0);
     }
   },
   // Turns all the tints on
   turnAllTintOn: function() {
     for (var i = 0; i < numLamps; i++) {
-      serialport.sendToMega("R", i + 1, String.fromCharCode(1));
+      serialport.sendToMega("R", i + 1, 1);
     }
   },
   // Turns on the bulbs one by one at a given interval and to a given brightness
@@ -79,12 +79,12 @@ module.exports = {
     if ((Date.now() - timerBulb1) >= interval) {
       //console.log("UP! "+bulbMin);
 
-      serialport.sendToMega("D", whichBulb1 + 1, String.fromCharCode(bulbMin));
+      serialport.sendToMega("D", whichBulb1 + 1, bulbMin);
 
       whichBulb1 = whichBulb1 + 1;
       if (whichBulb1 > numLamps) whichBulb1 = 0;
 
-      serialport.sendToMega("D", whichBulb1 + 1, String.fromCharCode(brightness));
+      serialport.sendToMega("D", whichBulb1 + 1, brightness);
 
       timerBulb1 = Date.now();
     }
@@ -95,12 +95,12 @@ module.exports = {
     if ((Date.now() - timerBulb2) >= interval) {
       //console.log("DOWN! "+bulbMax);
 
-      serialport.sendToMega("D", whichBulb2, String.fromCharCode(bulbMin));
+      serialport.sendToMega("D", whichBulb2, bulbMin);
 
       whichBulb2 = whichBulb2 - 1;
       if (whichBulb2 < 1) whichBulb2 = numLamps;
 
-      serialport.sendToMega("D", whichBulb2, String.fromCharCode(brightness));
+      serialport.sendToMega("D", whichBulb2, brightness);
 
       timerBulb2 = Date.now();
     }
@@ -111,12 +111,12 @@ module.exports = {
     if ((Date.now() - timerTint1) >= interval) {
       //console.log("UP! "+bulbMin);
 
-      serialport.sendToMega("R", whichTint1 + 1, String.fromCharCode(0));
+      serialport.sendToMega("R", whichTint1 + 1, 0);
 
       whichTint1 = whichTint1 + 1;
       if (whichTint1 > numLamps) whichTint1 = 0;
 
-      serialport.sendToMega("R", whichTint1 + 1, String.fromCharCode(1));
+      serialport.sendToMega("R", whichTint1 + 1, 1);
 
       timerTint1 = Date.now();
     }
@@ -127,12 +127,12 @@ module.exports = {
     if ((Date.now() - timerTint2) >= interval) {
       //console.log("UP! "+bulbMin);
 
-      serialport.sendToMega("R", whichTint2, String.fromCharCode(0));
+      serialport.sendToMega("R", whichTint2, 0);
 
       whichTint2 = whichTint2 - 1;
       if (whichTint2 < 1) whichTint2 = numLamps;
 
-      serialport.sendToMega("R", whichTint2, String.fromCharCode(1));
+      serialport.sendToMega("R", whichTint2, 1);
 
       timerTint2 = Date.now();
     }
@@ -143,12 +143,12 @@ module.exports = {
     if ((Date.now() - timerRandomBulb) >= interval) {
       //console.log(whichRandomBulb);
 
-      serialport.sendToMega("D", whichRandomBulb, String.fromCharCode(bulbMin));
+      serialport.sendToMega("D", whichRandomBulb, bulbMin);
 
       whichRandomBulb = getRandomInt(1, 8);
       var randomBright = getRandomInt(maxBrightness, bulbMin);
 
-      serialport.sendToMega("D", whichRandomBulb, String.fromCharCode(randomBright));
+      serialport.sendToMega("D", whichRandomBulb, randomBright);
 
       timerRandomBulb = Date.now();
     }
@@ -159,11 +159,11 @@ module.exports = {
     if ((Date.now() - timerRandomTint) >= interval) {
       //console.log("UP! "+bulbMin);
 
-      serialport.sendToMega("R", whichRandomTint, String.fromCharCode(0));
+      serialport.sendToMega("R", whichRandomTint, 0);
 
       whichRandomTint = getRandomInt(1, 8);
 
-      serialport.sendToMega("R", whichRandomTint, String.fromCharCode(1));
+      serialport.sendToMega("R", whichRandomTint, 1);
 
       timerRandomTint = Date.now();
     }
@@ -176,7 +176,7 @@ module.exports = {
   //  if ((Date.now() - timerRandomBrightnessAll) >= interval) {
   //    for (var i = 1; i <= 8; i++) {
   //      var randomBright = getRandomInt(maxBrightness, bulbMin);
-  //      serialport.sendToMega("D", i, String.fromCharCode(randomBright));
+  //      serialport.sendToMega("D", i, randomBright);
   //    }
   //    timerRandomBrightnessAll = Date.now();
   //  }
@@ -196,7 +196,7 @@ module.exports = {
 			//log.debug("timeBetweenSteps " + i + " " + timeBetweenSteps[i]);
 
 			if (timeBetweenSteps[i] < 1)
-				serialport.sendToMega("D", i+1, String.fromCharCode(desiredBright));
+				serialport.sendToMega("D", i+1, desiredBright);
 			
 		}
 		
@@ -211,7 +211,7 @@ module.exports = {
 				//log.debug("timeBetweenSteps " + i + " " + timeBetweenSteps[i]);
 				if (desiredBright[i] > currentBright[i]) currentBright[i]++;
 				else currentBright[i]--;
-				serialport.sendToMega("D", i+1, String.fromCharCode(currentBright[i]));
+				serialport.sendToMega("D", i+1, currentBright[i]);
 				
 				individualTimer[i] = Date.now();
 			}
@@ -227,7 +227,7 @@ module.exports = {
     if ((Date.now() - timerRandomTintToggleAll) >= interval) {
       for (var i = 1; i <= 8; i++) {
         var randomToggle = getRandomInt(0, 1);
-        serialport.sendToMega("R", i, String.fromCharCode(randomToggle));
+        serialport.sendToMega("R", i, randomToggle);
       }
 
       timerRandomTintToggleAll = Date.now();
