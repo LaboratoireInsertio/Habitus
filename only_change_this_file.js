@@ -29,7 +29,7 @@ function loop(){
 
 
   // -------------- LIFX Examples -------------- //
-
+  /*
     if(lastPir != sensors.pir ){
       if(sensors.pir == 1){
         log.debug('launch function someOneComing '+timeBlink);
@@ -37,6 +37,7 @@ function loop(){
       }
       lastPir = sensors.pir;
     }
+    */
 
 
 
