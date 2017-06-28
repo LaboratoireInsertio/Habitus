@@ -6,6 +6,8 @@
 // sensors.globalActivity	0-200
 
 var lastPir = 0;
+var timeBlink = 5;
+var countTime = 0;
 
 function loop(sensors, lampsLifx, animations){
   //-------- THIS FUNCTION IS EXECUTED EVERY 30MS -------------//

@@ -22,8 +22,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 
   log.info('Module Interactions is initialized');
 
-  var timeBlink = 5;
-  var countTime = 0;
+
   var lastCellDown = 0;
   var timeOutCellDown = 0;
   var timerTimeOutCellDown = 0
