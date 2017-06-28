@@ -13,7 +13,12 @@ var server = require('http').Server(app);
 var globalActivity = {
   minValue : 0,
   maxValue : 200,
-  value : 0
+  value : 0,
+  sound_loud : 6,
+  pir : 3,
+  sound_global : 3,
+  photocell_up : 2,
+  photocell_down : 2
 };
 
 winston.level = config.debugLevel;
