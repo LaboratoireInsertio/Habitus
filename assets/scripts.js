@@ -30,7 +30,7 @@ socket.on('globalActivity', function(globalActivity){
 
 socket.on('globalActivityData', function (datas) {
 
-  generateCharts("graphGlobalActivity", "Global Activity", datas, "line", 'rgba(255,221,18,0.5)', 'rgba(255,221,18,1)');
+  generateCharts("graphGlobalActivity", "Global Activity", datas, "line", 'rgba(128, 0, 98, 0.33)', 'rgba(128, 0, 98, 1)');
 
   // generateCharts("sound_2", "Sensor sound 2", datas, "line", 'rgba(234,86,61,0.5)', 'rgba(234,86,61,1)');
   // generateCharts("piezo", "Main courante", datas, "line", 'rgba(163,216,106,0.5)', 'rgba(163,216,106,1)');
