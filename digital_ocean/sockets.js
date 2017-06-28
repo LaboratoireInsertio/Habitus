@@ -56,12 +56,11 @@ module.exports.listen = function(server, log, db, _, moment, globalActivity) {
 
         //Save Global Activity points (all sensors = 1 points, loud Sound = 5)
         globalActivity.value = globalActivity.value + globalActivity[sensor]
-
-
         if (globalActivity.value > globalActivity.maxValue) globalActivity.value = globalActivity.maxValue;
 
         log.debug('Global Activity :' + globalActivity.value);
         io.sockets.emit('globalActivity', globalActivity);
+        //Insert Data in mongo DB
         db.insertData(sensor, data);
       }
       io.sockets.emit('data', sensor, data)

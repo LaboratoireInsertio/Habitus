@@ -122,6 +122,12 @@ module.exports.sendToMega = function(type, id, value, cb) {
   if (sensors.BulbsTintsActive) {
     serial.write(type + id + String.fromCharCode(value) + "~");
 
+    // Message send in the form R1<~ :
+    // R can be R for Relay or D for Dimer
+    // 1 is the channel number (1-8 on both cases)
+    // < is the value encoded in its char representation
+    // ~ escape character
+
     if (type == "D") stateStairs.bulbs[id - 1] = value;
     if (type == "R") stateStairs.tints[id - 1] = value;
   } else {

@@ -1,6 +1,6 @@
 // Require forecast module
 var Forecast = require('forecast');
-
+var onlyChangeThisFile = require('./only_change_this_file');
 // Initialize foreecast
 var forecast = new Forecast({
   service: 'darksky',
@@ -24,7 +24,6 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 
   var timeBlink = 5;
   var countTime = 0;
-  var lastPir = 0;
   var lastCellDown = 0;
   var timeOutCellDown = 0;
   var timerTimeOutCellDown = 0
@@ -67,7 +66,9 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   //////////////////////////   MAIN LOOP   //////////////////////////
   var loop = setInterval(function() {
 
-    // --------- Direct Interaction Examples --------- //
+    onlyChangeThisFile.loop(sensors, lamps, animations);
+
+  // --------- Direct Interaction Examples --------- //
 	/*
 	if(sensors.cellUp == 1){
       animations.swingBulbDown(500, 50);
@@ -80,16 +81,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
     }
 	*/
 
-	// -------------- LIFX Examples -------------- //
-	/*
-    if(lastPir != sensors.pir ){
-      if(sensors.pir == 1){
-        log.debug('launch function someOneComing '+timeBlink);
-        someOneComing();
-      }
-      lastPir = sensors.pir;
-    }
-	*/
+
 
 	// sensors.pir				0-1
 	// sensors.cellUp			0-1
@@ -109,7 +101,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 
 			sunriseTime = weather.daily.data[0].sunriseTime;
 			sunsetTime = weather.daily.data[0].sunsetTime;
-			
+
 			log.info("Sunrise Time2: " + sunriseTime);
 			log.info("Sunset Time2: " + sunsetTime);
 		});
@@ -117,8 +109,8 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 		lastSunUpdateTime = Date.now();
 	}
 
-    
-	if (Date.now() - timerBrightnessCalculation >= 1000){	
+
+	if (Date.now() - timerBrightnessCalculation >= 1000){
 		// max brightness during night: 20
 		// max brightness during inactivity: 60
 		// max brightness when someone: 100
@@ -145,33 +137,33 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 		//log.debug("Current Time: " + currentTime);
 		//log.debug("Main Brightness: " + mainBrightness);
 	}
-	
+
 	// Prints to the console everu 30 seconds for debuging
 	if (Date.now() - timerPrintDebug >= 30000){
 		log.debug("Sunrise Time: " + sunriseTime);
 		log.debug("Sunset Time: " + sunsetTime);
 		log.debug("Current Time: " + currentTime);
 		log.debug("Main Brightness: " + mainBrightness);
-		
+
 		timerPrintDebug = Date.now();
 	}
 
 	// mainInterval should be a value between 500 and 60000
 	//animations.randomBulbBrightnessAll(mainInterval, mainBrightness);
 	//animations.randomBulbBrightnessAll(1000, 20);
-	
+
 	mainInterval = 1000;
 	mainInterval = sensors.globalActivity.map(0, 200, 500, 30000);
 	mainInterval = 30000 - mainInterval + 500;
 	//mainBrightness = 20;
-	
+
 	// ------------------- Run Main Animation ------------------- //
 	if (!doingSecondaryAnimation1 && !doingSecondaryAnimation2){
 		animations.randomBulbBrightnessAll(mainInterval, mainBrightness);
 	}
-	
-	
-	// ----------------- Swing Up When Someone ----------------- //	
+
+
+	// ----------------- Swing Up When Someone ----------------- //
 	if (timeOutCellUp == 0){
 		if(lastCellDown != sensors.cellDown ){
       		if(sensors.cellDown == 1){
@@ -186,7 +178,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 		if (Date.now() - timerTimeOutCellDown >= 15000){
 			timeOutCellDown = 0;
 		}
-	
+
 		if (whichBulbSwingUpOnce <= 8){
 			if ((Date.now() - timerBulbSwingUpOnce) >= 500){
 				//log.debug(whichBulbSwingUpOnce);
@@ -200,7 +192,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 			doingSecondaryAnimation1 = false;
 		}
 	}
-	
+
 	// ----------------- Swing Down When Someone ----------------- //
 	if (timeOutCellDown == 0){
 		if(lastCellUp != sensors.cellUp){
@@ -216,7 +208,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 		if (Date.now() - timerTimeOutCellUp >= 15000){
 			timeOutCellUp = 0;
 		}
-	
+
 		if (whichBulbSwingDownOnce >= 1){
 			if ((Date.now() - timerBulbSwingDownOnce) >= 500){
 				//log.debug(whichBulbSwingDownOnce);
@@ -234,27 +226,6 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   }, 30);
 
 
-  // Demo - Make blink lifx lampfloor when someone active the PIR in the entry
-  function someOneComing(){
-    //Check if the lamp is present
-    if(lamps.floorLamp){
-      //Turn on the lamp before sending informations
-      lamps.floorLamp.on();
-      lamps.floorLamp.color(360, 50, 100, 2500, 0);
-      setTimeout(function(){
-        lamps.floorLamp.off();
-      },250);
-      // console.log('finish!',countTime, timeBlink);
-      if(countTime < timeBlink){
-        setTimeout(someOneComing,500);
-        countTime++;
-      }else{
-        countTime = 0;
-      }
-    }
-  }
-
-  // someOneComing();
 
 
   //Example creation animation

@@ -16,27 +16,29 @@ var sensors = {
   globalActivity : 0,
   BulbsTintsActive : true
 }
+var moduleAnimationActive = false;
+var modulesActive = {
+  socketDigital : false,
+  serialport : false,
+  mqtt : false
+}
 
 // var stateBulbs = [0,0,0,0,0,0,0,0];
 var stateStairs = {
   bulbs : [0,0,0,0,0,0,0,0],
   tints : [0,0,0,0,0,0,0,0]
 }
+var lamps = {}
 
 var lifx = require('./lifx');
 var interactions = require('./interactions');
-var moduleAnimationActive = false;
 var animations = require('./animations');
-var modulesActive = {
-  socketDigital : false,
-  serialport : false,
-  mqtt : false
-}
-var lamps = {}
 
+
+// Express switch on / off Installation
 server.listen(8844, function() {
     log.info('Server Express launch on : ' + 8844);
-    
+
   });
 
   app.get('/on', function(req, res) {
@@ -45,7 +47,7 @@ server.listen(8844, function() {
     res.send('Turn ON Bulbs and Tints');
   });
   app.get('/off', function(req, res) {
-   
+
     animations.turnAllBulbOff();
     animations.turnAllTintOff();
     sensors.BulbsTintsActive = false;
@@ -53,7 +55,7 @@ server.listen(8844, function() {
     res.send('Turn OFF Bulbs and Tints');
   });
 
-
+//Check if DigitalOcean, Serialport and MQTT is active before launch animation and interaction
 var checkStatusModule = setInterval(function(){
   log.debug('Check if modules activate', modulesActive);
   if(modulesActive.socketDigital == true && modulesActive.serialport == true && modulesActive.mqtt == true){
@@ -67,7 +69,7 @@ var checkStatusModule = setInterval(function(){
   }
 }, 500);
 
-
+//@TODO : Protect the connection
 var io = require('socket.io-client'),
   socket = io.connect(config.server, {
     reconnect: true

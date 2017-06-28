@@ -1,0 +1,54 @@
+// sensors.pir				0-1
+// sensors.cellUp			0-1
+// sensors.cellDown			0-1
+// sensors.loudSound		0-1
+// sensors.globalSound		0-1024
+// sensors.globalActivity	0-200
+
+var lastPir = 0;
+
+function loop(sensors, lampsLifx, animations){
+  //-------- THIS FUNCTION IS EXECUTED EVERY 30MS -------------//
+  //--------- RIGHT YOUR CODE HERE ! ------------------------//
+
+
+  // -------------- LIFX Examples -------------- //
+
+    if(lastPir != sensors.pir ){
+      if(sensors.pir == 1){
+        log.debug('launch function someOneComing '+timeBlink);
+        someOneComing();
+      }
+      lastPir = sensors.pir;
+    }
+
+
+
+
+}
+
+
+// Demo - Make blink lifx lampfloor when someone active the PIR in the entry
+function someOneComing(){
+  //Check if the lamp is present
+  if(lamps.floorLamp){
+    //Turn on the lamp before sending informations
+    lamps.floorLamp.on();
+    lamps.floorLamp.color(360, 50, 100, 2500, 0);
+    setTimeout(function(){
+      lamps.floorLamp.off();
+    },250);
+    // console.log('finish!',countTime, timeBlink);
+    if(countTime < timeBlink){
+      setTimeout(someOneComing,500);
+      countTime++;
+    }else{
+      countTime = 0;
+    }
+  }
+}
+
+
+module.exports = {
+  loop: loop
+}
