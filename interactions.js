@@ -125,8 +125,8 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	//animations.randomBulbBrightnessAll(1000, 20);
 	
 	mainInterval = 1000;
-	mainInterval = sensors.globalActivity.map(0, 200, 500, 60000);
-	mainInterval = 60000 - mainInterval + 500;
+	mainInterval = sensors.globalActivity.map(0, 200, 500, 30000);
+	mainInterval = 30000 - mainInterval + 500;
 	mainBrightness = 20;
 	
 	// ------------------- Run Main Animation ------------------- //
