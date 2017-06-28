@@ -5,11 +5,14 @@
 // sensors.globalSound		0-1024
 // sensors.globalActivity	0-200
 
+
 var lastPir = 0;
 var timeBlink = 5;
 var countTime = 0;
 
-function loop(sensors, lampsLifx, animations){
+
+function loop(){
+
   //-------- THIS FUNCTION IS EXECUTED EVERY 30MS -------------//
   //--------- RIGHT YOUR CODE HERE ! ------------------------//
 

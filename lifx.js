@@ -8,7 +8,7 @@ var lampsId = {
 }
 
 
-  module.exports.init = function(log, lamps) {
+  module.exports.init = function(log) {
 
     client.on('error', function(err) {
       log.info('LIFX error:\n' + err.stack);
@@ -43,7 +43,7 @@ var lampsId = {
     //Add Lamp
     function addLamp(name, light){
       log.debug('New light found. ID:' + light.id + ', IP:' + light.address + ':' + light.port);
-      lamps[name] = light;
+      lampsLifx[name] = light;
     }
 
     client.init();

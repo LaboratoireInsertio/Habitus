@@ -7,7 +7,7 @@ var server = require('http').Server(app);
 
 winston = log = require('winston');
 winston.level = config.debugLevel;
-var sensors = {
+global.sensors = {
   cellUp : 0,
   cellDown : 0,
   pir : 0,
@@ -28,11 +28,11 @@ var stateStairs = {
   bulbs : [0,0,0,0,0,0,0,0],
   tints : [0,0,0,0,0,0,0,0]
 }
-var lamps = {}
-
 var lifx = require('./lifx');
-var interactions = require('./interactions');
-var animations = require('./animations');
+
+global.lampsLifx = {}
+global.interactions = require('./interactions');
+global.animations = require('./animations');
 
 
 // Express switch on / off Installation
@@ -64,7 +64,7 @@ var checkStatusModule = setInterval(function(){
     //Start animation
     animations.init(log, serialport);
     setTimeout(function(){
-      interactions.init(sensors, lamps, animations, log, serialport, socket);
+      interactions.init(log, serialport, socket);
     },2000);
   }
 }, 500);
@@ -97,7 +97,7 @@ serialport.init(socket, modulesActive,sensors, stateStairs);
 require('./rasp/mosca').listen(config, log, socket, modulesActive, sensors, stateStairs);
 
 //Initialization Lifx Lamps
-lifx.init(log, lamps);
+lifx.init(log);
 
 
 //Send to the server Digital Ocean the value of Tints and Bublbs Every 0.5s

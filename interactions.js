@@ -18,7 +18,7 @@ Number.prototype.map = function (in_min, in_max, out_min, out_max) {
   return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-function init(sensors, lamps, animations, log, serialport, socket) {
+function init(log, serialport, socket) {
 
   log.info('Module Interactions is initialized');
 
@@ -65,7 +65,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   //////////////////////////   MAIN LOOP   //////////////////////////
   var loop = setInterval(function() {
 
-    onlyChangeThisFile.loop(sensors, lamps, animations);
+    onlyChangeThisFile.loop();
 
   // --------- Direct Interaction Examples --------- //
 	/*
