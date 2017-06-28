@@ -21,6 +21,9 @@ var globalActivity = {
   photocell_down : 2
 };
 
+setTimeout(function(){
+  test();
+},5000);
 winston.level = config.debugLevel;
 
 require('./express').listen(express,server,app,log,db, moment,_);
