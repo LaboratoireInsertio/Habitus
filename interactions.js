@@ -39,7 +39,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   var sunsetTime = 0;
   var currentTime = Math.floor(Date.now()/1000);
   var lastSunUpdateTime = 0;
-setTimeout(function(){
+
   forecast.get([46.8078623, -71.2202719], function(err, weather) {
   	if(err) return console.dir(err);
 
@@ -48,7 +48,7 @@ setTimeout(function(){
 		log.info("Sunrise Time: " + sunriseTime);
 		log.info("Sunset Time: " + sunsetTime);
   });
-}, 1000);
+
 
   var timerBrightnessCalculation = Date.now();
 
@@ -102,13 +102,14 @@ setTimeout(function(){
 	if ((currentHour == 3) && (Date.now() - lastSunUpdateTime > 86400000)){
 		forecast.get([46.8078623, -71.2202719], function(err, weather) {
 			if(err) return console.dir(err);
+			console.log(currentHour);
 			//console.dir(weather.daily.data[0].sunriseTime);
 
 			sunriseTime = weather.daily.data[0].sunriseTime;
 			sunsetTime = weather.daily.data[0].sunsetTime;
 			
-			log.info("Sunrise Time: " + sunriseTime);
-			log.info("Sunset Time: " + sunsetTime);
+			log.info("Sunrise Time2: " + sunriseTime);
+			log.info("Sunset Time2: " + sunsetTime);
 		});
 
 		lastSunUpdateTime = Date.now();
