@@ -13,12 +13,21 @@ module.exports.listen = function(server, log, db, _, moment, globalActivity) {
       socket.emit('globalActivity', globalActivity);
 
       db.getGlobalActivity(function(datas){
-          socket.emit('globalActivity', datas);
+          socket.emit('globalActivityData', datas);
       });
 
       db.getPir(function(datas) {
         socket.emit('pirData', datas);
       });
+
+      db.getCellDown(function(datas){
+        socket.emit('CellDownData', datas);
+      });
+
+      db.getCellUp(function(datas){
+        socket.emit('CellUpData', datas);
+      });
+
       db.getSoundLoud(function(datas) {
         socket.emit('SoundLoudData', datas);
       });

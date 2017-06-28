@@ -3,6 +3,8 @@ var activityPIR = [],
 		activitySoundLoud = [];
 		activitySoundGlobal = [];
 		activityStairs = [];
+		activityCellDown = [];
+		activityCellUp = [];
 
 
 socket.emit('datas');
@@ -17,6 +19,8 @@ socket.on('data', function(sensor, value){
 
 var remapValue;
 socket.on('globalActivity', function(globalActivity){
+	// if(!globalActivity.valu) return;
+	console.log(globalActivity.value);
 	remapValue = globalActivity.value.map(0,globalActivity.maxValue,0,100);
 	$("#globalActivity .value").html(remapValue);
 	$('#globalActivity #globalVal').css('width', remapValue+'%');
@@ -28,7 +32,7 @@ socket.on('pirData', function (datas) {
   $.each(datas, function(time, activation){
   	activityPIR.push({'x' : time, 'y' : activation.length});
   });
-  generateCharts("pir", "PIR", activityPIR, "line", 'rgba(255,221,18,0.5)', 'rgba(255,221,18,1)');
+  generateCharts("graphPir", "PIR", activityPIR, "line", 'rgba(255,221,18,0.5)', 'rgba(255,221,18,1)');
 
   // generateCharts("sound_2", "Sensor sound 2", datas, "line", 'rgba(234,86,61,0.5)', 'rgba(234,86,61,1)');
   // generateCharts("piezo", "Main courante", datas, "line", 'rgba(163,216,106,0.5)', 'rgba(163,216,106,1)');
@@ -39,7 +43,7 @@ socket.on('SoundLoudData', function (datas) {
   $.each(datas, function(time, activation){
   	activitySoundLoud.push({'x' : time, 'y' : activation.length});
   });
-  generateCharts("sound_1", "Sensor sound Loud", activitySoundLoud, "line", 'rgba(183,230,230,0.5)', 'rgba(183,230,230,1)');
+  generateCharts("graphSound_1", "Sensor sound Loud", activitySoundLoud, "line", 'rgba(183,230,230,0.5)', 'rgba(183,230,230,1)');
 
   // generateCharts("sound_2", "Sensor sound 2", datas, "line", 'rgba(234,86,61,0.5)', 'rgba(234,86,61,1)');
   // generateCharts("piezo", "Main courante", datas, "line", 'rgba(163,216,106,0.5)', 'rgba(163,216,106,1)');
@@ -52,11 +56,10 @@ socket.on('SoundGlobalData', function (datas) {
   		totalSound = +totalSound + +activation.y;
   		// console.log(activation.y);
   	});
-  	console.log(totalSound);
   	activitySoundGlobal.push({'x' : time, 'y' : totalSound});
   	totalSound = 0;
   });
-  generateCharts("sound_2", "Sensor sound Global", activitySoundGlobal, "line", 'rgba(163,216,106,0.5)', 'rgba(163,216,106,1)');
+  generateCharts("graphSound_2", "Sensor sound Global", activitySoundGlobal, "line", 'rgba(163,216,106,0.5)', 'rgba(163,216,106,1)');
 
   // generateCharts("sound_2", "Sensor sound 2", datas, "line", 'rgba(234,86,61,0.5)', 'rgba(234,86,61,1)');
   // generateCharts("piezo", "Main courante", datas, "line", 'rgba(163,216,106,0.5)', 'rgba(163,216,106,1)');
@@ -64,16 +67,43 @@ socket.on('SoundGlobalData', function (datas) {
 });
 
 
-socket.on('StairsData', function (datas) {
+socket.on('CellDownData', function (datas) {
   $.each(datas, function(time, activation){
-  	activityStairs.push({'x' : time, 'y' : activation.length});
+  	activityCellDown.push({'x' : time, 'y' : activation.length});
   });
-  generateCharts("stairs", "Stairs", activityStairs, "line", 'rgba(234,86,61,0.5)', 'rgba(234,86,61,1)');
+  generateCharts("graphCellDown", "Sensor Photocell Down", activityCellDown, "line", 'rgba(234,86,61,0.5)', 'rgba(234,86,61,1)');
 
   // generateCharts("sound_2", "Sensor sound 2", datas, "line", 'rgba(234,86,61,0.5)', 'rgba(234,86,61,1)');
   // generateCharts("piezo", "Main courante", datas, "line", 'rgba(163,216,106,0.5)', 'rgba(163,216,106,1)');
 
 });
+
+
+socket.on('CellUpData', function (datas) {
+  $.each(datas, function(time, activation){
+  	activityCellUp.push({'x' : time, 'y' : activation.length});
+  });
+  generateCharts("graphCellUp", "Sensor Photocell Up", activityCellUp, "line", 'rgba(234,86,61,0.5)', 'rgba(234,86,61,1)');
+
+  // generateCharts("sound_2", "Sensor sound 2", datas, "line", 'rgba(234,86,61,0.5)', 'rgba(234,86,61,1)');
+  // generateCharts("piezo", "Main courante", datas, "line", 'rgba(163,216,106,0.5)', 'rgba(163,216,106,1)');
+
+});
+
+
+
+
+//
+// socket.on('StairsData', function (datas) {
+//   $.each(datas, function(time, activation){
+//   	activityStairs.push({'x' : time, 'y' : activation.length});
+//   });
+//   generateCharts("graphStairs", "Stairs", activityStairs, "line", 'rgba(234,86,61,0.5)', 'rgba(234,86,61,1)');
+//
+//   // generateCharts("sound_2", "Sensor sound 2", datas, "line", 'rgba(234,86,61,0.5)', 'rgba(234,86,61,1)');
+//   // generateCharts("piezo", "Main courante", datas, "line", 'rgba(163,216,106,0.5)', 'rgba(163,216,106,1)');
+//
+// });
 
 
 var dataSound_1 = [];
