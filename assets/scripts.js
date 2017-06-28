@@ -5,6 +5,7 @@ var activityPIR = [],
 		activityStairs = [];
 		activityCellDown = [];
 		activityCellUp = [];
+		activityGlobal = [];
 
 
 socket.emit('datas');
@@ -20,18 +21,32 @@ socket.on('data', function(sensor, value){
 var remapValue;
 socket.on('globalActivity', function(globalActivity){
 	// if(!globalActivity.valu) return;
-	console.log(globalActivity.value);
+	// console.log(globalActivity.value);
 	remapValue = globalActivity.value.map(0,globalActivity.maxValue,0,100);
 	$("#globalActivity .value").html(remapValue);
 	$('#globalActivity #globalVal').css('width', remapValue+'%');
 });
 
 
+socket.on('globalActivityData', function (datas) {
+  // $.each(datas, function(time, activation){
+	//
+  // 	activityGlobal.push({'x' : time, 'y' : activation.length});
+  // });
+	console.log(datas);
+  generateCharts("graphGlobalActivity", "Global Activity", datas, "line", 'rgba(255,221,18,0.5)', 'rgba(255,221,18,1)');
+
+  // generateCharts("sound_2", "Sensor sound 2", datas, "line", 'rgba(234,86,61,0.5)', 'rgba(234,86,61,1)');
+  // generateCharts("piezo", "Main courante", datas, "line", 'rgba(163,216,106,0.5)', 'rgba(163,216,106,1)');
+
+});
+
 socket.on('pirData', function (datas) {
 
   $.each(datas, function(time, activation){
   	activityPIR.push({'x' : time, 'y' : activation.length});
   });
+	// console.log(activityPIR);
   generateCharts("graphPir", "PIR", activityPIR, "line", 'rgba(255,221,18,0.5)', 'rgba(255,221,18,1)');
 
   // generateCharts("sound_2", "Sensor sound 2", datas, "line", 'rgba(234,86,61,0.5)', 'rgba(234,86,61,1)');

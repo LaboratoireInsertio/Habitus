@@ -12,7 +12,9 @@ module.exports.insertData = function(table, data) {
 module.exports.getGlobalActivity = function(cb) {
   db.global_activity.find(function(err, docs) {
     var datas = _.groupBy(docs, function(doc) {
-      return moment(doc.x).startOf('minute').format();
+
+      // return moment(doc.x).startOf('minute').format();
+      return doc;
     });
     cb(datas);
   });
