@@ -33,12 +33,12 @@ function loop(sensors, lampsLifx, animations){
 // Demo - Make blink lifx lampfloor when someone active the PIR in the entry
 function someOneComing(){
   //Check if the lamp is present
-  if(lamps.floorLamp){
+  if(lampsLifx.floorLamp){
     //Turn on the lamp before sending informations
-    lamps.floorLamp.on();
-    lamps.floorLamp.color(360, 50, 100, 2500, 0);
+    lampsLifx.floorLamp.on();
+    lampsLifx.floorLamp.color(360, 50, 100, 2500, 0);
     setTimeout(function(){
-      lamps.floorLamp.off();
+      lampsLifx.floorLamp.off();
     },250);
     // console.log('finish!',countTime, timeBlink);
     if(countTime < timeBlink){
