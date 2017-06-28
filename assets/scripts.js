@@ -29,11 +29,7 @@ socket.on('globalActivity', function(globalActivity){
 
 
 socket.on('globalActivityData', function (datas) {
-  // $.each(datas, function(time, activation){
-	//
-  // 	activityGlobal.push({'x' : time, 'y' : activation.length});
-  // });
-	console.log(datas);
+
   generateCharts("graphGlobalActivity", "Global Activity", datas, "line", 'rgba(255,221,18,0.5)', 'rgba(255,221,18,1)');
 
   // generateCharts("sound_2", "Sensor sound 2", datas, "line", 'rgba(234,86,61,0.5)', 'rgba(234,86,61,1)');
