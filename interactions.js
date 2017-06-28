@@ -13,6 +13,7 @@ var forecast = new Forecast({
   }
 });
 
+
 Number.prototype.map = function (in_min, in_max, out_min, out_max) {
   return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
@@ -25,15 +26,29 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   var countTime = 0;
   var lastPir = 0;
   var lastCellDown = 0;
+  var timeOutCellDown = 0;
+  var timerTimeOutCellDown = 0
   var lastCellUp = 0;
+  var timeOutCellUp = 0;
+  var timerTimeOutCellUp = 0
 
   var mainBrightness = 20;
-  var mainInterval = 60000;
+  var mainInterval = 30000;
   // should be updated once a day from forecast
-  var sunriseTime = 1498553634;
-  var sunsetTime = 1498610667;
+  var sunriseTime = 0;
+  var sunsetTime = 0;
   var currentTime = Math.floor(Date.now()/1000);
   var lastSunUpdateTime = 0;
+
+  forecast.get([46.8078623, -71.2202719], function(err, weather) {
+  	if(err) return console.dir(err);
+
+  	sunriseTime = weather.daily.data[0].sunriseTime;
+  	sunsetTime = weather.daily.data[0].sunsetTime;
+		log.info("Sunrise Time: " + sunriseTime);
+		log.info("Sunset Time: " + sunsetTime);
+  });
+
 
   var timerBrightnessCalculation = Date.now();
 
@@ -46,6 +61,8 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   var doingSecondaryAnimation1 = false;
   var doingSecondaryAnimation2 = false;
 
+
+  //////////////////////////   MAIN LOOP   //////////////////////////
   var loop = setInterval(function() {
 
     // --------- Direct Interaction Examples --------- //
@@ -61,7 +78,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
     }
 	*/
 
-	// --------- LIFX Examples --------- //
+	// -------------- LIFX Examples -------------- //
 	/*
     if(lastPir != sensors.pir ){
       if(sensors.pir == 1){
@@ -79,22 +96,27 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	// sensors.globalSound		0-1024
 	// sensors.globalActivity	0-200
 
-
 	// update sunrise and sunset every day at 3:00 am.
 	var date = new Date();
 	var currentHour = date.getHours();
 	if ((currentHour == 3) && (Date.now() - lastSunUpdateTime > 86400000)){
 		forecast.get([46.8078623, -71.2202719], function(err, weather) {
 			if(err) return console.dir(err);
+			console.log(currentHour);
+			//console.dir(weather.daily.data[0].sunriseTime);
 
 			sunriseTime = weather.daily.data[0].sunriseTime;
 			sunsetTime = weather.daily.data[0].sunsetTime;
+			
+			log.info("Sunrise Time2: " + sunriseTime);
+			log.info("Sunset Time2: " + sunsetTime);
 		});
 
 		lastSunUpdateTime = Date.now();
 	}
 
-  
+    
+	if (sunriseTime != 0){
 	// max brightness during night: 20
 	// max brightness during inactivity: 60
 	// max brightness when someone: 100
@@ -119,6 +141,7 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 		}
 		//log.debug(mainBrightness);
 	}
+	}
 
 	// mainInterval should be a value between 500 and 60000
 	//animations.randomBulbBrightnessAll(mainInterval, mainBrightness);
@@ -127,56 +150,72 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	mainInterval = 1000;
 	mainInterval = sensors.globalActivity.map(0, 200, 500, 30000);
 	mainInterval = 30000 - mainInterval + 500;
-	mainBrightness = 20;
+	//mainBrightness = 20;
 	
 	// ------------------- Run Main Animation ------------------- //
 	if (!doingSecondaryAnimation1 && !doingSecondaryAnimation2){
-		animations.randomBulbBrightnessAll(mainInterval, mainBrightness);
+		///////////////////animations.randomBulbBrightnessAll(mainInterval, mainBrightness);
 	}
 	
 	
 	// ----------------- Swing Up When Someone ----------------- //	
-	if(lastCellDown != sensors.cellDown ){
-      if(sensors.cellDown == 1){
-        whichBulbSwingUpOnce = 0;
-		doingSecondaryAnimation1 = true;
-      }
-      lastCellDown = sensors.cellDown;
-    }
-	
-	if (whichBulbSwingUpOnce <= 8){
-		if ((Date.now() - timerBulbSwingUpOnce) >= 500){
-			//log.debug(whichBulbSwingUpOnce);
-			serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(0));
-        	whichBulbSwingUpOnce++;
-			serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(mainBrightness));
+	if (timeOutCellUp == 0){
+		if(lastCellDown != sensors.cellDown ){
+      		if(sensors.cellDown == 1){
+        		whichBulbSwingUpOnce = 0;
+				doingSecondaryAnimation1 = true;
+				timeOutCellDown = 1;
+				timerTimeOutCellDown = Date.now();
+      		}
+      		lastCellDown = sensors.cellDown;
+    	}
 
-			timerBulbSwingUpOnce = Date.now();
+		if (Date.now() - timerTimeOutCellDown >= 15000){
+			timeOutCellDown = 0;
 		}
-	} else {
-		doingSecondaryAnimation1 = false;
+	
+		if (whichBulbSwingUpOnce <= 8){
+			if ((Date.now() - timerBulbSwingUpOnce) >= 500){
+				//log.debug(whichBulbSwingUpOnce);
+				/////////////serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(0));
+        		whichBulbSwingUpOnce++;
+				/////////////serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(mainBrightness));
+
+				timerBulbSwingUpOnce = Date.now();
+			}
+		} else {
+			doingSecondaryAnimation1 = false;
+		}
 	}
 	
 	// ----------------- Swing Down When Someone ----------------- //
-	if(lastCellUp != sensors.cellUp){
-      if(sensors.cellUp == 1){
-        whichBulbSwingDownOnce = 9;
-		doingSecondaryAnimation2 = true;
-      }
-      lastCellUp = sensors.cellUp;
-    }
-	
-	if (whichBulbSwingDownOnce >= 1){
-		if ((Date.now() - timerBulbSwingDownOnce) >= 500){
-			//log.debug(whichBulbSwingDownOnce);
-			serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(0));
-        	whichBulbSwingDownOnce--;
-			serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(mainBrightness));
+	if (timeOutCellDown == 0){
+		if(lastCellUp != sensors.cellUp){
+      		if(sensors.cellUp == 1){
+        		whichBulbSwingDownOnce = 9;
+				doingSecondaryAnimation2 = true;
+				timeOutCellUp = 1;
+				timerTimeOutCellUp = Date.now();
+      		}
+      		lastCellUp = sensors.cellUp;
+    	}
 
-			timerBulbSwingDownOnce = Date.now();
+		if (Date.now() - timerTimeOutCellUp >= 15000){
+			timeOutCellUp = 0;
 		}
-	} else {
-		doingSecondaryAnimation2 = false;
+	
+		if (whichBulbSwingDownOnce >= 1){
+			if ((Date.now() - timerBulbSwingDownOnce) >= 500){
+				//log.debug(whichBulbSwingDownOnce);
+				/////////////////serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(0));
+        		whichBulbSwingDownOnce--;
+				/////////////////serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(mainBrightness));
+
+				timerBulbSwingDownOnce = Date.now();
+			}
+		} else {
+			doingSecondaryAnimation2 = false;
+		}
 	}
 
   }, 30);
