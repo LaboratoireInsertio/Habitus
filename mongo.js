@@ -16,7 +16,7 @@ module.exports.getGlobalActivity = function(cb) {
       // return moment(doc.x).startOf('minute').format();
       return doc;
     });
-    cb(datas);
+    cb(docs);
   });
 }
 
