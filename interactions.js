@@ -36,7 +36,11 @@ function init(sensors, lamps, animations, log, serialport, socket) {
   var whichBulbSwingUpOnce = 9;
   var timerBulbSwingUpOnce = Date.now();
 
-  var doingSecondaryAnimation = false;
+  var whichBulbSwingDownOnce = 0;
+  var timerBulbSwingDownOnce = Date.now();
+
+  var doingSecondaryAnimation1 = false;
+  var doingSecondaryAnimation2 = false;
 
   var loop = setInterval(function() {
 
@@ -115,21 +119,24 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 	//animations.randomBulbBrightnessAll(mainInterval, mainBrightness);
 	//animations.randomBulbBrightnessAll(1000, 20);
 	
-	if (!doingSecondaryAnimation){
+	// ------------------- Run Main Animation ------------------- //
+	if (!doingSecondaryAnimation1 && !doingSecondaryAnimation2){
 		animations.randomBulbBrightnessAll(1000, 20);
 	}
-		
+	
+	
+	// ----------------- Swing Up When Someone ----------------- //	
 	if(lastCellDown != sensors.cellDown ){
       if(sensors.cellDown == 1){
         whichBulbSwingUpOnce = 0;
-		doingSecondaryAnimation = true;
+		doingSecondaryAnimation1 = true;
       }
       lastCellDown = sensors.cellDown;
     }
 	
 	if (whichBulbSwingUpOnce <= 8){
 		if ((Date.now() - timerBulbSwingUpOnce) >= 500){
-			log.debug(whichBulbSwingUpOnce);
+			//log.debug(whichBulbSwingUpOnce);
 			serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(0));
         	whichBulbSwingUpOnce++;
 			serialport.sendToMega("D", whichBulbSwingUpOnce, String.fromCharCode(100));
@@ -137,7 +144,29 @@ function init(sensors, lamps, animations, log, serialport, socket) {
 			timerBulbSwingUpOnce = Date.now();
 		}
 	} else {
-		doingSecondaryAnimation = false;
+		doingSecondaryAnimation1 = false;
+	}
+	
+	// ----------------- Swing Down When Someone ----------------- //
+	if(lastCellUp != sensors.cellUp){
+      if(sensors.cellUp == 1){
+        whichBulbSwingDownOnce = 9;
+		doingSecondaryAnimation2 = true;
+      }
+      lastCellUp = sensors.cellUp;
+    }
+	
+	if (whichBulbSwingDownOnce >= 1){
+		if ((Date.now() - timerBulbSwingDownOnce) >= 500){
+			//log.debug(whichBulbSwingDownOnce);
+			serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(0));
+        	whichBulbSwingDownOnce--;
+			serialport.sendToMega("D", whichBulbSwingDownOnce, String.fromCharCode(100));
+
+			timerBulbSwingDownOnce = Date.now();
+		}
+	} else {
+		doingSecondaryAnimation2 = false;
 	}
 
   }, 30);
