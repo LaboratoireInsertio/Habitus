@@ -176,9 +176,9 @@ unsigned int DIMM_VALUE (unsigned char level)
  unsigned int buf_level;
 
  if (level < 26)  {level=26;}
- if (level > 234) {level=234;}
+ if (level > 229) {level=229;}
 
- return ((level*(FREQ))/256)*8.33;
+ return ((level*(FREQ))/256)*9;
 }
 
 
@@ -210,72 +210,6 @@ void setup() {
 
 
 }
-
-void loop() {
-
-    recvWithStartEndMarkers();
-    showNewData();
-
-    //Read data sensors and send
-    sensSoundGlob = analogRead(SENS_SOUND_GLOB);
-    if(sensSoundGlob < 5){
-      sendValue("sensSoundGlobal", sensSoundGlob);
-    }
-
-    if(sensSoundInte != digitalRead(SENS_SOUND_INTE)){
-      sensSoundInte = digitalRead(SENS_SOUND_INTE);
-      sendValue("sensSoundInte", sensSoundInte);
-    }
-
-    if(sensPir != digitalRead(SENS_PIR)){
-      sensPir = digitalRead(SENS_PIR);
-      sendValue("sensPir",sensPir);
-    }
-
-//    sensPhotoDown = analogRead(SENS_PHOTO_DOWN);
-//    sensPhotoUp = analogRead(SENS_PHOTO_UP);
-//
-//    sensSoundInte = digitalRead(SENS_SOUND_INTE);
-//    sensPir = digitalRead(SENS_PIR);
-
-
-
-//    Serial.print(sensSoundGlob, DEC); // Sound Global
-//    Serial.print(",");
-//    Serial.print(sensSoundInte, DEC); // Sound Intense
-//    Serial.print(",");
-//    Serial.println(sensPir, DEC); // PIR
-
- for(i=0;i<8;i++){
-  if(arrayBulbs[i][0] != arrayBulbs[i][1]){
-    if(arrayBulbs[i][0] < arrayBulbs[i][1]){
-      arrayBulbs[i][0]++;
-
-    }else{
-      arrayBulbs[i][0]--;
-    }
-
-    //@TODO: Need Simplify this code
-    if(i==0){ buf_CH1=DIMM_VALUE(arrayBulbs[i][0]); }
-    if(i==1){ buf_CH2=DIMM_VALUE(arrayBulbs[i][0]); }
-    if(i==2){ buf_CH3=DIMM_VALUE(arrayBulbs[i][0]); }
-    if(i==3){ buf_CH4=DIMM_VALUE(arrayBulbs[i][0]); }
-    if(i==4){ buf_CH5=DIMM_VALUE(arrayBulbs[i][0]); }
-    if(i==5){ buf_CH6=DIMM_VALUE(arrayBulbs[i][0]); }
-    if(i==6){ buf_CH7=DIMM_VALUE(arrayBulbs[i][0]); }
-    if(i==7){ buf_CH8=DIMM_VALUE(arrayBulbs[i][0]); }
-
-    if(arrayBulbs[i][0] == arrayBulbs[i][1]){
-      Serial.print("Update Bulb ");
-      Serial.print(i);
-      Serial.print(" : ");
-      Serial.println(arrayBulbs[i][0]);
-    }
-  }
- }
-
-}
-
 
 void sendValue(String sensor, int value){
 //  Serial.print("<");
@@ -323,12 +257,13 @@ void showNewData() {
   int id;
   int value;
     if (newData == true) {
-
+        Serial.println(receivedChars);
         type = strtok(receivedChars,":");
         id =  atol(strtok(NULL,":"));
         value =  atol(strtok(NULL,":"));
 
         if(type == "bulb"){
+         Serial.println("Update bulb received!");
          //store the value to reach for the bulb
          arrayBulbs[id][1] = value;
         }
@@ -340,3 +275,81 @@ void showNewData() {
         newData = false;
     }
 }
+
+
+
+void loop() {
+     
+    for (i=255;i>1;i--){
+     buf_CH1=buf_CH2=buf_CH3=buf_CH4=buf_CH5=buf_CH6=buf_CH7=buf_CH8=DIMM_VALUE(i); 
+     delay(SPEED);
+    }
+  
+    for (i=0;i<255;i++){
+      buf_CH1=buf_CH2=buf_CH3=buf_CH4=buf_CH5=buf_CH6=buf_CH7=buf_CH8=DIMM_VALUE(i); 
+      delay(SPEED);
+    }
+    
+    recvWithStartEndMarkers();
+    showNewData();
+
+    //Read data sensors and send
+    sensSoundGlob = analogRead(SENS_SOUND_GLOB);
+    if(sensSoundGlob > 5){
+      sendValue("sensSoundGlobal", sensSoundGlob);
+    }
+
+    if(sensSoundInte != digitalRead(SENS_SOUND_INTE)){
+      sensSoundInte = digitalRead(SENS_SOUND_INTE);
+      if(sensSoundInte == 1) sendValue("sensSoundInte", sensSoundInte);
+    }
+
+    if(sensPir != digitalRead(SENS_PIR)){
+      sensPir = digitalRead(SENS_PIR);
+      if(sensPir == 1) sendValue("sensPir",sensPir);
+    }
+
+//    sensPhotoDown = analogRead(SENS_PHOTO_DOWN);
+//    sensPhotoUp = analogRead(SENS_PHOTO_UP);
+//
+//    sensSoundInte = digitalRead(SENS_SOUND_INTE);
+//    sensPir = digitalRead(SENS_PIR);
+
+
+
+//    Serial.print(sensSoundGlob, DEC); // Sound Global
+//    Serial.print(",");
+//    Serial.print(sensSoundInte, DEC); // Sound Intense
+//    Serial.print(",");
+//    Serial.println(sensPir, DEC); // PIR
+
+ for(i=0;i<8;i++){
+  if(arrayBulbs[i][0] != arrayBulbs[i][1]){
+    if(arrayBulbs[i][0] < arrayBulbs[i][1]){
+      arrayBulbs[i][0]++;
+
+    }else{
+      arrayBulbs[i][0]--;
+    }
+
+    //@TODO: Need Simplify this code
+    if(i==0){ buf_CH1=DIMM_VALUE(arrayBulbs[i][0]); }
+    if(i==1){ buf_CH2=DIMM_VALUE(arrayBulbs[i][0]); }
+    if(i==2){ buf_CH3=DIMM_VALUE(arrayBulbs[i][0]); }
+    if(i==3){ buf_CH4=DIMM_VALUE(arrayBulbs[i][0]); }
+    if(i==4){ buf_CH5=DIMM_VALUE(arrayBulbs[i][0]); }
+    if(i==5){ buf_CH6=DIMM_VALUE(arrayBulbs[i][0]); }
+    if(i==6){ buf_CH7=DIMM_VALUE(arrayBulbs[i][0]); }
+    if(i==7){ buf_CH8=DIMM_VALUE(arrayBulbs[i][0]); }
+
+    if(arrayBulbs[i][0] == arrayBulbs[i][1]){
+      Serial.print("Update Bulb ");
+      Serial.print(i);
+      Serial.print(" : ");
+      Serial.println(arrayBulbs[i][0]);
+    }
+  }
+ }
+
+}
+

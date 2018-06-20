@@ -21,3 +21,12 @@ parser.on('data', (data) => {
   var dataSplit = data.split(":");
   console.log(dataSplit);
 });
+
+
+setTimeout(function(){
+  console.log("send test bulb")
+  serial.write("<bulb:8:255>",function(err){
+        console.log("test bulb sended!");
+        if(err) return console.log(err);
+  });
+},5000);
