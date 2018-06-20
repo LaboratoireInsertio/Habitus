@@ -42,7 +42,7 @@ echo '*filter
 # -------------- LOG iptables denied calls
 -A INPUT -m limit --limit 5/min -j LOG --log-prefix "iptables denied: " --log-level 7
 # -------------- SSH
--A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 44 -j ACCEPT
 # -------------- WEB
 -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
 -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
@@ -55,6 +55,7 @@ echo '*filter
 -A INPUT -j DROP
 -A FORWARD -j DROP
 COMMIT' | sudo tee -a /etc/iptables.firewall.rules
+sudo iptables-restore < /etc/iptables.firewall.rules
 
 #automate rules on every restart
 sudo touch /etc/network/if-pre-up.d/firewall
@@ -67,11 +68,17 @@ cd ~
 git clone git://github.com/c9/core.git c9sdk
 cd c9sdk
 scripts/install-sdk.sh
+ln -s ~/c9sdk/server.js ~/server_cloud9.js
 
 echo "Installation package git instagif"
 git clone https://github.com/chesnel/InsertioStairs.git #put git on organization InsertioLab
 cd InsertioStairs
 npm install
 
+echo "Installation dependencies for be able to push code in arduino with the pi"
+echo
+sudo apt-get install arduino-mk
+
+
 #Launch the app with PM2 + cloud9
-pm2 --name cloud9 start server.js -- -p 8383 -l 0.0.0.0  --auth Insertio:revolting166165?Brownian -w /home/pi/src/InsertioStairs/
+# pm2 --name cloud9 start server.js -- -p 8383 -l 0.0.0.0  --auth Insertio:revolting166165?Brownian -w /home/pi/src/InsertioStairs/
