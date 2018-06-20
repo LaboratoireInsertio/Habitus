@@ -1,31 +1,36 @@
 #!/bin/bash
 #installation Update and installation of habitus - Sensors
 
-echo "basic routine update ;)"
+echo "-----------------------------------------------------------------------"
+echo "---------------- basic routine update ;)-------------------------------"
+echo "-----------------------------------------------------------------------"
 sudo apt-get -y upgrade
 sudo apt-get -y update
 
-
+echo "-----------------------------------------------------------------------"
+echo "---------------- installation nodejs and npm --------------------------"
+echo "-----------------------------------------------------------------------"
 #More information about nodejs here : https://nodejs.org/en/
-echo "installation nodejs and npm"
-echo
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt-get -y install nodejs
 
-echo "Installation other dependancies"
-echo
-sudo apt-get -y install git
+echo "-----------------------------------------------------------------------"
+echo "---------------- Installation other dependancies ----------------------"
+echo "-----------------------------------------------------------------------"
+sudo apt-get -y install git vim
 
+echo "-----------------------------------------------------------------------"
+echo "---------------- Installation of PM2 via npm --------------------------"
+echo "-----------------------------------------------------------------------"
 #More information about PM2  here : http://pm2.keymetrics.io/docs/usage/quick-start/
-echo "Installation of PM2 via npm"
-echo
-npm install pm2 -g
+sudo npm install pm2 -g
 
+
+echo "-----------------------------------------------------------------------"
+echo "---------------- Install Cloud9 ---------------------------------------"
+echo "-----------------------------------------------------------------------"
 #Installation Cloud9 and rules security with iptables based on this tutorial : https://habilisbest.com/installing-cloud-9-on-your-raspberry-pi
 # https://habilisbest.com/raspberrypi-secure-personal-server-step-3-hardening-security
-
-echo "Install Cloud9"
-echo
 sudo touch /etc/iptables.firewall.rules
 echo '*filter
 
@@ -70,14 +75,21 @@ cd c9sdk
 scripts/install-sdk.sh
 ln -s ~/c9sdk/server.js ~/server_cloud9.js
 
-echo "Installation package git instagif"
-git clone https://github.com/chesnel/InsertioStairs.git #put git on organization InsertioLab
-cd InsertioStairs
+echo "-----------------------------------------------------------------------"
+echo "---------------- Install Repo Habitus ---------------------------------"
+echo "-----------------------------------------------------------------------"
+git clone https://github.com/LaboratoireInsertio/habitus.git #put git on organization InsertioLab
+cd Habitus
+git checkout develop
 npm install
 
-echo "Installation dependencies for be able to push code in arduino with the pi"
-echo
-sudo apt-get install arduino-mk
+
+echo "-----------------------------------------------------------------------"
+echo "---------------- Installation arduino-dk ------------------------------"
+echo "-----------------------------------------------------------------------"
+#Arduino-dk is for pushing code on an arduino via command line
+#Demonstration video : https://www.youtube.com/watch?v=qAM2S27FWAI
+sudo apt-get -y install arduino-mk
 
 
 #Launch the app with PM2 + cloud9
