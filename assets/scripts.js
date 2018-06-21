@@ -32,12 +32,13 @@ socket.on('globalActivity', function(globalActivity) {
 
 
 socket.on('stateStairs', function(stateStairs) {
-  console.log(stateStairs);
+  // console.log(stateStairs);
   for(var i=0;i<stateStairs.tints.length;i++){
     $(".tint[data-idtint="+i+"]").css("backgroundColor", "rgba(0,0,0,"+stateStairs.tints[i]+")")
   }
   for(var i=0;i<stateStairs.bulbs.length;i++){
-    $(".tint[data-idtbulb="+i+"]").css("backgroundColor", "rgba(255,229,46,"+stateStairs.tints[i].map(0,255,0,1)+")");
+    console.log(stateStairs.bulbs[i].map(0,255,0,1));
+    $(".tint[data-idtbulb="+i+"]").css("backgroundColor", "rgba(255,229,46,"+stateStairs.bulbs[i].map(0,255,0,1)+")");
   }
 });
 
