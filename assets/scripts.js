@@ -34,7 +34,7 @@ socket.on('globalActivity', function(globalActivity) {
 socket.on('stateStairs', function(stateStairs) {
   console.log(stateStairs);
   for(var i=0;i<stateStairs.tints.length;i++){
-    $("data-idtint="+i+"").css("backgroundColor", "rgba(0,0,0,"+stateStairs.tints[i]+")")
+    $(".tint[data-idtint="+i+"]").css("backgroundColor", "rgba(0,0,0,"+stateStairs.tints[i]+")")
   }
 });
 
