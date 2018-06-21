@@ -7,7 +7,7 @@
  sensors.cellUp			0-1
  sensors.cellDown			0-1
  sensors.loudSound		0-1
- sensors.globalSound		0-1024
+ sensors.globalSound		0-255
  sensors.globalActivity	0-200
 */
 

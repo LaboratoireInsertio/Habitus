@@ -24,6 +24,7 @@ echo "---------------- Installation of PM2 via npm --------------------------"
 echo "-----------------------------------------------------------------------"
 #More information about PM2  here : http://pm2.keymetrics.io/docs/usage/quick-start/
 sudo npm install pm2 -g
+sudo pm2 startup systemd
 
 
 echo "-----------------------------------------------------------------------"
@@ -79,7 +80,7 @@ echo "-----------------------------------------------------------------------"
 echo "---------------- Install Repo Habitus ---------------------------------"
 echo "-----------------------------------------------------------------------"
 git clone https://github.com/LaboratoireInsertio/habitus.git #put git on organization InsertioLab
-cd Habitus
+cd habitus
 git checkout develop
 npm install
 
@@ -93,4 +94,7 @@ sudo apt-get -y install arduino-mk
 
 
 #Launch the app with PM2 + cloud9
-# pm2 --name cloud9 start server.js -- -p 8383 -l 0.0.0.0  --auth Insertio:revolting166165?Brownian -w /home/pi/src/InsertioStairs/
+cd ..
+pm2 --name cloud9 start ~/server_cloud9.js -- -p 8383 -l 0.0.0.0  --auth Insertio:revolting166165?Brownian -w ~/habitus/
+pm2 --name rasp start ~/habitus/app_rasp.js
+pm2 save
