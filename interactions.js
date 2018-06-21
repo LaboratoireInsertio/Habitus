@@ -76,7 +76,7 @@ function init(log, serialport, socket, stateStairs, _) {
 	
 	function bulbUp(id){
 		var idBulb = id;
-		stateStairs.bulbs[id] = 0;
+		stateStairs.bulbs[id] = 255;
 		serialport.sendToMega("b");
 		setTimeout(function(){
 			idBulb++;
@@ -97,7 +97,7 @@ function init(log, serialport, socket, stateStairs, _) {
 	
 	function bulbDown(id){
 		var idBulb = id;
-		stateStairs.bulbs[id] = 0;
+		stateStairs.bulbs[id] = 255;
 		serialport.sendToMega("b");
 		setTimeout(function(){
 			idBulb--;
@@ -133,7 +133,7 @@ function init(log, serialport, socket, stateStairs, _) {
   //////////////////////////   MAIN LOOP   //////////////////////////
   var loop = setInterval(function() {
 
-    onlyChangeThisFile.loop();
+
 	
   // --------- Direct Interaction Examples --------- //
   if(sensors.cellDown == 1 && !animationCellDown && !animationCellUp){
@@ -149,7 +149,8 @@ function init(log, serialport, socket, stateStairs, _) {
   
 	//GlobalActivity is between 0 and 200 - We map for avec 250 = fast (20ms) ; 0 = slow (2000ms);
 	speedTimeout = map_range(sensors.globalActivity,0,200,20000,250);
-  
+    
+    onlyChangeThisFile.loop();
  
   
 	/*

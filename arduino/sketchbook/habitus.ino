@@ -251,6 +251,7 @@ void showNewData() {
         if(type == "b"){
          for(int b=0;b<8;b++){
           arrayBulbs[b][1] = atol(strtok(NULL,":"));
+          arrayBulbs[b][1] = map(arrayBulbs[b][1], 0,255,255,0);
          }
         
         }

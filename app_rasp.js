@@ -101,10 +101,10 @@ lifx.init(log);
 
 
 //Send to the server Digital Ocean the value of Tints and Bublbs Every 0.5s
-// setInterval(function(){
-//   log.debug('states', stateStairs);
-//   socket.emit('stateStairs', stateStairs);
-// },2000);
+setInterval(function(){
+  log.debug('states', stateStairs);
+  socket.emit('stateStairs', stateStairs);
+},500);
 
 //
 //

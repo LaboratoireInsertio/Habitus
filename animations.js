@@ -55,14 +55,14 @@ module.exports = {
   // Turns all the bulbs on, to the given bightness.
   turnAllBulbOn: function() {
     for (var i = 0; i < stateStairs.bulbs.length; i++) {
-     stateStairs.bulbs[i] = 0;
+     stateStairs.bulbs[i] = 255;
     }
     serialport.sendToMega("b");
   },
   // Turns all the bulbs off.
   turnAllBulbOff: function() {
     for (var i = 0; i < stateStairs.bulbs.length; i++) {
-     stateStairs.bulbs[i] = 255;
+     stateStairs.bulbs[i] = 0;
     }
     serialport.sendToMega("b");
   },
