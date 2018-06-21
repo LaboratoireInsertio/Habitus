@@ -13,6 +13,9 @@
 	<script src="/assets/scripts.js"></script>
 
 	<style type="text/css">
+	h2{
+		text-align: center;
+	}
 		#myChart{
 			/*width : 500px;*/
 			/*height */
@@ -66,6 +69,11 @@
 		.bulb{
 			background : rgba(255,229,46,0.5)
 		}
+		.rotate{
+			-ms-transform: rotate(35deg); /* IE 9 */
+	 		-webkit-transform: rotate(35deg); /* Safari */
+	 		transform: rotate(35deg);
+		}
 	</style>
 
 </head>
@@ -101,25 +109,29 @@
 			</div>
 			<div class="col-md-6 col-xs-12">
 				<h2>Lights</h2>
-				<span class="bulb" data-idbulb="0"></span>
-				<span class="bulb" data-idbulb="1"></span>
-				<span class="bulb" data-idbulb="2"></span>
-				<span class="bulb" data-idbulb="3"></span>
-				<span class="bulb" data-idbulb="4"></span>
-				<span class="bulb" data-idbulb="5"></span>
-				<span class="bulb" data-idbulb="6"></span>
-				<span class="bulb" data-idbulb="7"></span>
+				<div class="rotate">
+					<span class="bulb" data-idbulb="0"></span>
+					<span class="bulb" data-idbulb="1"></span>
+					<span class="bulb" data-idbulb="2"></span>
+					<span class="bulb" data-idbulb="3"></span>
+					<span class="bulb" data-idbulb="4"></span>
+					<span class="bulb" data-idbulb="5"></span>
+					<span class="bulb" data-idbulb="6"></span>
+					<span class="bulb" data-idbulb="7"></span>
+				</div>
 			</div>
 			<div class="col-md-6 col-xs-12">
 				<h2>Tints</h2>
-				<span class="tint" data-idtint="0"></span>
-				<span class="tint" data-idtint="1"></span>
-				<span class="tint" data-idtint="2"></span>
-				<span class="tint" data-idtint="3"></span>
-				<span class="tint" data-idtint="4"></span>
-				<span class="tint" data-idtint="5"></span>
-				<span class="tint" data-idtint="6"></span>
-				<span class="tint" data-idtint="7"></span>
+				<div class="rotate">
+					<span class="tint" data-idtint="0"></span>
+					<span class="tint" data-idtint="1"></span>
+					<span class="tint" data-idtint="2"></span>
+					<span class="tint" data-idtint="3"></span>
+					<span class="tint" data-idtint="4"></span>
+					<span class="tint" data-idtint="5"></span>
+					<span class="tint" data-idtint="6"></span>
+					<span class="tint" data-idtint="7"></span>
+				</div>
 			</div>
 		</div>
 	</div>
