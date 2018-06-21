@@ -89,7 +89,7 @@ function init(log, serialport, socket, stateStairs, _) {
 					animations.turnAllBulbOff();
 					setTimeout(function(){
 						animationCellDown = false;
-					},2500);
+					},3500);
 				},1000);
 			}
 		},200);
@@ -110,7 +110,7 @@ function init(log, serialport, socket, stateStairs, _) {
 					animations.turnAllBulbOff();
 						setTimeout(function(){
 							animationCellUp = false;
-						},2500);
+						},3500);
 				},1000);
 			}
 		},200);
