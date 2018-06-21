@@ -4,7 +4,7 @@ var arduinoPort = '/dev/ttyACM0';
 // var arduinoPort = '/dev/ttyACM0';
 var serial = new SerialPort(arduinoPort, {
   // parser: SerialPort.parsers.readline("\n"),
-  baudRate: 57600
+  baudRate: 1000000
 });
 var parser = serial.pipe(new Readline());
 
@@ -24,9 +24,27 @@ parser.on('data', (data) => {
 
 
 setTimeout(function(){
-  console.log("send test bulb")
-  serial.write("<bulb:8:255>",function(err){
-        console.log("test bulb sended!");
-        if(err) return console.log(err);
-  });
-},5000);
+  fadeInOutBulbs();
+},3000);
+
+
+function fadeInOutBulbs(){
+  bulbs("t",1);
+  bulbs("b",255);
+  setTimeout(function(){
+    bulbs("t",0);
+    bulbs("b",0);
+  },2000);
+  setTimeout(fadeInOutBulbs,4000);
+}
+
+function bulbs(type, val){
+  // for(var i=0;i<8;i++){
+
+    serial.write("<"+type+":"+val+":"+val+":"+val+":"+val+":"+val+":"+val+":"+val+":"+val+">",function(err){
+      if(err) return console.log(err);
+
+    });
+
+  // }
+}

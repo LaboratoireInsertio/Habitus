@@ -28,13 +28,16 @@
 #define GATE_IMPULSE 9
 
 #define FREQ 84
-  
+
+unsigned long interval=10;  // the time we need to wait
+unsigned long previousMillis=0;
+
 unsigned int  CH1, CH2, CH3, CH4, CH5, CH6, CH7, CH8;
 unsigned int  buf_CH1, buf_CH2, buf_CH3, buf_CH4,buf_CH5, buf_CH6, buf_CH7, buf_CH8;
 unsigned char clock_cn;    
 unsigned int  clock_tick;   
-unsigned char i;  
-
+int i = 255;
+bool down = true;
 #define freqDelay 8.33
 
 void timerIsr()
@@ -129,7 +132,7 @@ unsigned int DIMM_VALUE (unsigned char level)
 
 
 void setup() {
-
+  Serial.begin(57600);
   pinMode(channel_1, OUTPUT);
   pinMode(channel_2, OUTPUT);
   pinMode(channel_3, OUTPUT);
@@ -138,40 +141,39 @@ void setup() {
   pinMode(channel_6, OUTPUT);
   pinMode(channel_7, OUTPUT);
   pinMode(channel_8, OUTPUT);
-  attachInterrupt(1, zero_crosss_int, RISING);
+  attachInterrupt(0, zero_crosss_int, RISING);
   Timer3.initialize(8.33); 
   Timer3.attachInterrupt( timerIsr );
     
 }
 
 void loop() {
-  for (i=255;i>1;i--){
-    buf_CH1=buf_CH2=buf_CH3=buf_CH4=buf_CH5=buf_CH6=buf_CH7=buf_CH8=DIMM_VALUE(i); 
-    delay(SPEED);
+ 
+if ((unsigned long)(millis() - previousMillis) >= interval) {
+ previousMillis = millis();
+  if(i >= 1 && down == true){
+   i = i - 5;
+   if(i <= 0)
+    down = false;
   }
+  if(i<255 && down == false){
+   i = i + 5;
+   if(i >= 255)
+    down = true;
+  }
+  Serial.println(i);
   
-  for (i=0;i<255;i++){
-    buf_CH1=buf_CH2=buf_CH3=buf_CH4=buf_CH5=buf_CH6=buf_CH7=buf_CH8=DIMM_VALUE(i); 
-    delay(SPEED);
-  }
-  delay(2000);
-    
-  // for (i=255;i>1;i--) {buf_CH1=DIMM_VALUE(i); delay(SPEED);}
-  //  for (i=255;i>1;i--) {buf_CH2=DIMM_VALUE(i); delay(SPEED);}
-  //   for (i=255;i>1;i--) {buf_CH3=DIMM_VALUE(i); delay(SPEED);}
-  //    for (i=255;i>1;i--) {buf_CH4=DIMM_VALUE(i); delay(SPEED);}
-  //      for (i=255;i>1;i--) {buf_CH5=DIMM_VALUE(i); delay(SPEED);}
-  //       for (i=255;i>1;i--) {buf_CH6=DIMM_VALUE(i); delay(SPEED);}
-  //        for (i=255;i>1;i--) {buf_CH7=DIMM_VALUE(i); delay(SPEED);}
-  //         for (i=255;i>1;i--) {buf_CH8=DIMM_VALUE(i); delay(SPEED);}
+  buf_CH1=buf_CH2=buf_CH3=buf_CH4=buf_CH5=buf_CH6=buf_CH7=buf_CH8=DIMM_VALUE(i);
+  
+  // for (i=255;i>1;i--){
+  //   buf_CH1=buf_CH2=buf_CH3=buf_CH4=buf_CH5=buf_CH6=buf_CH7=buf_CH8=DIMM_VALUE(i); 
 
-  // for (i=0;i<255;i++) {buf_CH1=DIMM_VALUE(i); delay(SPEED);}   
-  //  for (i=0;i<255;i++) {buf_CH2=DIMM_VALUE(i); delay(SPEED);}   
-  //   for (i=0;i<255;i++) {buf_CH3=DIMM_VALUE(i); delay(SPEED);}   
-  //    for (i=0;i<255;i++) {buf_CH4=DIMM_VALUE(i); delay(SPEED);}   
-  //     for (i=0;i<255;i++) {buf_CH5=DIMM_VALUE(i); delay(SPEED);}   
-  //      for (i=0;i<255;i++) {buf_CH6=DIMM_VALUE(i); delay(SPEED);}   
-  //      for (i=0;i<255;i++) {buf_CH7=DIMM_VALUE(i); delay(SPEED);}   
-  //       for (i=0;i<255;i++) {buf_CH8=DIMM_VALUE(i); delay(SPEED);}   
-     
+  // }
+  
+  // for (i=0;i<255;i++){
+  //   buf_CH1=buf_CH2=buf_CH3=buf_CH4=buf_CH5=buf_CH6=buf_CH7=buf_CH8=DIMM_VALUE(i); 
+
+  // }
+
+ }
 }

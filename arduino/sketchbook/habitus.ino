@@ -13,6 +13,7 @@
 
 #include <string.h>
 #include <TimerThree.h>
+#define SERIAL_BUFFER_SIZE 256
 
 // ANALOG SENSORS //
 #define SENS_SOUND_GLOB A0
@@ -49,9 +50,13 @@ unsigned long lastSensorReading = 0;
 #define channel_7 30
 #define channel_8 31
 
-#define SPEED 5
+#define SPEED 1
 #define GATE_IMPULSE 9
 #define FREQ 84
+#define freqDelay 8.33
+
+unsigned long interval=10;  // the time we need to wait
+unsigned long previousMillis=0;
 
 byte arrayBulbs[8][2];
 byte arrayTints[8][2] = {
@@ -64,96 +69,77 @@ unsigned int  buf_CH1, buf_CH2, buf_CH3, buf_CH4,buf_CH5, buf_CH6, buf_CH7, buf_
 unsigned char clock_cn;
 unsigned int  clock_tick;
 unsigned char i;
-unsigned increase  = 1;
-unsigned decrease  = 1;
-unsigned int delaybulb = 8.33;
-
+int stepBulb = 5;
 
 // Serial declaration ---------------------//
-const byte numChars = 32;
+const byte numChars = 50;
 char receivedChars[numChars];
 char *p;
 boolean newData = false;
 
+
 void timerIsr()
 {
-    clock_tick++;
+clock_tick++;
 
-    if (clock_cn)
-     {
-      clock_cn++;
+if (CH1==clock_tick)
+{
+digitalWrite(channel_1, HIGH); // triac firing
+delayMicroseconds(freqDelay); // triac On propogation delay (for 60Hz use 8.33)
+digitalWrite(channel_1, LOW); // triac Off
+}
 
-       if (clock_cn==GATE_IMPULSE)
-       {
-        digitalWrite(channel_1, LOW);
-        digitalWrite(channel_2, LOW);
-        digitalWrite(channel_3, LOW);
-        digitalWrite(channel_4, LOW);
-        digitalWrite(channel_5, LOW);
-        digitalWrite(channel_6, LOW);
-        digitalWrite(channel_7, LOW);
-        digitalWrite(channel_8, LOW);
-        clock_cn=0;
-       }
-     }
+if (CH2==clock_tick)
+{
+digitalWrite(channel_2, HIGH); // triac firing
+delayMicroseconds(freqDelay); // triac On propogation delay (for 60Hz use 8.33)
+digitalWrite(channel_2, LOW); // triac Off
+}
 
-        if (CH1==clock_tick)
-         {
-          digitalWrite(channel_1, HIGH);
-          delayMicroseconds(delaybulb); // triac On propogation delay (for 60Hz use 8.33)
-          clock_cn=1;
-         }
+if (CH3==clock_tick)
+{
+digitalWrite(channel_3, HIGH); // triac firing
+delayMicroseconds(freqDelay); // triac On propogation delay (for 60Hz use 8.33)
+digitalWrite(channel_3, LOW); // triac Off
+}
 
-           if (CH2==clock_tick)
-            {
-             digitalWrite(channel_2, HIGH);
-             delayMicroseconds(delaybulb); // triac On propogation delay (for 60Hz use 8.33)
-             clock_cn=1;
-            }
+if (CH4==clock_tick)
+{
+digitalWrite(channel_4, HIGH); // triac firing
+delayMicroseconds(freqDelay); // triac On propogation delay (for 60Hz use 8.33)
+digitalWrite(channel_4, LOW); // triac Off
+}
 
-              if (CH3==clock_tick)
-               {
-                digitalWrite(channel_3, HIGH);
-                delayMicroseconds(delaybulb); // triac On propogation delay (for 60Hz use 8.33)
-                clock_cn=1;
-               }
+if (CH5==clock_tick)
+{
+digitalWrite(channel_5, HIGH); // triac firing
+delayMicroseconds(freqDelay); // triac On propogation delay (for 60Hz use 8.33)
+digitalWrite(channel_5, LOW); // triac Off
+}
 
-                 if (CH4==clock_tick)
-                  {
-                   digitalWrite(channel_4, HIGH);
-                   delayMicroseconds(delaybulb); // triac On propogation delay (for 60Hz use 8.33)
-                   clock_cn=1;
-                  }
+if (CH6==clock_tick)
+{
+digitalWrite(channel_6, HIGH); // triac firing
+delayMicroseconds(freqDelay); // triac On propogation delay (for 60Hz use 8.33)
+digitalWrite(channel_6, LOW); // triac Off
+}
 
-                  if (CH5==clock_tick)
-                  {
-                   digitalWrite(channel_5, HIGH);
-                   delayMicroseconds(delaybulb); // triac On propogation delay (for 60Hz use 8.33)
-                   clock_cn=1;
-                  }
-                 if (CH6==clock_tick)
-                  {
-                   digitalWrite(channel_6, HIGH);
-                   delayMicroseconds(delaybulb); // triac On propogation delay (for 60Hz use 8.33)
-                   clock_cn=1;
-                  }
+if (CH7==clock_tick)
+{
+digitalWrite(channel_7, HIGH); // triac firing
+delayMicroseconds(freqDelay); // triac On propogation delay (for 60Hz use 8.33)
+digitalWrite(channel_7, LOW); // triac Off
+}
 
-                 if (CH7==clock_tick)
-                  {
-                   digitalWrite(channel_7, HIGH);
-                   delayMicroseconds(delaybulb); // triac On propogation delay (for 60Hz use 8.33)
-                   clock_cn=1;
-                  }
-                 if (CH8==clock_tick)
-                  {
-                   digitalWrite(channel_8, HIGH);
-                   delayMicroseconds(delaybulb); // triac On propogation delay (for 60Hz use 8.33)
-                   clock_cn=1;
-                  }
+if (CH8==clock_tick)
+{
+digitalWrite(channel_8, HIGH); // triac firing
+delayMicroseconds(freqDelay); // triac On propogation delay (for 60Hz use 8.33)
+digitalWrite(channel_8, LOW); // triac Off
+}
 
 
 }
-
 
 
 void zero_crosss_int()
@@ -176,15 +162,15 @@ unsigned int DIMM_VALUE (unsigned char level)
  unsigned int buf_level;
 
  if (level < 26)  {level=26;}
- if (level > 229) {level=229;}
+ if (level > 247) {level=247;}
 
- return ((level*(FREQ))/256)*9;
+ return ((level*(FREQ))/256)*freqDelay;
 }
 
 
 
 void setup() {
-  Serial.begin(57600);
+    Serial.begin (1000000);
 
 //  // initializes relay pins as outputs
 //  for (int i = RELAY_CH1; i <= RELAY_CH8; i++)
@@ -194,14 +180,14 @@ void setup() {
   for (int i = channel_1; i <= channel_8; i++)
     pinMode(i, OUTPUT);
 
-  attachInterrupt(1, zero_crosss_int, RISING);
+  attachInterrupt(0, zero_crosss_int, RISING);
   Timer3.initialize(8.33);
   Timer3.attachInterrupt( timerIsr );
 
   //Setup array for bulbs values
   for(i=0;i<8;i++){
-    arrayBulbs[i][0] = 0;
-    arrayBulbs[i][1] = 25;
+    arrayBulbs[i][0] = 255;
+    arrayBulbs[i][1] = 255;
 
      // initializes relay pins as outputs
      pinMode(arrayTints[i][0], OUTPUT);
@@ -213,11 +199,12 @@ void setup() {
 
 void sendValue(String sensor, int value){
 //  Serial.print("<");
-  Serial.print(sensor);
-  Serial.print(":");
-  Serial.println(value, DEC);
+ Serial.print(sensor);
+ Serial.print(":");
+ Serial.println(value, DEC);
 //  Serial.println(">");
 }
+
 
 void recvWithStartEndMarkers() {
     static boolean recvInProgress = false;
@@ -257,19 +244,22 @@ void showNewData() {
   int id;
   int value;
     if (newData == true) {
-        Serial.println(receivedChars);
+        //  Serial.println(receivedChars);
         type = strtok(receivedChars,":");
-        id =  atol(strtok(NULL,":"));
-        value =  atol(strtok(NULL,":"));
 
-        if(type == "bulb"){
-         Serial.println("Update bulb received!");
-         //store the value to reach for the bulb
-         arrayBulbs[id][1] = value;
+
+        if(type == "b"){
+         for(int b=0;b<8;b++){
+          arrayBulbs[b][1] = atol(strtok(NULL,":"));
+         }
+        
         }
-        if(type == "tint"){
-          arrayTints[id][1] = value;
-          digitalWrite(arrayTints[id][0], arrayTints[id][1]);
+        if(type == "t"){
+          for(int b=0;b<8;b++){
+            arrayTints[b][1] = atol(strtok(NULL,":"));
+            digitalWrite(arrayTints[b][0], arrayTints[b][1]);
+
+          }
         }
 
         newData = false;
@@ -279,77 +269,62 @@ void showNewData() {
 
 
 void loop() {
-     
-    for (i=255;i>1;i--){
-     buf_CH1=buf_CH2=buf_CH3=buf_CH4=buf_CH5=buf_CH6=buf_CH7=buf_CH8=DIMM_VALUE(i); 
-     delay(SPEED);
-    }
-  
-    for (i=0;i<255;i++){
-      buf_CH1=buf_CH2=buf_CH3=buf_CH4=buf_CH5=buf_CH6=buf_CH7=buf_CH8=DIMM_VALUE(i); 
-      delay(SPEED);
-    }
     
-    recvWithStartEndMarkers();
-    showNewData();
+ 
+    if ((unsigned long)(millis() - previousMillis) >= 5) {
+      previousMillis = millis();
+        
+        recvWithStartEndMarkers();
+        showNewData();
+        
+        //Read data sensors and send
+        sensSoundGlob = analogRead(SENS_SOUND_GLOB);
+        if(sensSoundGlob > 5){
+          sendValue("sensSoundGlobal", sensSoundGlob);
+        }
+    
+        if(sensSoundInte != digitalRead(SENS_SOUND_INTE)){
+          sensSoundInte = digitalRead(SENS_SOUND_INTE);
+          if(sensSoundInte == 1) sendValue("sensSoundInte", sensSoundInte);
+        }
+    
+        if(sensPir != digitalRead(SENS_PIR)){
+          sensPir = digitalRead(SENS_PIR);
+          if(sensPir == 1) sendValue("sensPir",sensPir);
+        }
 
-    //Read data sensors and send
-    sensSoundGlob = analogRead(SENS_SOUND_GLOB);
-    if(sensSoundGlob > 5){
-      sendValue("sensSoundGlobal", sensSoundGlob);
+     
+     for(i=0;i<8;i++){
+     
+      if(arrayBulbs[i][0] != arrayBulbs[i][1]){
+        if(arrayBulbs[i][0] < arrayBulbs[i][1]){
+          arrayBulbs[i][0] = arrayBulbs[i][0] + stepBulb;
+          if(arrayBulbs[i][0] > 255) arrayBulbs[i][0] = 255;
+         
+        }else{
+          arrayBulbs[i][0] = arrayBulbs[i][0] - stepBulb;
+          if(arrayBulbs[i][0] < 0) arrayBulbs[i][0] = 0;
+        }
+        
+
+        //@TODO: Need Simplify this code
+        if(i==0){ buf_CH1=DIMM_VALUE(arrayBulbs[i][0]); }
+        if(i==1){ buf_CH2=DIMM_VALUE(arrayBulbs[i][0]); }
+        if(i==2){ buf_CH3=DIMM_VALUE(arrayBulbs[i][0]); }
+        if(i==3){ buf_CH4=DIMM_VALUE(arrayBulbs[i][0]); }
+        if(i==4){ buf_CH5=DIMM_VALUE(arrayBulbs[i][0]); }
+        if(i==5){ buf_CH6=DIMM_VALUE(arrayBulbs[i][0]); }
+        if(i==6){ buf_CH7=DIMM_VALUE(arrayBulbs[i][0]); }
+        if(i==7){ buf_CH8=DIMM_VALUE(arrayBulbs[i][0]); }
+        
+//        Serial.print("Bulb : "); Serial.print(i);Serial.print(" value : ");Serial.println(arrayBulbs[i][0]);
+        
+        if(arrayBulbs[i][0] == arrayBulbs[i][1]){
+        //   Serial.print("Bulb updated to : ");
+        //   Serial.println(arrayBulbs[i][0]);
+        }
+      }
+     }
     }
-
-    if(sensSoundInte != digitalRead(SENS_SOUND_INTE)){
-      sensSoundInte = digitalRead(SENS_SOUND_INTE);
-      if(sensSoundInte == 1) sendValue("sensSoundInte", sensSoundInte);
-    }
-
-    if(sensPir != digitalRead(SENS_PIR)){
-      sensPir = digitalRead(SENS_PIR);
-      if(sensPir == 1) sendValue("sensPir",sensPir);
-    }
-
-//    sensPhotoDown = analogRead(SENS_PHOTO_DOWN);
-//    sensPhotoUp = analogRead(SENS_PHOTO_UP);
-//
-//    sensSoundInte = digitalRead(SENS_SOUND_INTE);
-//    sensPir = digitalRead(SENS_PIR);
-
-
-
-//    Serial.print(sensSoundGlob, DEC); // Sound Global
-//    Serial.print(",");
-//    Serial.print(sensSoundInte, DEC); // Sound Intense
-//    Serial.print(",");
-//    Serial.println(sensPir, DEC); // PIR
-
- for(i=0;i<8;i++){
-  if(arrayBulbs[i][0] != arrayBulbs[i][1]){
-    if(arrayBulbs[i][0] < arrayBulbs[i][1]){
-      arrayBulbs[i][0]++;
-
-    }else{
-      arrayBulbs[i][0]--;
-    }
-
-    //@TODO: Need Simplify this code
-    if(i==0){ buf_CH1=DIMM_VALUE(arrayBulbs[i][0]); }
-    if(i==1){ buf_CH2=DIMM_VALUE(arrayBulbs[i][0]); }
-    if(i==2){ buf_CH3=DIMM_VALUE(arrayBulbs[i][0]); }
-    if(i==3){ buf_CH4=DIMM_VALUE(arrayBulbs[i][0]); }
-    if(i==4){ buf_CH5=DIMM_VALUE(arrayBulbs[i][0]); }
-    if(i==5){ buf_CH6=DIMM_VALUE(arrayBulbs[i][0]); }
-    if(i==6){ buf_CH7=DIMM_VALUE(arrayBulbs[i][0]); }
-    if(i==7){ buf_CH8=DIMM_VALUE(arrayBulbs[i][0]); }
-
-    if(arrayBulbs[i][0] == arrayBulbs[i][1]){
-      Serial.print("Update Bulb ");
-      Serial.print(i);
-      Serial.print(" : ");
-      Serial.println(arrayBulbs[i][0]);
-    }
-  }
- }
-
 }
 
