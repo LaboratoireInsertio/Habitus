@@ -54,53 +54,69 @@
 			transition: all 0.3s;
 			z-index: -1;
 		}
+		.bulb, .tint{
+			border-radius : 30px;
+			height : 30px;
+			width : 30px;
+			background : black;
+			border : 1px solid black;
+
+		}
 	</style>
 
 </head>
 <body>
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-xs-12 col-xs-offset-1">
-
-				<div class="col-xs-2 sensor">
+			<div class="col-xs-4 col-xs-offset-1">
+				<h2>Sensors</h2>
 					<div class="content" id='pir'>
 						<div class="name active" > PIR </div>
 					</div>
-				</div>
 
-				<div class="col-xs-2 sensor">
 					<div class="content" id="sound_global">
 						<div class="name" > Global Sound </div>
 
 					</div>
-				</div>
 
-				<div class="col-xs-2 sensor">
 					<div class="content" id='sound_loud'>
 						<div class="name" > Intense Sound </div>
 					</div>
-				</div>
 
-				<div class="col-xs-2 sensor">
 					<div class="content" id="photocell_up">
 						<div class="name" > PhotoCell Up </div>
 					</div>
-				</div>
 
-				<div class="col-xs-2 sensor">
 					<div class="content">
 						<div class="name" id="photocell_down"> PhotoCell Down </div>
 					</div>
-				</div>
-
+					<div class="content" id='globalActivity'>
+						<div class="name active" > Global Activity <span class="value">100</span>%</div>
+						<div id="globalVal"></div>
+					</div>
 			</div>
-			<div class="col-xs-6 col-xs-offset-3 sensor">
-				<div class="content" id='globalActivity'>
-					<div class="name active" > Global Activity <span class="value">100</span>%</div>
-					<div id="globalVal"></div>
-				</div>
+			<div class="col-xs-4 col-xs-offset-1">
+				<h2>Lights</h2>
+				<div class="bulb" data-idbulb="1"></div>
+				<div class="bulb" data-idbulb="2"></div>
+				<div class="bulb" data-idbulb="3"></div>
+				<div class="bulb" data-idbulb="4"></div>
+				<div class="bulb" data-idbulb="5"></div>
+				<div class="bulb" data-idbulb="6"></div>
+				<div class="bulb" data-idbulb="7"></div>
+				<div class="bulb" data-idbulb="8"></div>
 			</div>
-
+			<div class="col-xs-4 col-xs-offset-1">
+				<h2>Tints</h2>
+				<div class="tint" data-idtint="1"></div>
+				<div class="tint" data-idtint="2"></div>
+				<div class="tint" data-idtint="3"></div>
+				<div class="tint" data-idtint="4"></div>
+				<div class="tint" data-idtint="5"></div>
+				<div class="tint" data-idtint="6"></div>
+				<div class="tint" data-idtint="7"></div>
+				<div class="tint" data-idbulb="8"></div>
+			</div>
 		</div>
 	</div>
 
