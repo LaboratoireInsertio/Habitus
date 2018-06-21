@@ -24,7 +24,7 @@ echo "---------------- Installation of PM2 via npm --------------------------"
 echo "-----------------------------------------------------------------------"
 #More information about PM2  here : http://pm2.keymetrics.io/docs/usage/quick-start/
 sudo npm install pm2 -g
-sudo pm2 startup systemd
+sudo env PATH=$PATH:/usr/local/bin pm2 startup systemd -u pi --hp /home/pi
 
 
 echo "-----------------------------------------------------------------------"
