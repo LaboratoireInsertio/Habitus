@@ -38,7 +38,7 @@ socket.on('stateStairs', function(stateStairs) {
   }
   for(var i=0;i<stateStairs.bulbs.length;i++){
     console.log(stateStairs.bulbs[i].map(0,255,0,1));
-    $(".tint[data-idtbulb="+i+"]").css("backgroundColor", "rgba(255,229,46,"+stateStairs.bulbs[i].map(0,255,0,1)+")");
+    $(".bulb[data-idtbulb="+i+"]").css("backgroundColor", "rgba(255,229,46,"+stateStairs.bulbs[i].map(0,255,0,1)+")");
   }
 });
 
