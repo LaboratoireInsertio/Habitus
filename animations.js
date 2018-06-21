@@ -21,6 +21,7 @@ var whichRandomBulb = 3;
 var timerRandomBulb = Date.now();
 var whichTint2 = 0;
 var timerTint2 = Date.now();
+var stateStairs;
 
 var timerRandomBrightnessAll = Date.now();
 var desiredBright=[];
@@ -43,52 +44,61 @@ function getRandomInt(min, max) {
 };
 
 module.exports = {
-  init: function(winstonlog, sp) {
+  init: function(winstonlog, sp, states) {
+    stateStairs = states;
     log = winstonlog;
     serialport = sp;
     log.info('Module Animations is initialized');
   },
-  // ------------------ Basic Animations ------------------ //
+  // ------------------ Basic Animations  NEW!------------------ //
+  
   // Turns all the bulbs on, to the given bightness.
-  turnAllBulbOn: function(brightness) {
-    for (var i = 0; i < numLamps; i++) {
-      serialport.sendToMega("D", i + 1, brightness);
+  turnAllBulbOn: function() {
+    for (var i = 0; i < stateStairs.bulbs.length; i++) {
+     stateStairs.bulbs[i] = 0;
     }
+    serialport.sendToMega("b");
   },
   // Turns all the bulbs off.
   turnAllBulbOff: function() {
-    for (var i = 0; i < numLamps; i++) {
-      serialport.sendToMega("D", i + 1, bulbMin);
+    for (var i = 0; i < stateStairs.bulbs.length; i++) {
+     stateStairs.bulbs[i] = 255;
     }
+    serialport.sendToMega("b");
   },
   // Turns all the tints off
   turnAllTintOff: function() {
     for (var i = 0; i < numLamps; i++) {
-      serialport.sendToMega("R", i + 1, 0);
+     stateStairs.tints[i] = 0
     }
+    serialport.sendToMega("t");
   },
   // Turns all the tints on
   turnAllTintOn: function() {
     for (var i = 0; i < numLamps; i++) {
-      serialport.sendToMega("R", i + 1, 1);
+      stateStairs.tints[i] = 1
     }
+    serialport.sendToMega("t");
   },
+  
+  // ------------------ Basic Animations  OLD!------------------ //
+  
   // Turns on the bulbs one by one at a given interval and to a given brightness
   // starting from the bottom one and cycling while the function is called
-  swingBulbUp: function(interval, brightness) {
-    if ((Date.now() - timerBulb1) >= interval) {
-      //console.log("UP! "+bulbMin);
+  // swingBulbUp: function(interval, brightness) {
+  //   if ((Date.now() - timerBulb1) >= interval) {
+  //     //console.log("UP! "+bulbMin);
 
-      serialport.sendToMega("D", whichBulb1 + 1, bulbMin);
+  //     serialport.sendToMega("D", whichBulb1 + 1, bulbMin);
 
-      whichBulb1 = whichBulb1 + 1;
-      if (whichBulb1 > numLamps) whichBulb1 = 0;
+  //     whichBulb1 = whichBulb1 + 1;
+  //     if (whichBulb1 > numLamps) whichBulb1 = 0;
 
-      serialport.sendToMega("D", whichBulb1 + 1, brightness);
+  //     serialport.sendToMega("D", whichBulb1 + 1, brightness);
 
-      timerBulb1 = Date.now();
-    }
-  },
+  //     timerBulb1 = Date.now();
+  //   }
+  // },
   // Turns on the bulbs one by one at a given interval and to a given brightness
   // starting from the top one and cycling while the function is called
   swingBulbDown: function(interval, brightness) {

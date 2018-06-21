@@ -18,7 +18,11 @@ Number.prototype.map = function (in_min, in_max, out_min, out_max) {
   return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 
-function init(log, serialport, socket) {
+function map_range(value, low1, high1, low2, high2) {
+    return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+}
+
+function init(log, serialport, socket, stateStairs, _) {
 
   log.info('Module Interactions is initialized');
 
@@ -60,14 +64,94 @@ function init(log, serialport, socket) {
   var doingSecondaryAnimation2 = false;
 
   var timerPrintDebug = Date.now();
-
-
+	var animationCellDown = false;
+	var animationCellUp = false;
+	var speedTimeout = 2000;
+	
+	log.debug("test function turnAllBulbOn");
+	animations.turnAllBulbOn();
+	setTimeout(function(){
+		animations.turnAllBulbOff();
+	},1000);
+	
+	function bulbUp(id){
+		var idBulb = id;
+		stateStairs.bulbs[id] = 0;
+		serialport.sendToMega("b");
+		setTimeout(function(){
+			idBulb++;
+			if(idBulb<8){
+				bulbUp(idBulb);
+			} else {
+				
+				log.debug("Animation bulbUp Finish!");
+				setTimeout(function(){
+					animations.turnAllBulbOff();
+					setTimeout(function(){
+						animationCellDown = false;
+					},1500);
+				},1000);
+			}
+		},200);
+	}
+	
+	function bulbDown(id){
+		var idBulb = id;
+		stateStairs.bulbs[id] = 0;
+		serialport.sendToMega("b");
+		setTimeout(function(){
+			idBulb--;
+			if(idBulb>=0){
+				 bulbDown(idBulb);
+			}
+			else{ 
+				log.debug("Animation bulbDown Finish!");
+				setTimeout(function(){
+					animations.turnAllBulbOff();
+						setTimeout(function(){
+							animationCellUp = false;
+						},1500);
+				},1000);
+			}
+		},200);
+	}
+	
+	function randomTints(){
+		setTimeout(function(){
+			
+			var tintRand = _.random(0,7);
+			var stateRand = _.random(0,1);
+			// log.debug("random Tint! ",speedTimeout, sensors.globalActivity, tintRand, stateRand);
+			stateStairs.tints[tintRand] = stateRand;
+			serialport.sendToMega("t");
+			randomTints();
+		},speedTimeout);
+	}
+	
+	randomTints();
+	
   //////////////////////////   MAIN LOOP   //////////////////////////
   var loop = setInterval(function() {
 
     onlyChangeThisFile.loop();
-
+	
   // --------- Direct Interaction Examples --------- //
+  if(sensors.cellDown == 1 && !animationCellDown && !animationCellUp){
+  	animationCellDown = true;
+  	bulbUp(0);
+  }
+  
+  
+  if(sensors.cellUp == 1 && !animationCellUp && !animationCellDown){
+  	animationCellUp = true;
+  	bulbDown(7);
+  }
+  
+	//GlobalActivity is between 0 and 200 - We map for avec 250 = fast (20ms) ; 0 = slow (2000ms);
+	speedTimeout = map_range(sensors.globalActivity,0,200,20000,250);
+  
+ 
+  
 	/*
 	if(sensors.cellUp == 1){
       animations.swingBulbDown(500, 50);

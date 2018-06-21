@@ -25,7 +25,7 @@ var modulesActive = {
 
 // var stateBulbs = [0,0,0,0,0,0,0,0];
 var stateStairs = {
-  bulbs : [0,0,0,0,0,0,0,0],
+  bulbs : [255,255,255,255,255,255,255,255],
   tints : [0,0,0,0,0,0,0,0]
 }
 var lifx = require('./lifx');
@@ -62,9 +62,9 @@ var checkStatusModule = setInterval(function(){
     //stop to check status of modules
     clearInterval(checkStatusModule);
     //Start animation
-    animations.init(log, serialport);
+    animations.init(log, serialport,stateStairs);
     setTimeout(function(){
-      interactions.init(log, serialport, socket);
+      interactions.init(log, serialport, socket, stateStairs,_);
     },2000);
   }
 }, 500);
