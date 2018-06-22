@@ -1,6 +1,6 @@
 {
   "name": "insertio",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "app.js",
   "scripts": {
@@ -10,10 +10,15 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.14.0",
+    "forecast": "^0.3.2",
+    "forever-monitor": "^1.7.1",
     "moment": "^2.17.1",
     "mongojs": "^2.4.0",
-    "serialport": "^4.0.7",
+    "mosca": "^2.5.1",
+    "node-lifx": "^0.8.0",
+    "serialport": "^6.2.0",
     "socket.io": "^1.7.2",
-    "winston": "^2.3.0"
+    "underscore": "^1.8.3",
+    "winston": "^2.3.1"
   }
 }
